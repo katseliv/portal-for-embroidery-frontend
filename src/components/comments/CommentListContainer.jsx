@@ -5,36 +5,28 @@ import "../common/PageNavigation.module.css";
 import {
     addCommentActionCreator,
     dislikeActionCreator,
+    getCommentsByNumberAndSizeThunkCreator,
+    getCommentsThunkCreator,
     likeActionCreator,
     setCommentsActionCreator,
     setCurrentPageActionCreator,
-    setIsFetchingActionCreator, setIsLikingInProgressActionCreator,
-    setTotalCountActionCreator,
+    setIsFetchingActionCreator,
+    setIsLikingInProgressActionCreator,
+    setTotalCountActionCreator, updateCommentThunkCreator,
     updateNewCommentTextActionCreator
 } from "../../redux/comment-reducer";
 import CommentList from "./CommentList";
-import {commentAPI} from "../../api/api";
 
 class CommentListContainer extends React.Component {
 
     newCommentItem = React.createRef();
 
     componentDidMount() {
-        this.props.setIsFetching(true);
-        commentAPI.getComments().then(response => {
-            this.props.setIsFetching(false);
-            this.props.setComments(response.data.viewDtoList);
-            this.props.setTotalCommentsCount(response.data.totalCount);
-        });
+        this.props.getComments();
     }
 
     onPageChange = (pageNumber) => {
-        this.props.setIsFetching(true);
-        this.props.setCurrentPage(pageNumber);
-        commentAPI.getCommentsByNumberAndSize(pageNumber, this.props.pageSize).then(response => {
-            this.props.setIsFetching(false);
-            this.props.setComments(response.data.viewDtoList);
-        })
+        this.props.getCommentsByNumberAndSize(pageNumber, this.props.pageSize);
     }
 
     onCommentChange = () => {
@@ -46,8 +38,12 @@ class CommentListContainer extends React.Component {
         this.props.onAddComment();
     }
 
+    onUpdateComment = (commentId, text) => {
+        this.props.updateComment(commentId, text);
+    }
+
     like = (commentId) => {
-        this.props.setIsLikingInProgress(true);
+        this.props.setIsLikingInProgress(true, commentId);
         axios.post(
             `http://localhost:8080/api/v1/posts?${commentId}`,
             {},
@@ -60,7 +56,7 @@ class CommentListContainer extends React.Component {
                 if (response.status === 200) {
                     this.props.like(commentId);
                 }
-                this.props.setIsLikingInProgress(false);
+                this.props.setIsLikingInProgress(false, commentId);
             })
         this.props.like(commentId);
     }
@@ -77,9 +73,11 @@ class CommentListContainer extends React.Component {
                             newCommentText={this.props.newCommentText}
                             newCommentItem={this.newCommentItem}
                             isFetching={this.props.isFetching}
+                            isLikingInProgress={this.props.isLikingInProgress}
                             onPageChange={this.onPageChange}
                             onCommentChange={this.onCommentChange}
                             onAddComment={this.onAddComment}
+                            onUpdateComment={this.onUpdateComment}
                             like={this.like}
                             dislike={this.dislike}
 
@@ -125,8 +123,17 @@ let mapDispatchToProps = (dispatch) => {
         setIsFetching: (isFetching) => {
             dispatch(setIsFetchingActionCreator(isFetching));
         },
-        setIsLikingInProgress: (isLikingInProgress) => {
-            dispatch(setIsLikingInProgressActionCreator(isLikingInProgress));
+        setIsLikingInProgress: (isFetching, id) => {
+            dispatch(setIsLikingInProgressActionCreator(isFetching, id));
+        },
+        updateComment: (commentId, text) => {
+            dispatch(updateCommentThunkCreator(commentId, text));
+        },
+        getComments: () => {
+            dispatch(getCommentsThunkCreator());
+        },
+        getCommentsByNumberAndSize: (pageNumber, pageSize) => {
+            dispatch(getCommentsByNumberAndSizeThunkCreator(pageNumber, pageSize));
         },
     }
 }

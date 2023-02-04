@@ -7,6 +7,12 @@ const instance = axios.create({
 });
 
 export const commentAPI = {
+    getComment(commentId){
+        return instance.get(`/comments/${commentId}`);
+    },
+    updateComment(commentId, text) {
+        return instance.put(`/comments/${commentId}`, {text: text});
+    },
     getComments() {
         return instance.get(`/comments`);
     },

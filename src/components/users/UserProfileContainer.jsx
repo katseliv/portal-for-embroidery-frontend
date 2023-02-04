@@ -2,8 +2,10 @@ import React from "react";
 import axios from "axios";
 import {connect} from "react-redux";
 import UserProfile from "./UserProfile";
+import {compose} from "redux";
 import {useParams} from "react-router-dom";
 import {setUserProfileActionCreator} from "../../redux/profile-reducer";
+import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 
 class UserProfileContainer extends React.Component {
 
@@ -42,6 +44,8 @@ function withParams(Component) {
     return props => <Component {...props} params={useParams()}/>;
 }
 
-let UserProfileContainerWithParams = withParams(UserProfileContainer);
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserProfileContainerWithParams);
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    withParams,
+    // withAuthRedirect
+)(UserProfileContainer)

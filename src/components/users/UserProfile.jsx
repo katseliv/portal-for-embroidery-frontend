@@ -2,6 +2,7 @@ import React from 'react';
 import girl from '../../images/girl.png';
 import FolderGrid from "../folders/FolderGrid";
 import Preloader from "../common/Preloader";
+import UserProfileStatus from "./UserProfileStatus";
 
 const pStyle = {
     fontWeight: 600,
@@ -21,6 +22,8 @@ function UserProfile(props) {
                         <div className="mb-3">
                             <img src={girl} className="img-fluid" alt=""/>
                         </div>
+                        <UserProfileStatus status={"Texting to you..."}/>
+                        <p></p>
                         <p><span style={pStyle}>Username:</span> {props.profile.username}</p>
                         <p></p>
                         <p><span style={pStyle}>First Name:</span> {props.profile.firstName}</p>

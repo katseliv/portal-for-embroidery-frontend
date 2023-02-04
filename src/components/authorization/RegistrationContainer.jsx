@@ -1,8 +1,22 @@
 import React from 'react';
+import {connect} from "react-redux";
 import Registration from "./Registration";
+import {withAuthRedirect} from "../../hoc/withAuthRedirect";
+import {compose} from "redux";
 
-function RegistrationContainer() {
-    return (<Registration signUp={""}/>);
+class RegistrationContainer extends React.Component {
+    render() {
+        return (<Registration signUp={""}/>);
+    }
 }
 
-export default RegistrationContainer;
+let mapStateToProps = (state) => {
+
+    return {}
+}
+let mapDispatchToProps = (dispatch) => {
+
+    return {}
+}
+
+export default compose(connect(mapStateToProps, mapDispatchToProps), withAuthRedirect)(RegistrationContainer);

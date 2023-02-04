@@ -9,7 +9,7 @@ let CommentList = (props) => {
 
     let commentsData = props.comments
         .map(comment => <CommentItem id={comment.id} author={comment.userFirstName + " " + comment.userLastName}
-                                     text={comment.text} date={comment.creationDatetime}
+                                     text={comment.text} date={comment.creationDatetime} onUpdateComment={props.onUpdateComment}
                                      liked={comment.liked} like={props.like} dislike={props.dislike}/>)
 
     return (

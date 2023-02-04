@@ -1,7 +1,7 @@
 import React from 'react';
 import {NavLink} from "react-router-dom";
 
-function Registration(props) {
+let Registration = (props) => {
     let onSignUp = () => {
         let dataForm = {}
         props.signUp(dataForm);
@@ -55,7 +55,8 @@ function Registration(props) {
                         </div>
                         <div className="mb-3 text-center text-danger">
                         </div>
-                        <button type="button" onClick={onSignUp} className="btn btn-lg btn-outline-success w-100 mt-2">Submit
+                        <button type="button" onClick={onSignUp}
+                                className="btn btn-lg btn-outline-success w-100 mt-2">Submit
                         </button>
                         <p className="mt-3 mb-3 text-center">Already have an account?<br/>
                             <NavLink className="text-dark" to="/sign-in">Sign In!</NavLink>

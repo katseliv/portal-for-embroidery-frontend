@@ -1,6 +1,5 @@
 import Header from "./components/header/Header";
 import {Route, Routes} from "react-router-dom";
-import Registration from "./components/authorization/Registration";
 import Home from "./components/home/Home";
 import Footer from "./components/footer/Footer";
 import AboutUs from "./components/about-us/AboutUs";
@@ -11,6 +10,7 @@ import DesignProfile from "./components/designs/DesignProfile";
 import DesignGridContainer from "./components/designs/DesignGridContainer";
 import UserListContainer from "./components/users/UserListContainer";
 import UserProfileContainer from "./components/users/UserProfileContainer";
+import RegistrationContainer from "./components/authorization/RegistrationContainer";
 
 function App() {
     return (
@@ -29,7 +29,7 @@ function App() {
                 <Route path='/about-us' element={<AboutUs/>}/>
                 <Route path='/contacts' element={<Contacts/>}/>
                 <Route path='/sign-in' element={<Login/>}/>
-                <Route path='/sign-up' element={<Registration/>}/>
+                <Route path='/sign-up' element={<RegistrationContainer/>}/>
                 {/*<Route path='*' element={<Error/>}/>*/}
             </Routes>
             <Footer/>
