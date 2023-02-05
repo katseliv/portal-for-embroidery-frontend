@@ -6,8 +6,20 @@ const instance = axios.create({
     withCredentials: true
 });
 
+export const userAPI = {
+    getUser(userId) {
+        return instance.get(`/users/${userId}`);
+    },
+    getUsers() {
+        return instance.get(`/users`);
+    },
+    getUsersByNumberAndSize(pageNumber, pageSize) {
+        return instance.get(`/users?page=${pageNumber}&size=${pageSize}`);
+    },
+}
+
 export const commentAPI = {
-    getComment(commentId){
+    getComment(commentId) {
         return instance.get(`/comments/${commentId}`);
     },
     updateComment(commentId, text) {
@@ -16,7 +28,16 @@ export const commentAPI = {
     getComments() {
         return instance.get(`/comments`);
     },
-    getCommentsByNumberAndSize (pageNumber, pageSize) {
+    getCommentsByNumberAndSize(pageNumber, pageSize) {
         return instance.get(`/comments?page=${pageNumber}&size=${pageSize}`);
+    },
+}
+
+export const authAPI = {
+    login(email, password) {
+        return instance.post(`/accessToken`, {email, password});
+    },
+    logout() {
+        return instance.post(`/logout`);
     },
 }

@@ -2,7 +2,8 @@ import React from 'react';
 import {NavLink} from "react-router-dom";
 import postageHeart from '../../images/postage-heart.svg';
 
-function Header() {
+function Header(props) {
+    debugger
     return (
         <div className="container">
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -40,10 +41,19 @@ function Header() {
                                 <NavLink className="nav-link" to="/contacts">Contacts</NavLink>
                             </li>
                         </ul>
-                        <NavLink className="link-secondary nav-link" to="/sign-up">Sign Up</NavLink>
-                        <form className="d-flex" action="/sign-in">
-                            <button type="submit" className="btn btn-outline-success">Sign In</button>
-                        </form>
+                        {props.isAuthenticated
+                            ?
+                            <form className="d-flex">
+                                <button className="btn btn-outline-danger" onClick={props.logout}>Sign Out</button>
+                            </form>
+                            :
+                            <>
+                                <NavLink className="link-secondary nav-link" to="/sign-up">Sign Up</NavLink>
+                                <form className="d-flex" action="/sign-in">
+                                    <button className="btn btn-outline-success" type="submit">Sign In</button>
+                                </form>
+                            </>
+                        }
                     </div>
                 </div>
             </nav>

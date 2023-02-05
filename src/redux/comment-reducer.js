@@ -2,7 +2,6 @@ import {commentAPI} from "../api/api";
 
 const LIKE = 'LIKE';
 const DISLIKE = 'DISLIKE';
-const UPDATE_NEW_COMMENT_TEXT = 'UPDATE-NEW-COMMENT-TEXT';
 const ADD_COMMENT = 'ADD-COMMENT';
 const UPDATE_COMMENT = 'UPDATE-COMMENT';
 const SET_COMMENTS = 'SET-COMMENTS';
@@ -13,7 +12,6 @@ const TOGGLE_IS_LIKING_PROGRESS = 'TOGGLE-IS-LIKING-PROGRESS';
 
 let initialState = {
     comments: [],
-    newCommentText: '',
     currentPage: 1,
     pageSize: 5,
     totalCount: 4,
@@ -44,23 +42,17 @@ export const commentReducer = (state = initialState, action) => {
                     return comment;
                 })
             }
-        case UPDATE_NEW_COMMENT_TEXT:
-            return {
-                ...state,
-                newCommentText: action.newText
-            }
         case ADD_COMMENT:
             let newComment = {
                 id: 5,
                 userFirstName: 'Anonymous',
                 userLastName: '',
-                text: state.newCommentText,
+                text: action.newCommentText,
                 creationDatetime: '2022-12-27',
                 liked: false
             };
             return {
                 ...state,
-                newCommentText: '',
                 comments: [...state.comments, newComment]
             }
         case UPDATE_COMMENT:
@@ -95,9 +87,8 @@ export const commentReducer = (state = initialState, action) => {
 
 export const likeActionCreator = (commentId) => ({type: LIKE, commentId: commentId});
 export const dislikeActionCreator = (commentId) => ({type: DISLIKE, commentId: commentId});
-export const updateNewCommentTextActionCreator = (text) => ({type: UPDATE_NEW_COMMENT_TEXT, newText: text})
-export const addCommentActionCreator = () => ({type: ADD_COMMENT});
-export const updateCommentActionCreator = (commentId, text) => ({type: UPDATE_COMMENT});
+export const addCommentActionCreator = (newCommentText) => ({type: ADD_COMMENT, newCommentText: newCommentText});
+export const updateCommentActionCreator = (commentId, text) => ({type: UPDATE_COMMENT, commentId: commentId, text: text});
 export const setCommentsActionCreator = (comments) => ({type: SET_COMMENTS, comments: comments});
 export const setCurrentPageActionCreator = (currentPage) => ({type: SET_CURRENT_PAGE, currentPage: currentPage});
 export const setTotalCountActionCreator = (totalCount) => ({

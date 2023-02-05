@@ -8,19 +8,14 @@ import {
     getCommentsByNumberAndSizeThunkCreator,
     getCommentsThunkCreator,
     likeActionCreator,
-    setCommentsActionCreator,
     setCurrentPageActionCreator,
     setIsFetchingActionCreator,
     setIsLikingInProgressActionCreator,
-    setTotalCountActionCreator, updateCommentThunkCreator,
-    updateNewCommentTextActionCreator
+    updateCommentThunkCreator
 } from "../../redux/comment-reducer";
 import CommentList from "./CommentList";
 
 class CommentListContainer extends React.Component {
-
-    newCommentItem = React.createRef();
-
     componentDidMount() {
         this.props.getComments();
     }
@@ -29,13 +24,8 @@ class CommentListContainer extends React.Component {
         this.props.getCommentsByNumberAndSize(pageNumber, this.props.pageSize);
     }
 
-    onCommentChange = () => {
-        let text = this.newCommentItem.current.value;
-        this.props.updateNewCommentText(text);
-    }
-
-    onAddComment = () => {
-        this.props.onAddComment();
+    onAddComment = (values) => {
+        this.props.addComment(values.newCommentText);
     }
 
     onUpdateComment = (commentId, text) => {
@@ -70,25 +60,19 @@ class CommentListContainer extends React.Component {
                             totalCount={this.props.totalCount}
                             pageSize={this.props.pageSize}
                             currentPage={this.props.currentPage}
-                            newCommentText={this.props.newCommentText}
-                            newCommentItem={this.newCommentItem}
                             isFetching={this.props.isFetching}
                             isLikingInProgress={this.props.isLikingInProgress}
                             onPageChange={this.onPageChange}
-                            onCommentChange={this.onCommentChange}
                             onAddComment={this.onAddComment}
                             onUpdateComment={this.onUpdateComment}
                             like={this.like}
-                            dislike={this.dislike}
-
-        />;
+                            dislike={this.dislike}/>;
     }
 }
 
 let mapStateToProps = (state) => {
     return {
         comments: state.commentPage.comments,
-        newCommentText: state.commentPage.newCommentText,
         currentPage: state.commentPage.currentPage,
         pageSize: state.commentPage.pageSize,
         totalCount: state.commentPage.totalCount,
@@ -99,41 +83,32 @@ let mapStateToProps = (state) => {
 
 let mapDispatchToProps = (dispatch) => {
     return {
+        addComment: (newCommentText) => {
+            dispatch(addCommentActionCreator(newCommentText));
+        },
+        updateComment: (commentId, text) => {
+            dispatch(updateCommentThunkCreator(commentId, text));
+        },
         like: (commentId) => {
             dispatch(likeActionCreator(commentId));
         },
         dislike: (commentId) => {
             dispatch(dislikeActionCreator(commentId));
         },
-        updateNewCommentText: (text) => {
-            dispatch(updateNewCommentTextActionCreator(text));
+        getComments: () => {
+            dispatch(getCommentsThunkCreator());
         },
-        onAddComment: () => {
-            dispatch(addCommentActionCreator());
-        },
-        setComments: (comments) => {
-            dispatch(setCommentsActionCreator(comments));
+        getCommentsByNumberAndSize: (pageNumber, pageSize) => {
+            dispatch(getCommentsByNumberAndSizeThunkCreator(pageNumber, pageSize));
         },
         setCurrentPage: (pageNumber) => {
             dispatch(setCurrentPageActionCreator(pageNumber));
-        },
-        setTotalCommentsCount: (totalCount) => {
-            dispatch(setTotalCountActionCreator(totalCount));
         },
         setIsFetching: (isFetching) => {
             dispatch(setIsFetchingActionCreator(isFetching));
         },
         setIsLikingInProgress: (isFetching, id) => {
             dispatch(setIsLikingInProgressActionCreator(isFetching, id));
-        },
-        updateComment: (commentId, text) => {
-            dispatch(updateCommentThunkCreator(commentId, text));
-        },
-        getComments: () => {
-            dispatch(getCommentsThunkCreator());
-        },
-        getCommentsByNumberAndSize: (pageNumber, pageSize) => {
-            dispatch(getCommentsByNumberAndSizeThunkCreator(pageNumber, pageSize));
         },
     }
 }

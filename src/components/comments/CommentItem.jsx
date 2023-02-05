@@ -11,11 +11,11 @@ class CommentItem extends React.Component {
         borderStyle: "solid",
         borderColor: "#00000019",
         borderRadius: "0.25rem"
-    }
+    };
     state = {
         editMode: false,
         text: this.props.text,
-    }
+    };
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.text !== this.props.text) {

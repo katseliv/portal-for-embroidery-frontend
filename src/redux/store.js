@@ -5,10 +5,12 @@ import {designReducer} from "./design-reducer";
 import {commentReducer} from "./comment-reducer";
 import {postReducer} from "./post-reducer";
 import {authReducer} from "./auth-reducer";
+import {appReducer} from "./app-reducer";
 import {reducer as formReducer} from "redux-form";
 import thunkMiddleware from "redux-thunk";
 
 let reducers = combineReducers({
+    appPage: appReducer,
     authPage: authReducer,
     profilePage: profileReducer,
     userPage: userReducer,
