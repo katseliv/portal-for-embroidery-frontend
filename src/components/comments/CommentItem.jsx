@@ -1,6 +1,6 @@
+import React from "react";
 import heartFill from "../../images/heart-fill.svg";
 import heart from "../../images/heart.svg";
-import React from "react";
 
 class CommentItem extends React.Component {
     iStyle = {

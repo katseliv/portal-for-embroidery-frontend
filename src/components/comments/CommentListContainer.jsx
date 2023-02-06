@@ -14,11 +14,23 @@ import {
     updateCommentThunkCreator
 } from "../../redux/comment-reducer";
 import CommentList from "./CommentList";
+import {
+    getComments,
+    getCurrentPage,
+    getIsFetching,
+    getIsLikingInProgress,
+    getPageSize,
+    getTotalCount
+} from "../../redux/comment-selector";
 
-class CommentListContainer extends React.Component {
+class CommentListContainer extends React.PureComponent {
     componentDidMount() {
         this.props.getComments();
     }
+
+    // shouldComponentUpdate(nextProps, nextState, nextContext) {
+    //     return nextProps !== this.props || nextState !== this.props;
+    // }
 
     onPageChange = (pageNumber) => {
         this.props.getCommentsByNumberAndSize(pageNumber, this.props.pageSize);
@@ -70,14 +82,25 @@ class CommentListContainer extends React.Component {
     }
 }
 
+// let mapStateToProps = (state) => {
+//     return {
+//         comments: state.commentPage.comments,
+//         currentPage: state.commentPage.currentPage,
+//         pageSize: state.commentPage.pageSize,
+//         totalCount: state.commentPage.totalCount,
+//         isFetching: state.commentPage.isFetching,
+//         isLikingInProgress: state.commentPage.isLikingInProgress,
+//     }
+// }
+
 let mapStateToProps = (state) => {
     return {
-        comments: state.commentPage.comments,
-        currentPage: state.commentPage.currentPage,
-        pageSize: state.commentPage.pageSize,
-        totalCount: state.commentPage.totalCount,
-        isFetching: state.commentPage.isFetching,
-        isLikingInProgress: state.commentPage.isLikingInProgress,
+        comments: getComments(state),
+        currentPage: getCurrentPage(state),
+        pageSize: getPageSize(state),
+        totalCount: getTotalCount(state),
+        isFetching: getIsFetching(state),
+        isLikingInProgress: getIsLikingInProgress(state),
     }
 }
 

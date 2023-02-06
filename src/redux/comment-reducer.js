@@ -1,14 +1,16 @@
 import {commentAPI} from "../api/api";
+import {updateObjectInArray} from "../utils/object-helpers";
 
-const LIKE = 'LIKE';
-const DISLIKE = 'DISLIKE';
-const ADD_COMMENT = 'ADD-COMMENT';
-const UPDATE_COMMENT = 'UPDATE-COMMENT';
-const SET_COMMENTS = 'SET-COMMENTS';
-const SET_CURRENT_PAGE = 'SET-CURRENT-PAGE';
-const SET_COMMENTS_TOTAL_COUNT = 'SET-COMMENTS-TOTAL-COUNT';
-const TOGGLE_IS_FETCHING = 'TOGGLE-IS-FETCHING';
-const TOGGLE_IS_LIKING_PROGRESS = 'TOGGLE-IS-LIKING-PROGRESS';
+const LIKE = '/comment/LIKE';
+const DISLIKE = '/comment/DISLIKE';
+const ADD_COMMENT = '/comment/ADD-COMMENT';
+const DELETE_COMMENT = '/comment/DELETE-COMMENT';
+const UPDATE_COMMENT = '/comment/UPDATE-COMMENT';
+const SET_COMMENTS = '/comment/SET-COMMENTS';
+const SET_CURRENT_PAGE = '/comment/SET-CURRENT-PAGE';
+const SET_COMMENTS_TOTAL_COUNT = '/comment/SET-COMMENTS-TOTAL-COUNT';
+const TOGGLE_IS_FETCHING = '/comment/TOGGLE-IS-FETCHING';
+const TOGGLE_IS_LIKING_PROGRESS = '/comment/TOGGLE-IS-LIKING-PROGRESS';
 
 let initialState = {
     comments: [],
@@ -22,25 +24,26 @@ let initialState = {
 export const commentReducer = (state = initialState, action) => {
     switch (action.type) {
         case LIKE:
-            debugger;
             return {
                 ...state,
-                comments: state.comments.map(comment => {
-                    if (comment.id === action.commentId) {
-                        return {...comment, liked: true}
-                    }
-                    return comment;
-                })
+                comments: updateObjectInArray(state.comments, action.commentId, "id", {liked: true})
+                // comments: state.comments.map(comment => {
+                //     if (comment.id === action.commentId) {
+                //         return {...comment, liked: true}
+                //     }
+                //     return comment;
+                // })
             }
         case DISLIKE:
             return {
                 ...state,
-                comments: state.comments.map(comment => {
-                    if (comment.id === action.commentId) {
-                        return {...comment, liked: false}
-                    }
-                    return comment;
-                })
+                comments: updateObjectInArray(state.comments, action.commentId, "id", {liked: false})
+                // comments: state.comments.map(comment => {
+                //     if (comment.id === action.commentId) {
+                //         return {...comment, liked: false}
+                //     }
+                //     return comment;
+                // })
             }
         case ADD_COMMENT:
             let newComment = {
@@ -54,6 +57,11 @@ export const commentReducer = (state = initialState, action) => {
             return {
                 ...state,
                 comments: [...state.comments, newComment]
+            }
+        case DELETE_COMMENT:
+            return {
+                ...state,
+                comments: state.comments.filter(c => c.id !== action.commentId)
             }
         case UPDATE_COMMENT:
             return {
@@ -88,7 +96,12 @@ export const commentReducer = (state = initialState, action) => {
 export const likeActionCreator = (commentId) => ({type: LIKE, commentId: commentId});
 export const dislikeActionCreator = (commentId) => ({type: DISLIKE, commentId: commentId});
 export const addCommentActionCreator = (newCommentText) => ({type: ADD_COMMENT, newCommentText: newCommentText});
-export const updateCommentActionCreator = (commentId, text) => ({type: UPDATE_COMMENT, commentId: commentId, text: text});
+export const deleteCommentActionCreator = (commentId) => ({type: DELETE_COMMENT, commentId: commentId});
+export const updateCommentActionCreator = (commentId, text) => ({
+    type: UPDATE_COMMENT,
+    commentId: commentId,
+    text: text
+});
 export const setCommentsActionCreator = (comments) => ({type: SET_COMMENTS, comments: comments});
 export const setCurrentPageActionCreator = (currentPage) => ({type: SET_CURRENT_PAGE, currentPage: currentPage});
 export const setTotalCountActionCreator = (totalCount) => ({
@@ -105,13 +118,35 @@ export const setIsLikingInProgressActionCreator = (isFetching, id) => ({
     id: id
 });
 
+export const likeDislikeFlowThunkCreator = async (dispatch, commentId, apiMethod, actionCreator) => {
+    dispatch(setIsLikingInProgressActionCreator(true, commentId));
+    let response = await apiMethod(commentId);
+
+    if (response.status === 200) {
+        dispatch(actionCreator(commentId));
+    }
+    dispatch(setIsLikingInProgressActionCreator(false, commentId));
+}
+
+export const likeFlowThunkCreator = (commentId) => {
+    return async (dispatch) => {
+        likeDislikeFlowThunkCreator(dispatch, commentId, commentAPI.likeComment.bind(commentId), likeActionCreator);
+    };
+}
+
+export const dislikeFlowThunkCreator = (commentId) => {
+    return async (dispatch) => {
+        likeDislikeFlowThunkCreator(dispatch, commentId, commentAPI.dislikeComment.bind(commentId), dislikeActionCreator);
+    };
+}
+
 export const updateCommentThunkCreator = (commentId, text) => {
-    return (dispatch) => {
-        commentAPI.updateComment(commentId, text).then(response => {
-            if (response.status === 200) {
-                dispatch(updateCommentActionCreator(commentId, text));
-            }
-        });
+    return async (dispatch) => {
+        let response = await commentAPI.updateComment(commentId, text);
+
+        if (response.status === 200) {
+            dispatch(updateCommentActionCreator(commentId, text));
+        }
     };
 }
 export const getCommentsThunkCreator = () => {

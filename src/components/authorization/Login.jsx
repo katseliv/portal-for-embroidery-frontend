@@ -14,10 +14,10 @@ const Login = (props) => {
     );
 }
 
-let LoginForm = (props) => {
+let LoginForm = ({handleSubmit, error}) => {
     const maxLength10 = maxLengthCreator(10);
     return (
-        <form onSubmit={props.handleSubmit}>
+        <form onSubmit={handleSubmit}>
             <div className="mb-3">
                 <Field component={Input} name={"email"} label={"Email"}/>
             </div>
@@ -25,7 +25,7 @@ let LoginForm = (props) => {
                 <Field component={Input} name={"password"} label={"Password"}
                        validate={[requiredField, maxLength10]} type="password"/>
             </div>
-            {props.error && <div>{props.error}</div>}
+            {error && <div>{error}</div>}
             <button className="btn btn-lg btn-outline-success w-100 mt-2">Submit</button>
         </form>
     );
