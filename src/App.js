@@ -18,6 +18,9 @@ import {getUserThunkCreator} from "./redux/auth-reducer";
 import {initializeAppThunkCreator} from "./redux/app-reducer";
 import Preloader from "./components/common/Preloader";
 
+// const userListContainer = React.lazy(() => import('./components/users/UserListContainer'));
+// <Suspense fallback={<Preloader/>}>userListContainer</Suspense>
+
 class App extends React.Component {
     componentDidMount() {
         this.props.getUser();
