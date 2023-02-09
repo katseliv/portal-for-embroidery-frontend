@@ -6,7 +6,6 @@ import Home from "./components/home/Home";
 import Footer from "./components/footer/Footer";
 import AboutUs from "./components/about-us/AboutUs";
 import Contacts from "./components/contacts/Contacts";
-import UserProfileUpdate from "./components/users/UserProfileUpdate";
 import DesignProfile from "./components/designs/DesignProfile";
 import DesignGridContainer from "./components/designs/DesignGridContainer";
 import UserListContainer from "./components/users/UserListContainer";
@@ -18,13 +17,34 @@ import {getUserThunkCreator} from "./redux/auth-reducer";
 import {initializeAppThunkCreator} from "./redux/app-reducer";
 import Preloader from "./components/common/Preloader";
 
-// const userListContainer = React.lazy(() => import('./components/users/UserListContainer'));
+// const UserListContainer = React.lazy(() => import('./components/users/UserListContainer'));
 // <Suspense fallback={<Preloader/>}>userListContainer</Suspense>
 
 class App extends React.Component {
     componentDidMount() {
-        this.props.getUser();
+        this.props.initializeApp();
+        let userId = this.props.authorizedUserId;
+        if (userId) {
+            this.props.getUser(userId);
+        }
+        window.addEventListener("unhandledrejection", this.catchAllUnhandledErrors);
     }
+
+    componentWillUnmount() {
+        window.removeEventListener("unhandledrejection", this.catchAllUnhandledErrors);
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        let userId = this.props.authorizedUserId;
+        let prevUserId = prevProps.authorizedUserId;
+        if (userId !== prevUserId) {
+            this.props.getUser(userId);
+        }
+    }
+
+    // catchAllUnhandledErrors = (reason, promiseRejectionEvent) => {
+    //
+    // }
 
     render() {
         if (!this.props.initialized) return <Preloader/>;
@@ -36,7 +56,6 @@ class App extends React.Component {
                     <Route path='/profile' element={<UserProfileContainer/>}>
                         <Route path=':userId' element={<UserProfileContainer/>}/>
                     </Route>
-                    <Route path='/profile/update' element={<UserProfileUpdate/>}/>
                     <Route path='/users' element={<UserListContainer/>}/>
                     <Route path='/designs' element={<DesignGridContainer/>}/>
                     <Route path='/designs/design' element={<DesignProfile/>}/>
@@ -56,16 +75,18 @@ class App extends React.Component {
 let mapStateToProps = (state) => {
     return {
         initialized: state.appPage.initialized,
+        authorizedUserId: state.authPage.id,
+        isAuthenticated: state.authPage.isAuthenticated
     }
 }
 
 let mapDispatchToProps = (dispatch) => {
     return {
+        initializeApp: (userId) => {
+            dispatch(initializeAppThunkCreator(userId));
+        },
         getUser: (userId) => {
             dispatch(getUserThunkCreator(userId));
-        },
-        initialize: (userId) => {
-            dispatch(initializeAppThunkCreator(userId));
         },
     }
 }

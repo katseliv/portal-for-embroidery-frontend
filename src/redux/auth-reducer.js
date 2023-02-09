@@ -1,5 +1,6 @@
 import {authAPI, userAPI} from "../api/api";
 import {stopSubmit} from "redux-form";
+import {setUserProfileActionCreator} from "./profile-reducer";
 
 const SET_USER_DATA = "SET-USER";
 
@@ -34,6 +35,7 @@ export const getUserThunkCreator = (userId) => {
         userAPI.getUser(userId).then(response => {
             if (response.status === 200) {
                 dispatch(setUserActionCreator(response.data.id, response.data.login, response.data.email, true));
+                dispatch(setUserProfileActionCreator(response.data));
             }
         });
     };
@@ -46,6 +48,7 @@ export const loginThunkCreator = (email, password) => {
             } else {
                 let message = response.data.messages.length > 0 ? response.data.messages[0] : "Some error...";
                 dispatch(stopSubmit("loginForm", {_error: message}))
+                return Promise.reject(message);
             }
         });
     };

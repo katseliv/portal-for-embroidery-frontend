@@ -8,7 +8,7 @@ import {maxLengthCreator, requiredField} from "../../utils/validators/validators
 
 let CommentList = (props) => {
     let commentsData = props.comments
-        .map(comment => <CommentItem id={comment.id} author={comment.userFirstName + " " + comment.userLastName}
+        .map(comment => <CommentItem key={comment.id} id={comment.id} author={comment.userFirstName + " " + comment.userLastName}
                                      text={comment.text} date={comment.creationDatetime}
                                      onUpdateComment={props.onUpdateComment}
                                      liked={comment.liked} like={props.like} dislike={props.dislike}/>);

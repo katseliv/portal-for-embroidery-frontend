@@ -4,6 +4,7 @@ const SET_INITIALIZED = "SET-INITIALIZED";
 
 let initialState = {
     initialized: false,
+    globalError: null
 }
 
 export const appReducer = (state = initialState, action) => {

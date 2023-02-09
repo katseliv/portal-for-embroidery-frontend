@@ -3,7 +3,6 @@ import {NavLink} from "react-router-dom";
 import postageHeart from '../../images/postage-heart.svg';
 
 function Header(props) {
-    debugger
     return (
         <div className="container">
             <nav className="navbar navbar-expand-lg navbar-light bg-light">

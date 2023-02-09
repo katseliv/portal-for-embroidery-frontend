@@ -1,6 +1,6 @@
 const style = {height: 100};
 
-export const FormControl = ({input, meta, child, ...props}) => {
+export const FormControl = ({input, meta, ...props}) => {
     const hasError = meta.touched && meta.error;
     return (
         <div>
@@ -21,7 +21,7 @@ export const TextArea = (props) => {
 }
 
 export const Input = (props) => {
-    const {input, meta, child, ...restProps} = props;
+    const {input, meta, ...restProps} = props;
     return (
         <FormControl {...props}>
             <input className="form-control" {...input} {...restProps}/>

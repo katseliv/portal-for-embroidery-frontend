@@ -10,6 +10,15 @@ export const userAPI = {
     getUser(userId) {
         return instance.get(`/users/${userId}`);
     },
+    saveImage(image) {
+        const formData = new FormData();
+        formData.append('base64StringImage', image);
+        return instance.put(`/users`, formData,{
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+    },
     getUsers() {
         return instance.get(`/users`);
     },

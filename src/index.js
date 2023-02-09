@@ -10,7 +10,8 @@ import {BrowserRouter} from "react-router-dom";
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-        <BrowserRouter>
+        {/*<HashRouter/>*/}
+        <BrowserRouter basename={process.env.PUBLIC_URL}>
             <Provider store={store}>
                 <App/>
             </Provider>

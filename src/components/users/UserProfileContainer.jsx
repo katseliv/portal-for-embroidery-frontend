@@ -1,33 +1,44 @@
 import React from "react";
-import axios from "axios";
 import {connect} from "react-redux";
 import UserProfile from "./UserProfile";
 import {compose} from "redux";
-import {Navigate, useParams} from "react-router-dom";
-import {setUserProfileActionCreator} from "../../redux/profile-reducer";
+import {Navigate, useNavigate, useParams} from "react-router-dom";
+import {getUserProfileThunkCreator, saveImageThunkCreator} from "../../redux/profile-reducer";
 
 class UserProfileContainer extends React.Component {
 
     componentDidMount() {
+        this.refreshProfile();
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        let userId = this.props.params.userId;
+        let prevUserId = prevProps.params.userId;
+        if (userId !== prevUserId) {
+            this.refreshProfile();
+        }
+    }
+
+    refreshProfile() {
         let userId = this.props.params.userId;
         if (!userId) {
             userId = this.props.authorizedUserId;
             if (!userId) {
-                this.props.history.push("/login");
+                this.props.navigate("/sign-in");
             }
+        } else {
+            this.props.getUserProfile(userId);
         }
-        debugger;
-        axios.get(`http://localhost:8080/api/v1/users/${userId}`)
-            .then(response => {
-                this.props.setUserProfile(response.data);
-            });
     }
 
     render() {
         if (!this.props.isAuthenticated) {
             return <Navigate replace to='/sign-in'/>;
         }
-        return <UserProfile {...this.props} profile={this.props.profile}/>;
+        return <UserProfile {...this.props}
+                            isOwner={!!this.props.authorizedUserId}
+                            profile={this.props.profile}
+                            saveImage={this.props.saveImage}/>;
     }
 }
 
@@ -41,14 +52,21 @@ let mapStateToProps = (state) => {
 
 let mapDispatchToProps = (dispatch) => {
     return {
-        setUserProfile: (profile) => {
-            dispatch(setUserProfileActionCreator(profile));
+        getUserProfile: (userId) => {
+            dispatch(getUserProfileThunkCreator(userId));
+        },
+        saveImage: (image) => {
+            dispatch(saveImageThunkCreator(image));
         },
     }
+}
+
+function withNavigation(Component) {
+    return props => <Component {...props} navigate={useNavigate()}/>;
 }
 
 function withParams(Component) {
     return props => <Component {...props} params={useParams()}/>;
 }
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), withParams)(UserProfileContainer)
+export default compose(connect(mapStateToProps, mapDispatchToProps), withNavigation, withParams)(UserProfileContainer)
