@@ -13,7 +13,7 @@ function FolderGrid() {
                     <FolderItem name={"Folder (4)"}/>
                     <FolderItem name={"Folder (5)"}/>
                     <FolderItem name={"In Progress"}/>
-                    <FolderItem name={"Favorite designs"}/>
+                    <FolderItem name={"Favorite posts"}/>
                     <FolderItem name={"Basket"}/>
                 </div>
             </div>

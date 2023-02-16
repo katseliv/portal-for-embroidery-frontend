@@ -2,20 +2,23 @@ import React from "react";
 import {compose} from "redux";
 import {connect} from "react-redux";
 import {Route, Routes} from "react-router-dom";
+import Error from "./components/common/Error";
 import Home from "./components/home/Home";
 import Footer from "./components/footer/Footer";
 import AboutUs from "./components/about-us/AboutUs";
 import Contacts from "./components/contacts/Contacts";
-import DesignProfile from "./components/designs/DesignProfile";
-import DesignGridContainer from "./components/designs/DesignGridContainer";
+import Preloader from "./components/common/Preloader";
+import PostGridContainer from "./components/posts/PostGridContainer";
+import PostProfileContainer from "./components/posts/PostProfileContainer";
 import UserListContainer from "./components/users/UserListContainer";
 import UserProfileContainer from "./components/users/UserProfileContainer";
 import RegistrationContainer from "./components/authorization/RegistrationContainer";
 import LoginContainer from "./components/authorization/LoginContainer";
 import HeaderContainer from "./components/header/HeaderContainer";
-import {getUserThunkCreator} from "./redux/auth-reducer";
 import {initializeAppThunkCreator} from "./redux/app-reducer";
-import Preloader from "./components/common/Preloader";
+import {getUserProfileThunkCreator} from "./redux/profile-reducer";
+import {getInitialized} from "./redux/app-selector";
+import {getAuthorizedUserId, getIsAuthenticated} from "./redux/auth-selector";
 
 // const UserListContainer = React.lazy(() => import('./components/users/UserListContainer'));
 // <Suspense fallback={<Preloader/>}>userListContainer</Suspense>
@@ -42,9 +45,9 @@ class App extends React.Component {
         }
     }
 
-    // catchAllUnhandledErrors = (reason, promiseRejectionEvent) => {
-    //
-    // }
+    catchAllUnhandledErrors = (reason, promiseRejectionEvent) => {
+        // alert('Some error occurred!');
+    }
 
     render() {
         if (!this.props.initialized) return <Preloader/>;
@@ -57,14 +60,15 @@ class App extends React.Component {
                         <Route path=':userId' element={<UserProfileContainer/>}/>
                     </Route>
                     <Route path='/users' element={<UserListContainer/>}/>
-                    <Route path='/designs' element={<DesignGridContainer/>}/>
-                    <Route path='/designs/design' element={<DesignProfile/>}/>
+                    <Route path='/designs' element={<PostGridContainer/>}>
+                        <Route path=':postId' element={<PostProfileContainer/>}/>
+                    </Route>
                     <Route path='/my-designs'/>
                     <Route path='/about-us' element={<AboutUs/>}/>
                     <Route path='/contacts' element={<Contacts/>}/>
                     <Route path='/sign-in' element={<LoginContainer/>}/>
                     <Route path='/sign-up' element={<RegistrationContainer/>}/>
-                    {/*<Route path='*' element={<Error/>}/>*/}
+                    <Route path='*' element={<Error/>}/>
                 </Routes>
                 <Footer/>
             </div>
@@ -74,9 +78,9 @@ class App extends React.Component {
 
 let mapStateToProps = (state) => {
     return {
-        initialized: state.appPage.initialized,
-        authorizedUserId: state.authPage.id,
-        isAuthenticated: state.authPage.isAuthenticated
+        initialized: getInitialized(state),
+        authorizedUserId: getAuthorizedUserId(state),
+        isAuthenticated: getIsAuthenticated(state),
     }
 }
 
@@ -86,7 +90,7 @@ let mapDispatchToProps = (dispatch) => {
             dispatch(initializeAppThunkCreator(userId));
         },
         getUser: (userId) => {
-            dispatch(getUserThunkCreator(userId));
+            dispatch(getUserProfileThunkCreator(userId));
         },
     }
 }

@@ -1,6 +1,6 @@
-import {getUserThunkCreator} from "./auth-reducer";
+import {getUserProfileThunkCreator} from "./profile-reducer";
 
-const SET_INITIALIZED = "SET-INITIALIZED";
+const SET_INITIALIZED = "/app/SET-INITIALIZED";
 
 let initialState = {
     initialized: false,
@@ -23,7 +23,7 @@ export const setInitializedActionCreator = () => ({type: SET_INITIALIZED});
 
 export const initializeAppThunkCreator = (userId) => {
     return (dispatch) => {
-        let promise = dispatch(getUserThunkCreator(userId));
+        let promise = dispatch(getUserProfileThunkCreator(userId));
         Promise.all([promise]).then(() => {
             dispatch(setInitializedActionCreator());
         });

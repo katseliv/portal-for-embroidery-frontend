@@ -1,8 +1,8 @@
 import {userAPI} from "../api/api";
 
-const UPDATE_PROFILE_BODY = "UPDATE-PROFILE-BODY";
-const SET_USER_PROFILE = "SET-USER-PROFILE";
-const SAVE_IMAGE = "SAVE-IMAGE";
+const UPDATE_PROFILE_BODY = "/profile/UPDATE-PROFILE-BODY";
+const SET_USER_PROFILE = "/profile/SET-USER-PROFILE";
+const SAVE_IMAGE = "/profile/SAVE-IMAGE";
 
 let initialState = {
     profile: null

@@ -1,7 +1,7 @@
+import React from "react";
 import liquid from '../../images/liquid.png';
 import liquid2 from '../../images/liquid2.png';
 import abstract from '../../images/abstract.png';
-import React from "react";
 import CommentListContainer from "../comments/CommentListContainer";
 
 const carouselStyle = {
@@ -9,7 +9,7 @@ const carouselStyle = {
     height: '600px'
 };
 
-function DesignProfile() {
+function PostProfile(props) {
     return (
         <div>
             <div className="container p-5 overflow-hidden">
@@ -53,7 +53,7 @@ function DesignProfile() {
                             </div>
                         </div>
                         <div className="col-7">
-                            <h1 className="h4 mb-5 fw-normal text-center">Liquid</h1>
+                            <h1 className="h4 mb-5 fw-normal text-center">{props.title}</h1>
                             <h6 className="h5 mb-3 fw-normal text-right">Liquid is one of the three principle
                                 states of matter. In its characteristics, a liquid is intermediate between a gas
                                 and a solid, the other two principle states. Like gases, liquids can flow and
@@ -86,9 +86,9 @@ function DesignProfile() {
                     </div>
                 </div>
             </div>
-            <CommentListContainer/>
+            <CommentListContainer postId={3} userId={13}/>
         </div>
     );
 }
 
-export default DesignProfile;
+export default PostProfile;

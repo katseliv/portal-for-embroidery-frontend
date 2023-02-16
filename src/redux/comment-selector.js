@@ -1,29 +1,25 @@
 import {createSelector} from "reselect";
 
 export const getComments = (state) => {
-    return state.commentPage.comments;
+    return state.commentPage.comments.sort((a, b) => a.id > b.id ? 1 : -1);
 };
 
-export const getCurrentPage = (state) => {
+export const getCurrentPageOfComments = (state) => {
     return state.commentPage.currentPage;
 };
 
-export const getPageSize = (state) => {
+export const getPageSizeOfComments = (state) => {
     return state.commentPage.pageSize;
 };
 
-export const getTotalCount = (state) => {
+export const getTotalCountOfComments = (state) => {
     return state.commentPage.totalCount;
 };
 
-export const getIsFetching = (state) => {
+export const getIsFetchingOfComments = (state) => {
     return state.commentPage.isFetching;
 };
 
-export const getIsLikingInProgress = (state) => {
-    return state.commentPage.isLikingInProgress;
-};
-
-export const getCommentsDifficultSelector = createSelector(getComments, getIsFetching, (comments, isFetching) => {
+export const getCommentsDifficultSelector = createSelector(getComments, getIsFetchingOfComments, (comments, isFetching) => {
     return comments.filter(c => isFetching);
 });

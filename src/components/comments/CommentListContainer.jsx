@@ -1,122 +1,85 @@
 import React from "react";
-import axios from "axios";
 import {connect} from "react-redux";
 import "../common/PageNavigation.module.css";
 import {
-    addCommentActionCreator,
-    dislikeActionCreator,
+    addCommentThunkCreator,
+    deleteCommentThunkCreator,
     getCommentsByNumberAndSizeThunkCreator,
     getCommentsThunkCreator,
-    likeActionCreator,
     setCurrentPageActionCreator,
     setIsFetchingActionCreator,
-    setIsLikingInProgressActionCreator,
     updateCommentThunkCreator
 } from "../../redux/comment-reducer";
 import CommentList from "./CommentList";
 import {
     getComments,
-    getCurrentPage,
-    getIsFetching,
-    getIsLikingInProgress,
-    getPageSize,
-    getTotalCount
+    getCurrentPageOfComments,
+    getIsFetchingOfComments,
+    getPageSizeOfComments,
+    getTotalCountOfComments
 } from "../../redux/comment-selector";
+import {getIsAuthenticated} from "../../redux/auth-selector";
 
-class CommentListContainer extends React.PureComponent {
+class CommentListContainer extends React.Component {
     componentDidMount() {
         this.props.getComments();
     }
 
-    // shouldComponentUpdate(nextProps, nextState, nextContext) {
-    //     return nextProps !== this.props || nextState !== this.props;
-    // }
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        return nextProps !== this.props || nextState !== this.props;
+    }
 
     onPageChange = (pageNumber) => {
         this.props.getCommentsByNumberAndSize(pageNumber, this.props.pageSize);
     }
 
     onAddComment = (values) => {
-        this.props.addComment(values.newCommentText);
+        this.props.addComment(this.props.postId, this.props.userId, values.text);
     }
 
     onUpdateComment = (commentId, text) => {
         this.props.updateComment(commentId, text);
     }
 
-    like = (commentId) => {
-        this.props.setIsLikingInProgress(true, commentId);
-        axios.post(
-            `http://localhost:8080/api/v1/posts?${commentId}`,
-            {},
-            {
-                headers: {
-                    "Authorization": ""
-                }
-            })
-            .then(response => {
-                if (response.status === 200) {
-                    this.props.like(commentId);
-                }
-                this.props.setIsLikingInProgress(false, commentId);
-            })
-        this.props.like(commentId);
-    }
-
-    dislike = (commentId) => {
-        this.props.dislike(commentId);
+    onDeleteComment = (commentId) => {
+        this.props.deleteComment(commentId);
     }
 
     render() {
         return <CommentList comments={this.props.comments}
-                            totalCount={this.props.totalCount}
-                            pageSize={this.props.pageSize}
                             currentPage={this.props.currentPage}
+                            pageSize={this.props.pageSize}
+                            totalCount={this.props.totalCount}
                             isFetching={this.props.isFetching}
-                            isLikingInProgress={this.props.isLikingInProgress}
+                            isAuthenticated={this.props.isAuthenticated}
                             onPageChange={this.onPageChange}
                             onAddComment={this.onAddComment}
                             onUpdateComment={this.onUpdateComment}
-                            like={this.like}
-                            dislike={this.dislike}/>;
+                            onDeleteComment={this.onDeleteComment}/>;
     }
 }
-
-// let mapStateToProps = (state) => {
-//     return {
-//         comments: state.commentPage.comments,
-//         currentPage: state.commentPage.currentPage,
-//         pageSize: state.commentPage.pageSize,
-//         totalCount: state.commentPage.totalCount,
-//         isFetching: state.commentPage.isFetching,
-//         isLikingInProgress: state.commentPage.isLikingInProgress,
-//     }
-// }
 
 let mapStateToProps = (state) => {
     return {
         comments: getComments(state),
-        currentPage: getCurrentPage(state),
-        pageSize: getPageSize(state),
-        totalCount: getTotalCount(state),
-        isFetching: getIsFetching(state),
-        isLikingInProgress: getIsLikingInProgress(state),
+        currentPage: getCurrentPageOfComments(state),
+        pageSize: getPageSizeOfComments(state),
+        totalCount: getTotalCountOfComments(state),
+        isFetching: getIsFetchingOfComments(state),
+        isAuthenticated: getIsAuthenticated(state),
     }
 }
 
 let mapDispatchToProps = (dispatch) => {
     return {
-        addComment: (newCommentText) => {
-            dispatch(addCommentActionCreator(newCommentText));
+        addComment: (postId, userId, text) => {
+            dispatch(addCommentThunkCreator(postId, userId, text));
         },
         updateComment: (commentId, text) => {
             dispatch(updateCommentThunkCreator(commentId, text));
         },
-        like: (commentId) => {
-            dispatch(likeActionCreator(commentId));
-        },
-        dislike: (commentId) => {
-            dispatch(dislikeActionCreator(commentId));
+        deleteComment: (commentId) => {
+            dispatch(deleteCommentThunkCreator(commentId));
         },
         getComments: () => {
             dispatch(getCommentsThunkCreator());
@@ -129,9 +92,6 @@ let mapDispatchToProps = (dispatch) => {
         },
         setIsFetching: (isFetching) => {
             dispatch(setIsFetchingActionCreator(isFetching));
-        },
-        setIsLikingInProgress: (isFetching, id) => {
-            dispatch(setIsLikingInProgressActionCreator(isFetching, id));
         },
     }
 }
