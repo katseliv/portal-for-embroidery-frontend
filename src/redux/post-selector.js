@@ -1,3 +1,5 @@
+import {createSelector} from "reselect";
+
 export const getPosts = (state) => {
     return state.postPage.posts.sort((a, b) => a.id > b.id ? 1 : -1);
 };

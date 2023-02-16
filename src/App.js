@@ -15,9 +15,9 @@ import UserProfileContainer from "./components/users/UserProfileContainer";
 import RegistrationContainer from "./components/authorization/RegistrationContainer";
 import LoginContainer from "./components/authorization/LoginContainer";
 import HeaderContainer from "./components/header/HeaderContainer";
+import {getInitialized} from "./redux/app-selector";
 import {initializeAppThunkCreator} from "./redux/app-reducer";
 import {getUserProfileThunkCreator} from "./redux/profile-reducer";
-import {getInitialized} from "./redux/app-selector";
 import {getAuthorizedUserId, getIsAuthenticated} from "./redux/auth-selector";
 
 // const UserListContainer = React.lazy(() => import('./components/users/UserListContainer'));

@@ -20,42 +20,41 @@ const TOGGLE_IS_LIKING_PROGRESS = '/post/TOGGLE-IS-LIKING-PROGRESS';
 
 let initialState = {
     posts: [
-        {
-            id: 1,
-            image: plants,
-            title: 'Plants',
-            text: 'This is a longer card with supporting text below as a natural\n' +
-                'lead-in to additional content. This content is a little bit longer.'
-        },
-        {
-            id: 2,
-            image: liquid,
-            title: 'Liquid',
-            text: 'This is a longer card with supporting text below as a natural\n' +
-                'lead-in to additional content. This content is a little bit longer.'
-        },
-        {
-            id: 3,
-            image: abstract,
-            title: 'Abstract',
-            text: 'This is a longer card with supporting text below as a natural\n' +
-                'lead-in to additional content. This content is a little bit longer.'
-        },
-        {
-            id: 4,
-            image: abstract2,
-            title: 'Abstract',
-            text: 'This is a longer card with supporting text below as a natural\n' +
-                'lead-in to additional content. This content is a little bit longer.'
-        },
-        {
-            id: 5,
-            image: liquid2,
-            title: 'Liquid',
-            text: 'This is a longer card with supporting text below as a natural\n' +
-                'lead-in to additional content. This content is a little bit longer.'
-        },
-
+        // {
+        //     id: 1,
+        //     image: plants,
+        //     title: 'Plants',
+        //     text: 'This is a longer card with supporting text below as a natural\n' +
+        //         'lead-in to additional content. This content is a little bit longer.'
+        // },
+        // {
+        //     id: 2,
+        //     image: liquid,
+        //     title: 'Liquid',
+        //     text: 'This is a longer card with supporting text below as a natural\n' +
+        //         'lead-in to additional content. This content is a little bit longer.'
+        // },
+        // {
+        //     id: 3,
+        //     image: abstract,
+        //     title: 'Abstract',
+        //     text: 'This is a longer card with supporting text below as a natural\n' +
+        //         'lead-in to additional content. This content is a little bit longer.'
+        // },
+        // {
+        //     id: 4,
+        //     image: abstract2,
+        //     title: 'Abstract',
+        //     text: 'This is a longer card with supporting text below as a natural\n' +
+        //         'lead-in to additional content. This content is a little bit longer.'
+        // },
+        // {
+        //     id: 5,
+        //     image: liquid2,
+        //     title: 'Liquid',
+        //     text: 'This is a longer card with supporting text below as a natural\n' +
+        //         'lead-in to additional content. This content is a little bit longer.'
+        // },
     ],
     currentPage: 1,
     pageSize: 5,
@@ -92,7 +91,7 @@ export const postReducer = (state = initialState, action) => {
                 posts: updateObjectInArray(state.posts, action.postId, "id", {liked: false})
             }
         case SET_POSTS:
-            return {...state, posts: action.posts}
+            return {...state, posts: {...state.posts, ...action.posts}}
         case SET_CURRENT_PAGE:
             return {...state, currentPage: action.currentPage}
         case SET_POSTS_TOTAL_COUNT:
