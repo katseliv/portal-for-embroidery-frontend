@@ -40,6 +40,9 @@ export const postAPI = {
     deletePost(postId) {
         return instance.delete(`/posts/${postId}`);
     },
+    getCountLikes(postId) {
+        return instance.get(`/posts/${postId}/likes`);
+    },
     likePost(postId, text) {
         return instance.post(`/posts/${postId}`, {text: text});
     },
@@ -70,8 +73,14 @@ export const commentAPI = {
     getComments() {
         return instance.get(`/comments`);
     },
+    getCommentsOfPost(postId) {
+        return instance.get(`/posts/${postId}/comments`);
+    },
     getCommentsByNumberAndSize(pageNumber, pageSize) {
         return instance.get(`/comments?page=${pageNumber}&size=${pageSize}`);
+    },
+    getCommentsOfPostByNumberAndSize(postId, pageNumber, pageSize) {
+        return instance.get(`/posts/${postId}/comments?page=${pageNumber}&size=${pageSize}`);
     },
 }
 

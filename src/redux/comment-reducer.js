@@ -106,11 +106,33 @@ export const getCommentsThunkCreator = () => {
         }
     };
 }
+export const getCommentsOfPostThunkCreator = (postId) => {
+    return async (dispatch) => {
+        dispatch(setIsFetchingActionCreator(true));
+        let response = await commentAPI.getCommentsOfPost(postId);
+        if (response.status === 200) {
+            dispatch(setIsFetchingActionCreator(false));
+            dispatch(setCommentsActionCreator(response.data.viewDtoList));
+            dispatch(setTotalCountActionCreator(response.data.totalCount));
+        }
+    };
+}
 export const getCommentsByNumberAndSizeThunkCreator = (pageNumber, pageSize) => {
     return async (dispatch) => {
         dispatch(setIsFetchingActionCreator(true));
         dispatch(setCurrentPageActionCreator(pageNumber));
         let response = await commentAPI.getCommentsByNumberAndSize(pageNumber, pageSize);
+        if (response.status === 200) {
+            dispatch(setIsFetchingActionCreator(false));
+            dispatch(setCommentsActionCreator(response.data.viewDtoList));
+        }
+    };
+}
+export const getCommentsOfPostByNumberAndSizeThunkCreator = (postId, pageNumber, pageSize) => {
+    return async (dispatch) => {
+        dispatch(setIsFetchingActionCreator(true));
+        dispatch(setCurrentPageActionCreator(pageNumber));
+        let response = await commentAPI.getCommentsOfPostByNumberAndSize(postId, pageNumber, pageSize);
         if (response.status === 200) {
             dispatch(setIsFetchingActionCreator(false));
             dispatch(setCommentsActionCreator(response.data.viewDtoList));

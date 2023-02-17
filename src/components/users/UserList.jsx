@@ -6,15 +6,12 @@ import PageNavigation from "../common/PageNavigation";
 function UserList(props) {
 
     let usersData = props.users
-        .map(user => <UserItem number={user.id} username={user.username}
+        .map(user => <UserItem key={user.id} number={user.id} username={user.username}
                                firstName={user.firstName} lastName={user.lastName}/>)
 
     return (
         <div className="container py-5 overflow-hidden">
             <h1 className="h4 mb-4 fw-normal text-center">Users</h1><br/>
-
-            {props.isFetching ? <Preloader/> : null}
-
             <table className="table">
                 <thead>
                 <tr>
@@ -30,6 +27,8 @@ function UserList(props) {
                 {usersData}
                 </tbody>
             </table>
+
+            {props.isFetching ? <Preloader/> : null}
 
             <PageNavigation totalCount={props.totalCount}
                             pageSize={props.pageSize}

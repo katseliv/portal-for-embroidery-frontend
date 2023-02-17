@@ -1,11 +1,6 @@
 import {reset} from "redux-form";
 import {postAPI} from "../api/api";
 import {updateObjectInArray} from "../utils/object-helpers";
-import plants from "../images/plants.png";
-import liquid from "../images/liquid.png";
-import liquid2 from "../images/liquid2.png";
-import abstract from "../images/abstract.png";
-import abstract2 from "../images/abstract2.png";
 
 const LIKE = '/post/LIKE';
 const DISLIKE = '/post/DISLIKE';
@@ -13,49 +8,15 @@ const ADD_POST = '/post/ADD-COMMENT';
 const UPDATE_POST = '/post/UPDATE-COMMENT';
 const DELETE_POST = '/post/DELETE-COMMENT';
 const SET_POSTS = '/post/SET-POSTS';
+const SET_POST_PROFILE = '/post/SET-POST-PROFILE';
 const SET_CURRENT_PAGE = '/post/SET-CURRENT-PAGE';
 const SET_POSTS_TOTAL_COUNT = '/post/SET-POSTS-TOTAL-COUNT';
 const TOGGLE_IS_FETCHING = '/post/TOGGLE-IS-FETCHING';
 const TOGGLE_IS_LIKING_PROGRESS = '/post/TOGGLE-IS-LIKING-PROGRESS';
 
 let initialState = {
-    posts: [
-        // {
-        //     id: 1,
-        //     image: plants,
-        //     title: 'Plants',
-        //     text: 'This is a longer card with supporting text below as a natural\n' +
-        //         'lead-in to additional content. This content is a little bit longer.'
-        // },
-        // {
-        //     id: 2,
-        //     image: liquid,
-        //     title: 'Liquid',
-        //     text: 'This is a longer card with supporting text below as a natural\n' +
-        //         'lead-in to additional content. This content is a little bit longer.'
-        // },
-        // {
-        //     id: 3,
-        //     image: abstract,
-        //     title: 'Abstract',
-        //     text: 'This is a longer card with supporting text below as a natural\n' +
-        //         'lead-in to additional content. This content is a little bit longer.'
-        // },
-        // {
-        //     id: 4,
-        //     image: abstract2,
-        //     title: 'Abstract',
-        //     text: 'This is a longer card with supporting text below as a natural\n' +
-        //         'lead-in to additional content. This content is a little bit longer.'
-        // },
-        // {
-        //     id: 5,
-        //     image: liquid2,
-        //     title: 'Liquid',
-        //     text: 'This is a longer card with supporting text below as a natural\n' +
-        //         'lead-in to additional content. This content is a little bit longer.'
-        // },
-    ],
+    profile: null,
+    posts: [],
     currentPage: 1,
     pageSize: 5,
     totalCount: 4,
@@ -91,7 +52,9 @@ export const postReducer = (state = initialState, action) => {
                 posts: updateObjectInArray(state.posts, action.postId, "id", {liked: false})
             }
         case SET_POSTS:
-            return {...state, posts: {...state.posts, ...action.posts}}
+            return {...state, posts: [...action.posts]}
+        case SET_POST_PROFILE:
+            return {...state, profile: action.profile};
         case SET_CURRENT_PAGE:
             return {...state, currentPage: action.currentPage}
         case SET_POSTS_TOTAL_COUNT:
@@ -110,6 +73,10 @@ export const postReducer = (state = initialState, action) => {
     }
 }
 
+export const setPostProfileActionCreator = (profile) => ({
+    type: SET_POST_PROFILE,
+    profile: profile
+});
 export const addPostActionCreator = (newPost) => ({type: ADD_POST, newPost: newPost});
 export const updatePostActionCreator = (postId, text) => ({
     type: UPDATE_POST,
@@ -135,6 +102,15 @@ export const setIsLikingInProgressActionCreator = (isFetching, id) => ({
     id: id
 });
 
+export const getPostProfileThunkCreator = (postId) => {
+    return (dispatch) => {
+        postAPI.getPost(postId).then(response => {
+            if (response.status === 200) {
+                dispatch(setPostProfileActionCreator(response.data));
+            }
+        });
+    };
+}
 export const addPostThunkCreator = (designerId, designId, description) => {
     return async (dispatch) => {
         let responseCreatePost = await postAPI.createPost(designerId, designId, description);

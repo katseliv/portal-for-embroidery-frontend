@@ -2,17 +2,21 @@ import React from "react";
 import Preloader from "../common/Preloader";
 import PageNavigation from "../common/PageNavigation";
 import CommentItem from "./CommentItem";
-import {Field, reduxForm, reset} from "redux-form";
+import {Field, reduxForm} from "redux-form";
 import {TextArea} from "../common/form-control/FormControl";
 import {maxLengthCreator, requiredField} from "../../utils/validators/validators";
 
-let CommentList = (props) => {
+const CommentList = (props) => {
     let commentsData = props.comments
         .map(comment => <CommentItem key={comment.id} id={comment.id}
                                      author={comment.userFirstName + " " + comment.userLastName}
                                      text={comment.text} date={comment.creationDatetime}
                                      onUpdateComment={props.onUpdateComment}
                                      onDeleteComment={props.onDeleteComment}/>);
+
+    if (props.isFetching) {
+        return <Preloader/>;
+    }
 
     return (
         <div className="container overflow-hidden">
@@ -23,7 +27,7 @@ let CommentList = (props) => {
                         <CommentReduxForm onSubmit={props.onAddComment}/>
                     </div>
                 </div> : null}
-            {props.isFetching ? <Preloader/> : null}
+            {/*{props.isFetching ? <Preloader/> : null}*/}
             {commentsData}
             <PageNavigation totalCount={props.totalCount}
                             pageSize={props.pageSize}
@@ -46,11 +50,11 @@ const CommentForm = (props) => {
     );
 }
 
-const resetForm = (result, dispatch) => dispatch(reset("commentForm"));
+// const resetForm = (result, dispatch) => dispatch(reset("commentForm"));
 
 const CommentReduxForm = reduxForm({
     form: "commentForm",
-    onSubmitSuccess: resetForm,
+    // onSubmitSuccess: resetForm,
 })(CommentForm);
 
 export default CommentList;

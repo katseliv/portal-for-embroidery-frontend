@@ -1,12 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import PostItem from "./PostItem";
 
-let PostGrid = (props) => {
+const PostGrid = (props) => {
     // const [posts, setPosts] = useState(props.posts);
     // const [currentPage, setCurrentPage] = useState(1);
     // const [isFetching, setIsFetching] = useState(props.isFetching);
     // const [totalCount, setTotalCount] = useState(0);
-    //
     //
     // useEffect(() => {
     //     if (isFetching) {
@@ -15,17 +14,19 @@ let PostGrid = (props) => {
     //         setTotalCount();
     //     }
     // }, [currentPage, isFetching, props])
-
-    let mappedPosts = props.posts.map(post => <PostItem number={post.id} image={post.image} title={post.title}
-                                                        text={post.text} liked={post.liked}
-                                                        like={props.like} dislike={props.dislike}/>)
-
+    //
     // const scrollHandler = (e) => {
     //     if (e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 100
     //         && posts.length < totalCount) {
     //         setIsFetching(true);
     //     }
     // }
+
+    let mappedPosts = props.posts.map(post => <PostItem key={post.id} number={post.id}
+                                                        image={post.designBase64StringImage}
+                                                        title={post.designName} text={post.description}
+                                                        countLikes={post.countLikes} liked={post.liked}
+                                                        like={props.like} dislike={props.dislike}/>)
 
     return (
         <div className="container p-5 overflow-hidden">

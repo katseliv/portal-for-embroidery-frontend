@@ -3,9 +3,11 @@ import {connect} from "react-redux";
 import {compose} from "redux";
 import {useNavigate, useParams} from "react-router-dom";
 import PostProfile from "./PostProfile";
+import {getPostProfile} from "../../redux/post-selector";
+import {getPostProfileThunkCreator} from "../../redux/post-reducer";
+import {getAuthorizedUserId, getIsAuthenticated} from "../../redux/auth-selector";
 
 class PostProfileContainer extends React.Component {
-
     componentDidMount() {
         this.refreshProfile();
     }
@@ -29,24 +31,23 @@ class PostProfileContainer extends React.Component {
 
     render() {
         return <PostProfile {...this.props}
-                            isOwner={!!this.props.authorizedUserId}
                             profile={this.props.profile}
-                            saveImage={this.props.saveImage}/>;
+                            isOwner={!!this.props.authorizedUserId}/>;
     }
 }
 
 let mapStateToProps = (state) => {
     return {
-        profile: state.profilePage.profile,
-        authorizedUserId: state.authPage.id,
-        isAuthenticated: state.authPage.isAuthenticated
+        profile: getPostProfile(state),
+        authorizedUserId: getAuthorizedUserId(state),
+        isAuthenticated: getIsAuthenticated(state)
     }
 }
 
 let mapDispatchToProps = (dispatch) => {
     return {
         getPost: (postId) => {
-            dispatch();
+            dispatch(getPostProfileThunkCreator(postId));
         },
     }
 }

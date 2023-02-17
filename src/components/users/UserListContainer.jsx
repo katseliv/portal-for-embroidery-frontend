@@ -8,6 +8,7 @@ import {
     setUsersActionCreator
 } from "../../redux/user-reducer";
 import UserList from "./UserList";
+import {getUsers} from "../../redux/user-selector";
 
 class UserListContainer extends React.Component {
 
@@ -15,7 +16,6 @@ class UserListContainer extends React.Component {
         this.props.setIsFetching(true);
         axios.get(`http://localhost:8080/api/v1/users`)
             .then(response => {
-                debugger;
                 this.props.setIsFetching(false);
                 this.props.setUsers(response.data.viewDtoList);
                 this.props.setTotalUsersCount(response.data.totalCount);
@@ -46,7 +46,7 @@ class UserListContainer extends React.Component {
 
 let mapStateToProps = (state) => {
     return {
-        users: state.userPage.users,
+        users: getUsers(state),
         currentPage: state.userPage.currentPage,
         pageSize: state.userPage.pageSize,
         totalCount: state.userPage.totalCount,

@@ -19,11 +19,11 @@ let LoginForm = ({handleSubmit, error}) => {
     return (
         <form onSubmit={handleSubmit}>
             <div className="mb-3">
-                <Field component={Input} name={"email"} label={"Email"}/>
+                <Field component={Input} name={"email"} label={"Email"} autoComplete="email"/>
             </div>
             <div className="mb-3">
-                <Field component={Input} name={"password"} label={"Password"}
-                       validate={[requiredField, maxLength10]} type="password"/>
+                <Field component={Input} name={"password"} label={"Password"} validate={[requiredField, maxLength10]}
+                       autoComplete="current-password" type="password"/>
             </div>
             {error && <div>{error}</div>}
             <button className="btn btn-lg btn-outline-success w-100 mt-2">Submit</button>

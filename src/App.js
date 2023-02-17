@@ -60,9 +60,8 @@ class App extends React.Component {
                         <Route path=':userId' element={<UserProfileContainer/>}/>
                     </Route>
                     <Route path='/users' element={<UserListContainer/>}/>
-                    <Route path='/designs' element={<PostGridContainer/>}>
-                        <Route path=':postId' element={<PostProfileContainer/>}/>
-                    </Route>
+                    <Route path='/designs' element={<PostGridContainer/>}/>
+                    <Route path='/designs/:postId' element={<PostProfileContainer/>}/>
                     <Route path='/my-designs'/>
                     <Route path='/about-us' element={<AboutUs/>}/>
                     <Route path='/contacts' element={<Contacts/>}/>

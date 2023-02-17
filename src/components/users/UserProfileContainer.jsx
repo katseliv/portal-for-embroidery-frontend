@@ -1,12 +1,11 @@
 import React from "react";
 import {connect} from "react-redux";
-import UserProfile from "./UserProfile";
 import {compose} from "redux";
+import UserProfile from "./UserProfile";
 import {Navigate, useNavigate, useParams} from "react-router-dom";
 import {getUserProfileThunkCreator, saveImageThunkCreator} from "../../redux/profile-reducer";
 
 class UserProfileContainer extends React.Component {
-
     componentDidMount() {
         this.refreshProfile();
     }
