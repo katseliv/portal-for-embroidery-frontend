@@ -162,9 +162,9 @@ export const getPostsByNumberAndSizeThunkCreator = (pageNumber, pageSize) => {
         }
     };
 }
-export const likeDislikeFlowThunkCreator = async (dispatch, postId, apiMethod, actionCreator) => {
+export const likeDislikeFlowThunkCreator = async (dispatch, postId, userId, apiMethod, actionCreator) => {
     dispatch(setIsLikingInProgressActionCreator(true, postId));
-    let response = await apiMethod(postId);
+    let response = await apiMethod({postId, userId});
     if (response.status === 200) {
         dispatch(actionCreator(postId));
     }
@@ -172,11 +172,13 @@ export const likeDislikeFlowThunkCreator = async (dispatch, postId, apiMethod, a
 }
 export const likeFlowThunkCreator = (postId) => {
     return async (dispatch) => {
-        await likeDislikeFlowThunkCreator(dispatch, postId, postAPI.likePost.bind(postId), likeActionCreator);
+        let userId = 13;
+        await likeDislikeFlowThunkCreator(dispatch, postId, userId, postAPI.likePost.bind({postId: postId, userId: userId}), likeActionCreator);
     };
 }
 export const dislikeFlowThunkCreator = (postId) => {
     return async (dispatch) => {
-        await likeDislikeFlowThunkCreator(dispatch, postId, postAPI.dislikePost.bind(postId), dislikeActionCreator);
+        let userId = 13;
+        await likeDislikeFlowThunkCreator(dispatch, postId, userId, postAPI.dislikePost.bind({postId: postId, userId: userId}), dislikeActionCreator);
     };
 }

@@ -26,10 +26,10 @@ const PostItem = (props) => {
                             {/*disabled={props.isLikingInProgress.some(c => id === c.id)}*/}
                             {props.liked
                                 ? <img src={heartFill} onClick={() => {
-                                    props.dislike(props.id)
+                                    props.dislike(props.number)
                                 }} alt={"Unlike"}/>
                                 : <img src={heart} onClick={() => {
-                                    props.like(props.id)
+                                    props.like(props.number)
                                 }} alt={"Like"}/>}
                             <span className="px-2" style={textStyle}>{props.countLikes}</span>
                         </div>

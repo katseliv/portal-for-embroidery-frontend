@@ -43,11 +43,12 @@ export const postAPI = {
     getCountLikes(postId) {
         return instance.get(`/posts/${postId}/likes`);
     },
-    likePost(postId, text) {
-        return instance.post(`/posts/${postId}`, {text: text});
+    likePost(data) {
+        console.log(data)
+        return instance.post(`/posts/${data.postId}/like`, {userId: data.userId});
     },
-    dislikePost(postId) {
-        return instance.delete(`/posts/${postId}`);
+    dislikePost(data) {
+        return instance.post(`/posts/${data.postId}/dislike`, {userId: data.userId});
     },
     getPosts() {
         return instance.get(`/posts`);
