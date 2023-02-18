@@ -1,19 +1,25 @@
 import React from "react";
-import liquid from "../../images/liquid.png";
-import liquid2 from "../../images/liquid2.png";
-import abstract from "../../images/abstract.png";
 import Carousel from "../common/Carousel";
 import Preloader from "../common/Preloader";
 import CommentListContainer from "../comments/CommentListContainer";
+import {base64ToArrayBuffer, saveByteArray} from "../../utils/file-helpers";
 
 const PostProfile = (props) => {
     if (!props.profile) {
         return <Preloader/>;
     }
 
-    let mappedFiles = props.profile.files.map(file => <a className="link-success px-1"
-                                                         href="/">{file.name + "." + file.extension}</a>);
-    let mappedTags = props.profile.tags.map(tag => <a className="link-success px-1" href="/">{"#" + tag}</a>);
+    let mappedFiles = props.profile.files.map(file =>
+        <a className="link-success px-1" href="javascript: undefined;"
+           onClick={() => {
+               saveByteArray(file.name, file.extension, base64ToArrayBuffer(file.base64StringFile))
+           }}>
+            {file.name + "." + file.extension}
+        </a>);
+    let mappedTags = props.profile.tags.map(tag =>
+        <a className="link-success px-1" href="javascript: undefined;">
+            {"#" + tag}
+        </a>);
 
     return (
         <div>
@@ -21,10 +27,7 @@ const PostProfile = (props) => {
                 <div className="container">
                     <div className="row">
                         <div className="col-5 mb-3">
-                            <Carousel firstImage={liquid} secondImage={liquid2} thirdImage={abstract}/>
-                            {/*<Carousel firstImage={`data:image/jpeg;base64,${props.profile.files[0]}`}*/}
-                            {/*          secondImage={`data:image/jpeg;base64,${props.profile.files[1]}`}*/}
-                            {/*          thirdImage={`data:image/jpeg;base64,${props.profile.files[2]}`}/>*/}
+                            <Carousel files={props.profile.files}/>
                         </div>
                         <div className="col-7">
                             <h1 className="h4 mb-5 fw-normal text-center">{props.profile.designName}</h1>

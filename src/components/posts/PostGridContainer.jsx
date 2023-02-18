@@ -27,6 +27,10 @@ class PostGridContainer extends React.Component {
         return nextProps !== this.props || nextState !== this.props;
     }
 
+    onDeletePost = (postId) => {
+        this.props.deletePost(postId);
+    }
+
     getPosts = (pageNumber) => {
         this.props.getPostsByNumberAndSize(pageNumber, this.props.pageSizeOfPosts);
     }
@@ -47,6 +51,7 @@ class PostGridContainer extends React.Component {
                          isFetching={this.props.isFetchingOfPosts}
                          isLikingInProgress={this.props.isLikingInProgressOfPost}
                          getPosts={this.getPosts}
+                         onDeletePost={this.onDeletePost}
                          like={this.likePost}
                          dislike={this.dislikePost}/>;
     }

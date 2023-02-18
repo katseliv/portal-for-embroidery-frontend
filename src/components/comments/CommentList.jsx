@@ -8,7 +8,7 @@ import {maxLengthCreator, requiredField} from "../../utils/validators/validators
 
 const CommentList = (props) => {
     let commentsData = props.comments
-        .map(comment => <CommentItem key={comment.id} id={comment.id}
+        .map(comment => <CommentItem key={comment.id} number={comment.id}
                                      author={comment.userFirstName + " " + comment.userLastName}
                                      text={comment.text} date={comment.creationDatetime}
                                      onUpdateComment={props.onUpdateComment}
@@ -27,7 +27,6 @@ const CommentList = (props) => {
                         <CommentReduxForm onSubmit={props.onAddComment}/>
                     </div>
                 </div> : null}
-            {/*{props.isFetching ? <Preloader/> : null}*/}
             {commentsData}
             <PageNavigation totalCount={props.totalCount}
                             pageSize={props.pageSize}

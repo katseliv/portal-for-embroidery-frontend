@@ -27,7 +27,7 @@ const CommentItem = (props) => {
 
     const deactivateEditMode = () => {
         setEditMode(false);
-        props.onUpdateComment(props.id, text);
+        props.onUpdateComment(props.number, text);
     };
 
     return (
@@ -38,7 +38,7 @@ const CommentItem = (props) => {
                     <i className="rounded me-2 bi-person-fill align-content-center" style={iStyle}></i>
                     <strong className="me-auto">{props.author}</strong>
                     <small>{props.date}</small>
-                    <button className="btn-close" aria-label="Закрыть" onClick={() => {props.onDeleteComment(props.id);}}/>
+                    <button className="btn-close" aria-label="Закрыть" onClick={() => {props.onDeleteComment(props.number);}}/>
                 </div>
                 <div className="toast-body">
                     {!editMode

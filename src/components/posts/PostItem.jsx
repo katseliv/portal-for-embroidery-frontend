@@ -21,6 +21,9 @@ const PostItem = (props) => {
                     <div className="row">
                         <div className="col-8">
                             <NavLink to={`/designs/${props.number}`} className="card-link link-success">More</NavLink>
+                            <a className="card-link link-danger" href="javascript: undefined;" onClick={() => {
+                                props.onDeletePost(props.number);
+                            }}>Delete</a>
                         </div>
                         <div className="col-4 text-end">
                             {/*disabled={props.isLikingInProgress.some(c => id === c.id)}*/}

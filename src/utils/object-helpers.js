@@ -4,5 +4,5 @@ export let updateObjectInArray = (items, itemId, objectPropName, newObjectProps)
             return {...item, ...newObjectProps}
         }
         return item;
-    })
+    });
 }

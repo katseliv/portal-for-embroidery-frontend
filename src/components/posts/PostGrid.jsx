@@ -30,8 +30,8 @@ const PostGrid = (props) => {
     let mappedPosts = props.posts.map(post => <PostItem key={post.id} number={post.id}
                                                         image={post.designBase64StringImage}
                                                         title={post.designName} text={post.description}
-                                                        countLikes={post.countLikes} liked={post.liked}
-                                                        like={props.like} dislike={props.dislike}/>);
+                                                        onDeletePost={props.onDeletePost} countLikes={post.countLikes}
+                                                        liked={post.liked} like={props.like} dislike={props.dislike}/>);
 
     return (
         <div className="container p-5 overflow-hidden">
