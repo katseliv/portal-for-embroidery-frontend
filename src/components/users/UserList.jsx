@@ -4,10 +4,13 @@ import Preloader from "../common/Preloader";
 import PageNavigation from "../common/PageNavigation";
 
 function UserList(props) {
+    if (props.isFetching) {
+        return <Preloader/>;
+    }
 
     let usersData = props.users
         .map(user => <UserItem key={user.id} number={user.id} username={user.username}
-                               firstName={user.firstName} lastName={user.lastName}/>)
+                               firstName={user.firstName} lastName={user.lastName}/>);
 
     return (
         <div className="container py-5 overflow-hidden">
@@ -27,8 +30,6 @@ function UserList(props) {
                 {usersData}
                 </tbody>
             </table>
-
-            {props.isFetching ? <Preloader/> : null}
 
             <PageNavigation totalCount={props.totalCount}
                             pageSize={props.pageSize}

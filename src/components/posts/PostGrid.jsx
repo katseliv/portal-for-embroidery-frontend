@@ -1,5 +1,6 @@
 import React from 'react';
 import PostItem from "./PostItem";
+import Preloader from "../common/Preloader";
 
 const PostGrid = (props) => {
     // const [posts, setPosts] = useState(props.posts);
@@ -22,11 +23,15 @@ const PostGrid = (props) => {
     //     }
     // }
 
+    if (props.isFetching) {
+        return <Preloader/>;
+    }
+
     let mappedPosts = props.posts.map(post => <PostItem key={post.id} number={post.id}
                                                         image={post.designBase64StringImage}
                                                         title={post.designName} text={post.description}
                                                         countLikes={post.countLikes} liked={post.liked}
-                                                        like={props.like} dislike={props.dislike}/>)
+                                                        like={props.like} dislike={props.dislike}/>);
 
     return (
         <div className="container p-5 overflow-hidden">

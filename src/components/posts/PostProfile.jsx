@@ -11,6 +11,10 @@ const PostProfile = (props) => {
         return <Preloader/>;
     }
 
+    let mappedFiles = props.profile.files.map(file => <a className="link-success px-1"
+                                                         href="/">{file.name + "." + file.extension}</a>);
+    let mappedTags = props.profile.tags.map(tag => <a className="link-success px-1" href="/">{"#" + tag}</a>);
+
     return (
         <div>
             <div className="container p-5 overflow-hidden">
@@ -18,9 +22,9 @@ const PostProfile = (props) => {
                     <div className="row">
                         <div className="col-5 mb-3">
                             <Carousel firstImage={liquid} secondImage={liquid2} thirdImage={abstract}/>
-                            {/*<Carousel firstImage={`data:image/jpeg;base64,${props.profile.designBase64StringImages[0]}`}*/}
-                            {/*          secondImage={`data:image/jpeg;base64,${props.profile.designBase64StringImages[1]}`}*/}
-                            {/*          thirdImage={`data:image/jpeg;base64,${props.profile.designBase64StringImages[2]}`}/>*/}
+                            {/*<Carousel firstImage={`data:image/jpeg;base64,${props.profile.files[0]}`}*/}
+                            {/*          secondImage={`data:image/jpeg;base64,${props.profile.files[1]}`}*/}
+                            {/*          thirdImage={`data:image/jpeg;base64,${props.profile.files[2]}`}/>*/}
                         </div>
                         <div className="col-7">
                             <h1 className="h4 mb-5 fw-normal text-center">{props.profile.designName}</h1>
@@ -38,14 +42,10 @@ const PostProfile = (props) => {
                                 Author: {props.profile.designerFirstName + " " + props.profile.designerLastName}
                             </h6>
                             <h6 className="h5 mb-3 fw-normal text-right">
-                                Files:&nbsp;
-                                <a className="link-success" href="public/postage-heart.svg">postage-heart.svg</a>,&nbsp;
-                                <a className="link-success" href="public/postage-heart-mini.svg">postage-heart-mini.svg</a>
+                                Files: {mappedFiles}
                             </h6>
                             <h6 className="h5 mb-3 fw-normal text-right">
-                                Tags:&nbsp;
-                                <a className="link-success" href="/">#liquid</a>,&nbsp;
-                                <a className="link-success" href="/">#water</a>
+                                Tags: {mappedTags}
                             </h6>
                             <form method="get" action="/designs/design/update">
                                 <button type="submit" className="btn btn-lg btn-outline-success w-100 mt-2">Edit
