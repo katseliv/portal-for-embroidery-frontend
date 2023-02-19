@@ -4,7 +4,9 @@ import "../common/PageNavigation.module.css";
 import {
     addCommentThunkCreator,
     deleteCommentThunkCreator,
-    getCommentsByNumberAndSizeThunkCreator, getCommentsOfPostByNumberAndSizeThunkCreator, getCommentsOfPostThunkCreator,
+    getCommentsByNumberAndSizeThunkCreator,
+    getCommentsOfPostByNumberAndSizeThunkCreator,
+    getCommentsOfPostThunkCreator,
     getCommentsThunkCreator,
     setCurrentPageActionCreator,
     setIsFetchingActionCreator,
@@ -22,7 +24,6 @@ import {getIsAuthenticated} from "../../redux/auth-selector";
 
 class CommentListContainer extends React.Component {
     componentDidMount() {
-        // this.props.getComments();
         this.props.getCommentsOfPost(this.props.postId);
     }
 
@@ -32,14 +33,13 @@ class CommentListContainer extends React.Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         let postId = this.props.postId;
-        let prevPostId= prevProps.postId;
+        let prevPostId = prevProps.postId;
         if (postId !== prevPostId) {
             this.props.getCommentsOfPost(postId);
         }
     }
 
     onPageChange = (pageNumber) => {
-        // this.props.getCommentsByNumberAndSize(pageNumber, this.props.pageSize);
         this.props.getCommentsOfPostByNumberAndSize(this.props.postId, pageNumber, this.props.pageSize);
     }
 

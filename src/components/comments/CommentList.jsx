@@ -49,11 +49,8 @@ const CommentForm = (props) => {
     );
 }
 
-// const resetForm = (result, dispatch) => dispatch(reset("commentForm"));
-
 const CommentReduxForm = reduxForm({
     form: "commentForm",
-    // onSubmitSuccess: resetForm,
 })(CommentForm);
 
 export default CommentList;
