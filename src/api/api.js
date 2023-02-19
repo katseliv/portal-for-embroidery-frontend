@@ -28,8 +28,8 @@ export const userAPI = {
 }
 
 export const postAPI = {
-    createPost(designerId, designId, description) {
-        return instance.post(`/posts`, {designerId: designerId, designId: designId, description: description});
+    createPost(post) {
+        return instance.post(`/posts`, {designerId: post.designerId, designId: post.designId, description: post.description});
     },
     getPost(postId) {
         return instance.get(`/posts/${postId}`);

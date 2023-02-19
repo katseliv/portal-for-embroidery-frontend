@@ -4,9 +4,12 @@ import PostGrid from "./PostGrid";
 import {
     addPostThunkCreator,
     deletePostThunkCreator,
-    dislikeFlowThunkCreator, getPostsByNumberAndSizeThunkCreator, getPostsThunkCreator,
-    likeFlowThunkCreator, setCurrentPageActionCreator, setIsFetchingActionCreator,
-    updatePostThunkCreator
+    dislikeFlowThunkCreator,
+    getPostsByNumberAndSizeThunkCreator,
+    getPostsThunkCreator,
+    likeFlowThunkCreator,
+    setCurrentPageActionCreator,
+    setIsFetchingActionCreator
 } from "../../redux/post-reducer";
 import {
     getCurrentPageOfPosts,
@@ -24,6 +27,10 @@ class PostGridContainer extends React.Component {
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
         return nextProps !== this.props || nextState !== this.props;
+    }
+
+    onAddPost = (post) => {
+        this.props.addPost(post);
     }
 
     onDeletePost = (postId) => {
@@ -50,6 +57,7 @@ class PostGridContainer extends React.Component {
                          isFetching={this.props.isFetchingOfPosts}
                          isLikingInProgress={this.props.isLikingInProgressOfPost}
                          getPosts={this.getPosts}
+                         onAddPost={this.onAddPost}
                          onDeletePost={this.onDeletePost}
                          like={this.likePost}
                          dislike={this.dislikePost}/>;
@@ -69,11 +77,8 @@ let mapStateToProps = (state) => {
 
 let mapDispatchToProps = (dispatch) => {
     return {
-        addPost: (designerId, designId, description) => {
-            dispatch(addPostThunkCreator(designerId, designId, description));
-        },
-        updatePost: (postId, description) => {
-            dispatch(updatePostThunkCreator(postId, description));
+        addPost: (post) => {
+            dispatch(addPostThunkCreator(post));
         },
         deletePost: (postId) => {
             dispatch(deletePostThunkCreator(postId));

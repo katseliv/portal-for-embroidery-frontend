@@ -4,7 +4,7 @@ import PostProfileInfo from "./PostProfileInfo";
 import PostProfileUpdate from "./PostProfileUpdate";
 
 const PostProfile = (props) => {
-    let [editMode, setEditMode] = useState(false);
+    const [editMode, setEditMode] = useState(false);
 
     if (!props.profile) {
         return <Preloader/>;

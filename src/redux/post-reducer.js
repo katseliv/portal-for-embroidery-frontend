@@ -112,9 +112,9 @@ export const getPostProfileThunkCreator = (postId) => {
         });
     };
 }
-export const addPostThunkCreator = (designerId, designId, description) => {
+export const addPostThunkCreator = (post) => {
     return async (dispatch) => {
-        let responseCreatePost = await postAPI.createPost(designerId, designId, description);
+        let responseCreatePost = await postAPI.createPost(post);
         if (responseCreatePost.status === 201) {
             let newPostId = responseCreatePost.data;
             let responseGetPost = await postAPI.getPost(newPostId);
