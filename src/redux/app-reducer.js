@@ -1,4 +1,4 @@
-import {getUserProfileThunkCreator} from "./profile-reducer";
+import {getUserProfileThunkCreator} from "./user-reducer";
 
 const SET_INITIALIZED = "/app/SET-INITIALIZED";
 

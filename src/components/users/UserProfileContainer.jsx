@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {compose} from "redux";
 import UserProfile from "./UserProfile";
 import {Navigate, useNavigate, useParams} from "react-router-dom";
-import {getUserProfileThunkCreator, saveImageThunkCreator} from "../../redux/profile-reducer";
+import {getUserProfileThunkCreator, saveImageThunkCreator} from "../../redux/user-reducer";
 
 class UserProfileContainer extends React.Component {
     componentDidMount() {
@@ -43,7 +43,7 @@ class UserProfileContainer extends React.Component {
 
 let mapStateToProps = (state) => {
     return {
-        profile: state.profilePage.profile,
+        profile: state.userPage.profile,
         authorizedUserId: state.authPage.id,
         isAuthenticated: state.authPage.isAuthenticated
     }

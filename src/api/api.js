@@ -7,8 +7,17 @@ const instance = axios.create({
 });
 
 export const userAPI = {
+    createUser(user) {
+        return instance.post(`/users`, {...user});
+    },
     getUser(userId) {
         return instance.get(`/users/${userId}`);
+    },
+    updateUser(userId, newProfile) {
+        return instance.put(`/users/${userId}`, {...newProfile});
+    },
+    deleteUser(userId) {
+        return instance.delete(`/users/${userId}`);
     },
     saveImage(image) {
         const formData = new FormData();
@@ -29,7 +38,11 @@ export const userAPI = {
 
 export const postAPI = {
     createPost(post) {
-        return instance.post(`/posts`, {designerId: post.designerId, designId: post.designId, description: post.description});
+        return instance.post(`/posts`, {
+            designerId: post.designerId,
+            designId: post.designId,
+            description: post.description
+        });
     },
     getPost(postId) {
         return instance.get(`/posts/${postId}`);
@@ -39,9 +52,6 @@ export const postAPI = {
     },
     deletePost(postId) {
         return instance.delete(`/posts/${postId}`);
-    },
-    getCountLikes(postId) {
-        return instance.get(`/posts/${postId}/likes`);
     },
     likePost(data) {
         console.log(data)

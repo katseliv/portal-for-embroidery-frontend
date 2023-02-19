@@ -1,43 +1,36 @@
 import React from "react";
-import axios from "axios";
 import {connect} from "react-redux";
 import {
+    getUsersByNumberAndSizeThunkCreator,
+    getUsersThunkCreator,
     setCurrentPageActionCreator,
-    setIsFetchingActionCreator,
-    setTotalCountActionCreator,
-    setUsersActionCreator
+    setIsFetchingActionCreator
 } from "../../redux/user-reducer";
 import UserList from "./UserList";
-import {getUsers} from "../../redux/user-selector";
+import {
+    getCurrentPageOfUsers,
+    getIsFetchingOfUsers,
+    getPageSizeOfUsers,
+    getTotalCountOfUsers,
+    getUsers
+} from "../../redux/user-selector";
 
 class UserListContainer extends React.Component {
 
     componentDidMount() {
-        this.props.setIsFetching(true);
-        axios.get(`http://localhost:8080/api/v1/users`)
-            .then(response => {
-                this.props.setIsFetching(false);
-                this.props.setUsers(response.data.viewDtoList);
-                this.props.setTotalUsersCount(response.data.totalCount);
-            });
+        this.props.getUsers();
     }
 
     onPageChange = (pageNumber) => {
-        this.props.setIsFetching(true);
-        this.props.setCurrentPage(pageNumber);
-        axios.get(`http://localhost:8080/api/v1/users?page=${pageNumber}&size=${this.props.pageSize}`)
-            .then(response => {
-                this.props.setIsFetching(false);
-                this.props.setUsers(response.data.viewDtoList);
-            })
+        this.props.getUsersByNumberAndSize(pageNumber, this.props.pageSizeOfUsers);
     }
 
     render() {
         return <UserList users={this.props.users}
-                         totalCount={this.props.totalCount}
-                         pageSize={this.props.pageSize}
-                         currentPage={this.props.currentPage}
-                         isFetching={this.props.isFetching}
+                         currentPage={this.props.currentPageOfUsers}
+                         pageSize={this.props.pageSizeOfUsers}
+                         totalCount={this.props.totalCountOfUsers}
+                         isFetching={this.props.isFetchingOfUsers}
                          onPageChange={this.onPageChange}
 
         />;
@@ -47,23 +40,23 @@ class UserListContainer extends React.Component {
 let mapStateToProps = (state) => {
     return {
         users: getUsers(state),
-        currentPage: state.userPage.currentPage,
-        pageSize: state.userPage.pageSize,
-        totalCount: state.userPage.totalCount,
-        isFetching: state.userPage.isFetching,
+        currentPageOfUsers: getCurrentPageOfUsers(state),
+        pageSizeOfUsers: getPageSizeOfUsers(state),
+        totalCountOfUsers: getTotalCountOfUsers(state),
+        isFetchingOfUsers: getIsFetchingOfUsers(state),
     }
 }
 
 let mapDispatchToProps = (dispatch) => {
     return {
-        setUsers: (users) => {
-            dispatch(setUsersActionCreator(users));
+        getUsers: () => {
+            dispatch(getUsersThunkCreator());
+        },
+        getUsersByNumberAndSize: (pageNumber, pageSize) => {
+            dispatch(getUsersByNumberAndSizeThunkCreator(pageNumber, pageSize));
         },
         setCurrentPage: (pageNumber) => {
             dispatch(setCurrentPageActionCreator(pageNumber));
-        },
-        setTotalUsersCount: (totalCount) => {
-            dispatch(setTotalCountActionCreator(totalCount));
         },
         setIsFetching: (isFetching) => {
             dispatch(setIsFetchingActionCreator(isFetching));

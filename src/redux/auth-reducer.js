@@ -1,6 +1,6 @@
 import {authAPI} from "../api/api";
 import {stopSubmit} from "redux-form";
-import {getUserProfileThunkCreator} from "./profile-reducer";
+import {getUserProfileThunkCreator} from "./user-reducer";
 
 const SET_USER_DATA = "/auth/SET-USER";
 

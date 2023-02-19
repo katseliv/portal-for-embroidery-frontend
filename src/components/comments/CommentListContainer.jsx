@@ -40,7 +40,7 @@ class CommentListContainer extends React.Component {
     }
 
     onPageChange = (pageNumber) => {
-        this.props.getCommentsOfPostByNumberAndSize(this.props.postId, pageNumber, this.props.pageSize);
+        this.props.getCommentsOfPostByNumberAndSize(this.props.postId, pageNumber, this.props.pageSizeOfComments);
     }
 
     onAddComment = (values) => {
@@ -57,10 +57,10 @@ class CommentListContainer extends React.Component {
 
     render() {
         return <CommentList comments={this.props.comments}
-                            currentPage={this.props.currentPage}
-                            pageSize={this.props.pageSize}
-                            totalCount={this.props.totalCount}
-                            isFetching={this.props.isFetching}
+                            currentPage={this.props.currentPageOfComments}
+                            pageSize={this.props.pageSizeOfComments}
+                            totalCount={this.props.totalCountOfComments}
+                            isFetching={this.props.isFetchingOfComments}
                             isAuthenticated={this.props.isAuthenticated}
                             onPageChange={this.onPageChange}
                             onAddComment={this.onAddComment}
@@ -72,10 +72,10 @@ class CommentListContainer extends React.Component {
 let mapStateToProps = (state) => {
     return {
         comments: getComments(state),
-        currentPage: getCurrentPageOfComments(state),
-        pageSize: getPageSizeOfComments(state),
-        totalCount: getTotalCountOfComments(state),
-        isFetching: getIsFetchingOfComments(state),
+        currentPageOfComments: getCurrentPageOfComments(state),
+        pageSizeOfComments: getPageSizeOfComments(state),
+        totalCountOfComments: getTotalCountOfComments(state),
+        isFetchingOfComments: getIsFetchingOfComments(state),
         isAuthenticated: getIsAuthenticated(state),
     }
 }

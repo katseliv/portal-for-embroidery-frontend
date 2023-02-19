@@ -74,10 +74,6 @@ export const postReducer = (state = initialState, action) => {
     }
 }
 
-export const setPostProfileActionCreator = (profile) => ({
-    type: SET_POST_PROFILE,
-    profile: profile
-});
 export const addPostActionCreator = (newPost) => ({type: ADD_POST, newPost: newPost});
 export const updatePostActionCreator = (postId, description) => ({
     type: UPDATE_POST,
@@ -86,6 +82,10 @@ export const updatePostActionCreator = (postId, description) => ({
 });
 export const deletePostActionCreator = (postId) => ({type: DELETE_POST, postId: postId});
 export const setPostsActionCreator = (posts) => ({type: SET_POSTS, posts: posts});
+export const setPostProfileActionCreator = (profile) => ({
+    type: SET_POST_PROFILE,
+    profile: profile
+});
 export const setCurrentPageActionCreator = (currentPage) => ({type: SET_CURRENT_PAGE, currentPage: currentPage});
 export const setTotalCountActionCreator = (totalCount) => ({
     type: SET_POSTS_TOTAL_COUNT,
@@ -103,15 +103,6 @@ export const setIsLikingInProgressActionCreator = (isFetching, id) => ({
     id: id
 });
 
-export const getPostProfileThunkCreator = (postId) => {
-    return (dispatch) => {
-        postAPI.getPost(postId).then(response => {
-            if (response.status === 200) {
-                dispatch(setPostProfileActionCreator(response.data));
-            }
-        });
-    };
-}
 export const addPostThunkCreator = (post) => {
     return async (dispatch) => {
         let responseCreatePost = await postAPI.createPost(post);
@@ -132,7 +123,7 @@ export const updatePostThunkCreator = (postId, description) => {
             dispatch(updatePostActionCreator(postId, description));
         } else {
             let message = response.data.messages.length > 0 ? response.data.messages[0] : "Some error...";
-            dispatch(stopSubmit("postProfileUpdateForm", {_error: message}))
+            dispatch(stopSubmit("postProfileUpdateForm", {_error: message}));
         }
     };
 }
@@ -163,6 +154,14 @@ export const getPostsByNumberAndSizeThunkCreator = (pageNumber, pageSize) => {
         if (response.status === 200) {
             dispatch(setIsFetchingActionCreator(false));
             dispatch(setPostsActionCreator(response.data.viewDtoList));
+        }
+    };
+}
+export const getPostProfileThunkCreator = (postId) => {
+    return async (dispatch) => {
+        let response = await postAPI.getPost(postId);
+        if (response.status === 200) {
+            dispatch(setPostProfileActionCreator(response.data));
         }
     };
 }
