@@ -1,10 +1,11 @@
 import React from "react";
-import {connect} from "react-redux";
 import {compose} from "redux";
+import {connect} from "react-redux";
+import {initialize} from 'redux-form';
 import {useNavigate, useParams} from "react-router-dom";
 import PostProfile from "./PostProfile";
 import {getPostProfile} from "../../redux/post-selector";
-import {getPostProfileThunkCreator} from "../../redux/post-reducer";
+import {getPostProfileThunkCreator, updatePostThunkCreator} from "../../redux/post-reducer";
 import {getAuthorizedUserId, getIsAuthenticated} from "../../redux/auth-selector";
 
 class PostProfileContainer extends React.Component {
@@ -12,10 +13,14 @@ class PostProfileContainer extends React.Component {
         this.refreshProfile();
     }
 
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        return nextProps !== this.props || nextState !== this.props;
+    }
+
     componentDidUpdate(prevProps, prevState, snapshot) {
         let postId = this.props.params.postId;
         let prevPostId = prevProps.params.postId;
-        if (postId !== prevPostId) {
+        if (postId !== prevPostId && (prevProps !== this.props || prevState !== this.props)) {
             this.refreshProfile();
         }
     }
@@ -24,15 +29,26 @@ class PostProfileContainer extends React.Component {
         let postId = this.props.params.postId;
         if (postId) {
             this.props.getPost(postId);
+
         } else {
             this.props.navigate("/designs");
         }
     }
 
+    initializePost = () => {
+        this.props.initializePost(this.props.profile);
+    }
+
+    onSaveProfile = (postId, description) => {
+        this.props.updatePost(postId, description);
+    }
+
     render() {
         return <PostProfile {...this.props}
                             profile={this.props.profile}
-                            isOwner={!!this.props.authorizedUserId}/>;
+                            navigate={this.props.navigate}
+                            initializePost={this.initializePost}
+                            onSaveProfile={this.onSaveProfile}/>;
     }
 }
 
@@ -46,8 +62,14 @@ let mapStateToProps = (state) => {
 
 let mapDispatchToProps = (dispatch) => {
     return {
+        initializePost: (postProfile) => {
+            dispatch(initialize('postProfileUpdateForm', postProfile, true, {}));
+        },
         getPost: (postId) => {
             dispatch(getPostProfileThunkCreator(postId));
+        },
+        updatePost: (postId, description) => {
+            dispatch(updatePostThunkCreator(postId, description));
         },
     }
 }

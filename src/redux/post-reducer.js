@@ -1,4 +1,4 @@
-import {reset} from "redux-form";
+import {reset, stopSubmit} from "redux-form";
 import {postAPI} from "../api/api";
 import {updateObjectInArray} from "../utils/object-helpers";
 
@@ -34,7 +34,8 @@ export const postReducer = (state = initialState, action) => {
         case UPDATE_POST:
             return {
                 ...state,
-                posts: updateObjectInArray(state.posts, action.postId, "id", {text: action.text})
+                profile: {...state.profile, description: action.description},
+                posts: updateObjectInArray(state.posts, action.postId, "id", {description: action.description})
             }
         case DELETE_POST:
             return {
@@ -78,10 +79,10 @@ export const setPostProfileActionCreator = (profile) => ({
     profile: profile
 });
 export const addPostActionCreator = (newPost) => ({type: ADD_POST, newPost: newPost});
-export const updatePostActionCreator = (postId, text) => ({
+export const updatePostActionCreator = (postId, description) => ({
     type: UPDATE_POST,
     postId: postId,
-    text: text
+    description: description
 });
 export const deletePostActionCreator = (postId) => ({type: DELETE_POST, postId: postId});
 export const setPostsActionCreator = (posts) => ({type: SET_POSTS, posts: posts});
@@ -129,6 +130,9 @@ export const updatePostThunkCreator = (postId, description) => {
         let response = await postAPI.updatePost(postId, description);
         if (response.status === 200) {
             dispatch(updatePostActionCreator(postId, description));
+        } else {
+            let message = response.data.messages.length > 0 ? response.data.messages[0] : "Some error...";
+            dispatch(stopSubmit("postProfileUpdateForm", {_error: message}))
         }
     };
 }
@@ -173,12 +177,18 @@ export const likeDislikeFlowThunkCreator = async (dispatch, postId, userId, apiM
 export const likeFlowThunkCreator = (postId) => {
     return async (dispatch) => {
         let userId = 13;
-        await likeDislikeFlowThunkCreator(dispatch, postId, userId, postAPI.likePost.bind({postId: postId, userId: userId}), likeActionCreator);
+        await likeDislikeFlowThunkCreator(dispatch, postId, userId, postAPI.likePost.bind({
+            postId: postId,
+            userId: userId
+        }), likeActionCreator);
     };
 }
 export const dislikeFlowThunkCreator = (postId) => {
     return async (dispatch) => {
         let userId = 13;
-        await likeDislikeFlowThunkCreator(dispatch, postId, userId, postAPI.dislikePost.bind({postId: postId, userId: userId}), dislikeActionCreator);
+        await likeDislikeFlowThunkCreator(dispatch, postId, userId, postAPI.dislikePost.bind({
+            postId: postId,
+            userId: userId
+        }), dislikeActionCreator);
     };
 }

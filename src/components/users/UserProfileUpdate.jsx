@@ -1,8 +1,13 @@
 import React from "react";
 import {Input} from "../common/form-control/FormControl";
+import Preloader from "../common/Preloader";
 import {Field, reduxForm} from "redux-form";
 
 const UserProfileUpdate = (props) => {
+    if (!props.profile) {
+        return <Preloader/>;
+    }
+
     const onSubmit = (formData) => {
         props.onSaveProfile(formData);
     }

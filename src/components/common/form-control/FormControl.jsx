@@ -1,18 +1,19 @@
 const style = {height: 100};
 
-export const FormControl = ({input, meta, ...props}) => {
+export const FormControl = ({meta, children, label}) => {
     const hasError = meta.touched && meta.error;
     return (
         <div>
-            <label className={"form-label " + (hasError ? "is-invalid" : "")}>{props.label}</label>
-            {props.children}
+            <label className={"form-label " + (hasError ? "is-invalid" : "")}>{label}</label>
+            {children}
             {hasError && <div className="invalid-feedback">{meta.error}</div>}
         </div>
     );
 }
 
 export const TextArea = (props) => {
-    const {input, meta, child, ...restProps} = props;
+    let {input, meta, ...restProps} = props;
+    input = {...input, value: meta.initial};
     return (
         <FormControl {...props}>
             <textarea className="form-control" style={style} {...input} {...restProps}/>
@@ -21,7 +22,8 @@ export const TextArea = (props) => {
 }
 
 export const Input = (props) => {
-    const {input, meta, ...restProps} = props;
+    let {input, meta, ...restProps} = props;
+    input = {...input, value: meta.initial};
     return (
         <FormControl {...props}>
             <input className="form-control" {...input} {...restProps}/>

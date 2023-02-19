@@ -17,7 +17,6 @@ import {
     getTotalCountOfPosts
 } from "../../redux/post-selector";
 
-
 class PostGridContainer extends React.Component {
     componentDidMount() {
         this.props.getPosts();
@@ -55,7 +54,6 @@ class PostGridContainer extends React.Component {
                          like={this.likePost}
                          dislike={this.dislikePost}/>;
     }
-
 }
 
 let mapStateToProps = (state) => {
