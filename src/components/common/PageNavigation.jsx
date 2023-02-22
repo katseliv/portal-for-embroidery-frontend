@@ -5,7 +5,6 @@ const aStyle = {color: "#530FAD"};
 const buttonLimit = 5;
 
 let PageNavigation = (props) => {
-
     let getStartPageNumber = (totalPages, pageNumber) => {
         if (totalPages <= buttonLimit) {
             return 1;

@@ -3,7 +3,7 @@ import UserItem from "./UserItem";
 import Preloader from "../common/Preloader";
 import PageNavigation from "../common/PageNavigation";
 
-function UserList(props) {
+const UserList = (props) => {
     if (props.isFetching) {
         return <Preloader/>;
     }

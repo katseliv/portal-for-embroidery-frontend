@@ -4,7 +4,7 @@ const headerStyle = {
     fontWeight: 600,
 };
 
-function AboutUs() {
+const AboutUs = () => {
     return (
         <div className="container p-5 overflow-hidden">
             <h1 className="h4 mb-4 fw-normal text-center">About Us</h1><br/>

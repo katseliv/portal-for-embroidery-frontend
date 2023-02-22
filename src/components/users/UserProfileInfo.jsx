@@ -1,7 +1,7 @@
 import React from 'react';
 import girl from '../../images/girl.png';
-import FolderGrid from "../folders/FolderGrid";
 import UserProfileStatus from "./UserProfileStatus";
+import FolderGridContainer from "../folders/FolderGridContainer";
 
 const pStyle = {
     fontWeight: 600,
@@ -43,7 +43,9 @@ const UserProfileInfo = (props) => {
                                        onClick={props.activateEditMode}>Edit</button>
                         }
                     </div>
-                    <div className="col-8"><FolderGrid/></div>
+                    <div className="col-8">
+                        {props.profile.id && <FolderGridContainer/>}
+                    </div>
                 </div>
             </div>
         </div>

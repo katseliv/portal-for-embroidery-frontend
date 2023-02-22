@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Home() {
+const Home = () => {
     return (
         <div className="container p-lg-5 m-lg-5 overflow-hidden">
             <div className="container py-5 overflow-hidden">

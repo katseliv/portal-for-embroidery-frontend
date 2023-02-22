@@ -1,7 +1,7 @@
 import React from 'react';
 import {NavLink} from "react-router-dom";
 
-let Registration = (props) => {
+const Registration = (props) => {
     let onSignUp = () => {
         let dataForm = {}
         props.signUp(dataForm);

@@ -5,7 +5,7 @@ const linkStyle = {
     color: "#530FAD",
 };
 
-function UserItem(props) {
+const UserItem = (props) => {
     return (
         <tr>
             <th scope="row"><NavLink to={`/profile/${props.number}`} style={linkStyle}>{props.number}</NavLink></th>

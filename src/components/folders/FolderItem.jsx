@@ -1,7 +1,7 @@
 import React from 'react';
 import folder from "../../images/folder.svg";
 
-function FolderItem(props) {
+const FolderItem = (props) => {
     return (
         <div className="col">
             <div className="h-50">

@@ -31,9 +31,7 @@ class UserListContainer extends React.Component {
                          pageSize={this.props.pageSizeOfUsers}
                          totalCount={this.props.totalCountOfUsers}
                          isFetching={this.props.isFetchingOfUsers}
-                         onPageChange={this.onPageChange}
-
-        />;
+                         onPageChange={this.onPageChange}/>;
     }
 }
 

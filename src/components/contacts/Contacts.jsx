@@ -4,7 +4,7 @@ const hStyle = {
     fontWeight: 600,
 };
 
-function Contacts() {
+const Contacts = () => {
     return (
         <div className="container p-5 overflow-hidden">
             <h1 className="h4 mb-4 fw-normal text-center">Contacts</h1><br/>

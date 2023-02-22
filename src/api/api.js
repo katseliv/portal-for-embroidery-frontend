@@ -36,6 +36,27 @@ export const userAPI = {
     },
 }
 
+export const folderAPI = {
+    createFolder(folder) {
+        return instance.post(`/folders`, {...folder});
+    },
+    getFolder(folderId) {
+        return instance.get(`/folders/${folderId}`);
+    },
+    updateFolder(folderId, folderName) {
+        return instance.put(`/folders/${folderId}`, {folderName: folderName});
+    },
+    deleteFolder(folderId) {
+        return instance.delete(`/folders/${folderId}`);
+    },
+    getFolders() {
+        return instance.get(`/folders`);
+    },
+    getFoldersByNumberAndSize(pageNumber, pageSize) {
+        return instance.get(`/folders?page=${pageNumber}&size=${pageSize}`);
+    },
+}
+
 export const postAPI = {
     createPost(post) {
         return instance.post(`/posts`, {...post});

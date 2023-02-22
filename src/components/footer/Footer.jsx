@@ -2,7 +2,7 @@ import React from 'react';
 import {NavLink} from "react-router-dom";
 import postageHeart from "../../images/postage-heart.svg";
 
-function Footer() {
+const Footer = () => {
     return (
         <div className="container">
             <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
