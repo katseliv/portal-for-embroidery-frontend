@@ -8,9 +8,8 @@ function UserList(props) {
         return <Preloader/>;
     }
 
-    let usersData = props.users
-        .map(user => <UserItem key={user.id} number={user.id} username={user.username}
-                               firstName={user.firstName} lastName={user.lastName}/>);
+    let usersData = props.users.map(user => <UserItem key={user.id} number={user.id} username={user.username}
+                                                      firstName={user.firstName} lastName={user.lastName}/>);
 
     return (
         <div className="container py-5 overflow-hidden">

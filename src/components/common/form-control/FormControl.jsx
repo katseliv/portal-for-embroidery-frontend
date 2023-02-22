@@ -1,3 +1,5 @@
+import React from "react";
+
 const style = {height: 100};
 
 export const FormControl = ({meta, children, label}) => {
@@ -30,5 +32,20 @@ export const Input = (props) => {
         </FormControl>
     );
 }
+
+const adaptFileEventToValue = delegate => e => delegate(e.target.files);
+
+export const MultipleFileInput = ({input: {value: omitValue, onChange, onBlur, ...inputProps}, ...props}) => {
+    let {meta, ...restProps} = props;
+    return (
+        <FormControl {...props}>
+            <input className="form-control" type="file"
+                   onChange={adaptFileEventToValue(onChange)}
+                   onBlur={adaptFileEventToValue(onBlur)}
+                   {...inputProps} {...restProps} multiple/>
+        </FormControl>
+    );
+}
+
 
 

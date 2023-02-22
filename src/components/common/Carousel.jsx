@@ -1,7 +1,4 @@
 import React from "react";
-import liquid from "../../images/liquid.png";
-import liquid2 from "../../images/liquid2.png";
-import abstract from "../../images/abstract.png";
 
 const carouselStyle = {
     width: '100%',
@@ -12,9 +9,10 @@ let Carousel = (props) => {
     let counter = 0;
 
     let carouselIndicators = props.files.map((file, index) => {
-            if (file.extension !== "jpeg") {
+            if (file.extension !== "jpeg" && file.extension !== "png") {
                 return;
             }
+
             if (index === 0) {
                 return <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
                                className="active" aria-current="true"/>;
@@ -26,7 +24,7 @@ let Carousel = (props) => {
     );
 
     let carouselItems = props.files.map((file, index) => {
-            if (file.extension !== "jpeg") {
+            if (file.extension !== "jpeg" && file.extension !== "png") {
                 return;
             }
             if (index === 0) {
@@ -47,21 +45,9 @@ let Carousel = (props) => {
         <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel">
             <div className="carousel-indicators">
                 {carouselIndicators}
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to={2}/>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to={3}/>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to={4}/>
             </div>
             <div className="carousel-inner" style={carouselStyle}>
                 {carouselItems}
-                <div className="carousel-item">
-                    <img src={liquid} className="d-block w-100 active" alt=""/>
-                </div>
-                <div className="carousel-item">
-                    <img src={liquid2} className="d-block w-100" alt=""/>
-                </div>
-                <div className="carousel-item">
-                    <img src={abstract} className="d-block w-100" alt=""/>
-                </div>
             </div>
             <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
                     data-bs-slide="prev">

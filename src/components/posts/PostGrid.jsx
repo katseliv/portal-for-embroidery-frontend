@@ -34,7 +34,7 @@ const PostGrid = (props) => {
     };
 
     const onAddPost = (post) => {
-        post = {...post, designerId: 3}
+        post = {designerId: 3, designId: 5, ...post}
         props.onAddPost(post);
         setCreateMode(false);
     }
