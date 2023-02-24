@@ -7,6 +7,8 @@ const UPDATE_FOLDER = '/folder/UPDATE-FOLDER';
 const DELETE_FOLDER = '/folder/DELETE-FOLDER';
 const SET_FOLDERS = '/folder/SET-FOLDERS';
 const SET_FOLDER_PROFILE = '/folder/SET-FOLDER-PROFILE';
+const SET_INITIAL_PATH = '/folder/SET-INITIAL-PATH';
+const SET_PATH = '/folder/SET-PATH';
 const SET_CURRENT_PAGE = '/folder/SET-CURRENT-PAGE';
 const SET_FOLDERS_TOTAL_COUNT = '/folder/SET-FOLDERS-TOTAL-COUNT';
 const TOGGLE_IS_FETCHING = '/folder/TOGGLE-IS-FETCHING';
@@ -14,6 +16,8 @@ const TOGGLE_IS_FETCHING = '/folder/TOGGLE-IS-FETCHING';
 let initialState = {
     profile: null,
     folders: [],
+    path: "/home",
+    currentFolder: null,
     currentPage: 1,
     pageSize: 10,
     totalCount: 4,
@@ -42,6 +46,10 @@ export const folderReducer = (state = initialState, action) => {
             return {...state, folders: action.folders}
         case SET_FOLDER_PROFILE:
             return {...state, profile: action.profile};
+        case SET_INITIAL_PATH:
+            return {...state, path: "/home", currentFolder: null};
+        case SET_PATH:
+            return {...state, path: state.path + "/" + action.currentFolder, currentFolder: action.currentFolder}
         case SET_CURRENT_PAGE:
             return {...state, currentPage: action.currentPage}
         case SET_FOLDERS_TOTAL_COUNT:
@@ -67,6 +75,8 @@ export const setFolderProfileActionCreator = (profile) => ({
     type: SET_FOLDER_PROFILE,
     profile: profile
 });
+export const setInitialPathActionCreator = () => ({type: SET_INITIAL_PATH});
+export const setPathActionCreator = (currentFolder) => ({type: SET_PATH, currentFolder: currentFolder});
 export const setCurrentPageActionCreator = (currentPage) => ({type: SET_CURRENT_PAGE, currentPage: currentPage});
 export const setTotalCountActionCreator = (totalCount) => ({
     type: SET_FOLDERS_TOTAL_COUNT,
@@ -125,6 +135,28 @@ export const getFoldersByNumberAndSizeThunkCreator = (pageNumber, pageSize) => {
         dispatch(setIsFetchingActionCreator(true));
         dispatch(setCurrentPageActionCreator(pageNumber));
         let response = await folderAPI.getFoldersByNumberAndSize(pageNumber, pageSize);
+        if (response.status === 200) {
+            dispatch(setIsFetchingActionCreator(false));
+            dispatch(setFoldersActionCreator(response.data.viewDtoList));
+        }
+    };
+}
+export const getFoldersOfUserByNumberAndSizeThunkCreator = (userId, pageNumber, pageSize) => {
+    return async (dispatch) => {
+        dispatch(setIsFetchingActionCreator(true));
+        dispatch(setCurrentPageActionCreator(pageNumber));
+        let response = await folderAPI.getFoldersOfUserByNumberAndSize(userId, pageNumber, pageSize);
+        if (response.status === 200) {
+            dispatch(setIsFetchingActionCreator(false));
+            dispatch(setFoldersActionCreator(response.data.viewDtoList));
+        }
+    };
+}
+export const getFoldersOfParentFolderByNumberAndSizeThunkCreator = (folderId, pageNumber, pageSize) => {
+    return async (dispatch) => {
+        dispatch(setIsFetchingActionCreator(true));
+        dispatch(setCurrentPageActionCreator(pageNumber));
+        let response = await folderAPI.getFoldersOfParentFolderByNumberAndSize(folderId, pageNumber, pageSize);
         if (response.status === 200) {
             dispatch(setIsFetchingActionCreator(false));
             dispatch(setFoldersActionCreator(response.data.viewDtoList));

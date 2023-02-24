@@ -5,6 +5,7 @@ import {userReducer} from "./user-reducer";
 import {postReducer} from "./post-reducer";
 import {commentReducer} from "./comment-reducer";
 import {folderReducer} from "./folder-reducer";
+import {fileReducer} from "./file-reducer";
 import {reducer as formReducer} from "redux-form";
 import thunkMiddleware from "redux-thunk";
 
@@ -15,6 +16,7 @@ let reducers = combineReducers({
     postPage: postReducer,
     commentPage: commentReducer,
     folderPage: folderReducer,
+    filePage: fileReducer,
     form: formReducer
 })
 

@@ -6,6 +6,14 @@ export const getFolders = (state) => {
     return state.folderPage.folders.sort((a, b) => a.id > b.id ? 1 : -1);
 };
 
+export const getPathOfFolders = (state) => {
+    return state.folderPage.path;
+};
+
+export const getCurrentFolderOfFolders = (state) => {
+    return state.folderPage.currentFolder;
+};
+
 export const getCurrentPageOfFolders = (state) => {
     return state.folderPage.currentPage;
 };

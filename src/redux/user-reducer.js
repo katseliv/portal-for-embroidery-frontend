@@ -1,6 +1,7 @@
 import {userAPI} from "../api/api";
-import {updateObjectInArray} from "../utils/object-helpers";
 import {reset, stopSubmit} from "redux-form";
+import {updateObjectInArray} from "../utils/object-helpers";
+import {setInitialPathActionCreator} from "./folder-reducer";
 
 const ADD_USER = '/user/ADD-USER';
 const UPDATE_USER = '/user/UPDATE-USER';
@@ -111,7 +112,6 @@ export const updateUserThunkCreator = (userId, newProfile) => {
 export const saveImageThunkCreator = (image) => {
     return async (dispatch) => {
         let response = await userAPI.saveImage(image);
-
         if (response.status === 200) {
             dispatch(saveImageActionCreator(response.data.base64StringImage));
         }
@@ -152,6 +152,7 @@ export const getUserProfileThunkCreator = (userId) => {
         userAPI.getUser(userId).then(response => {
             if (response.status === 200) {
                 dispatch(setUserProfileActionCreator(response.data));
+                dispatch(setInitialPathActionCreator());
             }
         });
     };

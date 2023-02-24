@@ -55,6 +55,36 @@ export const folderAPI = {
     getFoldersByNumberAndSize(pageNumber, pageSize) {
         return instance.get(`/folders?page=${pageNumber}&size=${pageSize}`);
     },
+    getFoldersOfUserByNumberAndSize(userId, pageNumber, pageSize) {
+        return instance.get(`/users/${userId}/folders?page=${pageNumber}&size=${pageSize}`);
+    },
+    getFoldersOfParentFolderByNumberAndSize(folderId, pageNumber, pageSize) {
+        return instance.get(`/folders/${folderId}/folders?page=${pageNumber}&size=${pageSize}`);
+    },
+}
+
+export const fileAPI = {
+    createFile(file) {
+        return instance.post(`/files`, {...file});
+    },
+    getFile(fileId) {
+        return instance.get(`/files/${fileId}`);
+    },
+    updateFile(fileId, fileName) {
+        return instance.put(`/files/${fileId}`, {fileName: fileName});
+    },
+    deleteFile(fileId) {
+        return instance.delete(`/files/${fileId}`);
+    },
+    getFiles() {
+        return instance.get(`/files`);
+    },
+    getFilesByNumberAndSize(pageNumber, pageSize) {
+        return instance.get(`/files?page=${pageNumber}&size=${pageSize}`);
+    },
+    getFilesOfFolderByNumberAndSize(folderId, pageNumber, pageSize) {
+        return instance.get(`/folders/${folderId}/files?page=${pageNumber}&size=${pageSize}`);
+    },
 }
 
 export const postAPI = {

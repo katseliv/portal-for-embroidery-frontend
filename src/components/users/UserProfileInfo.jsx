@@ -34,13 +34,11 @@ const UserProfileInfo = (props) => {
                         {/*    <Contact contactTitle={key} contactValue={profile.contacts[key]}/>*/}
                         {/*})}</>*/}
 
-                        {props.isOwner
-                            && <button className="btn btn-lg btn-outline-success w-100 mt-2" type="file"
-                                       onChange={props.onUploadImage}>Upload Image</button>
+                        {props.isOwner && <button className="btn btn-lg btn-outline-success w-100 mt-2" type="file"
+                                                  onChange={props.onUploadImage}>Upload Image</button>
                         }
-                        {props.isOwner
-                            && <button className="btn btn-lg btn-outline-success w-100 mt-2"
-                                       onClick={props.activateEditMode}>Edit</button>
+                        {props.isOwner && <button className="btn btn-lg btn-outline-success w-100 mt-2"
+                                                  onClick={props.activateEditMode}>Edit</button>
                         }
                     </div>
                     <div className="col-8">
