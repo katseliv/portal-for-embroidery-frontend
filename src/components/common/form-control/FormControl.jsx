@@ -33,6 +33,14 @@ export const Input = (props) => {
     );
 }
 
+export const SearchInput = (props) => {
+    let {input, meta, ...restProps} = props;
+    input = {...input, value: meta.initial};
+    return (
+        <input className="form-control me-2" type="search" aria-label="Search" {...input} {...restProps}/>
+    );
+}
+
 const adaptFileEventToValue = delegate => e => delegate(e.target.files);
 
 export const FileInput = ({input: {value: omitValue, onChange, onBlur, ...inputProps}, ...props}) => {

@@ -5,7 +5,7 @@ import {
     addPostThunkCreator,
     deletePostThunkCreator,
     dislikeFlowThunkCreator,
-    getPostsByNumberAndSizeThunkCreator,
+    getPostsByNumberAndSizeThunkCreator, getPostsByTagThunkCreator,
     getPostsThunkCreator,
     likeFlowThunkCreator,
     setCurrentPageActionCreator,
@@ -37,8 +37,16 @@ class PostGridContainer extends React.Component {
         this.props.deletePost(postId);
     }
 
-    getPosts = (pageNumber) => {
+    getPosts = () => {
+        this.props.getPosts();
+    }
+
+    getPostsByNumber = (pageNumber) => {
         this.props.getPostsByNumberAndSize(pageNumber, this.props.pageSizeOfPosts);
+    }
+
+    getPostsByTag = (tagName) => {
+        this.props.getPostsByTag(tagName);
     }
 
     likePost = (postId) => {
@@ -57,6 +65,8 @@ class PostGridContainer extends React.Component {
                          isFetching={this.props.isFetchingOfPosts}
                          isLikingInProgress={this.props.isLikingInProgressOfPost}
                          getPosts={this.getPosts}
+                         getPostsByNumber={this.getPostsByNumber}
+                         getPostsByTag={this.getPostsByTag}
                          onAddPost={this.onAddPost}
                          onDeletePost={this.onDeletePost}
                          like={this.likePost}
@@ -91,6 +101,9 @@ let mapDispatchToProps = (dispatch) => {
         },
         getPosts: () => {
             dispatch(getPostsThunkCreator());
+        },
+        getPostsByTag: (tagName) => {
+            dispatch(getPostsByTagThunkCreator(tagName));
         },
         getPostsByNumberAndSize: (pageNumber, pageSize) => {
             dispatch(getPostsByNumberAndSizeThunkCreator(pageNumber, pageSize));

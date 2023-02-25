@@ -110,6 +110,9 @@ export const postAPI = {
     getPosts() {
         return instance.get(`/posts`);
     },
+    getPostsByTag(tagName) {
+        return instance.get(`/posts?tagName=${tagName}`);
+    },
     getPostsByNumberAndSize(pageNumber, pageSize) {
         return instance.get(`/posts?page=${pageNumber}&size=${pageSize}`);
     },

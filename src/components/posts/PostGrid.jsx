@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import PostItem from "./PostItem";
 import Preloader from "../common/Preloader";
 import PostProfileCreate from "./PostProfileCreate";
+import Searcher from "../common/Searcher";
 
 const PostGrid = (props) => {
     const [createMode, setCreateMode] = useState(false);
@@ -12,7 +13,7 @@ const PostGrid = (props) => {
     //
     // useEffect(() => {
     //     if (isFetching) {
-    //         props.getPosts(currentPage);
+    //         props.getPostsByNumber(currentPage);
     //         setCurrentPage(prevState => prevState + 1);
     //         setTotalCount();
     //     }
@@ -39,6 +40,14 @@ const PostGrid = (props) => {
         setCreateMode(false);
     }
 
+    const onGetPosts = () => {
+        props.getPosts();
+    }
+
+    const onGetPostsByTag = (tag) => {
+        props.getPostsByTag(tag.request);
+    }
+
     let mappedPosts = props.posts.map(post => <PostItem key={post.id} number={post.id}
                                                         image={post.designBase64StringImage}
                                                         title={post.designName} text={post.description}
@@ -49,14 +58,18 @@ const PostGrid = (props) => {
         <div>
             {createMode ? <PostProfileCreate onAddPost={onAddPost}/> :
                 <div className="container p-5 overflow-hidden">
-                    <h1 className="h4 mb-4 fw-normal text-center">Designs</h1><br/>
+                    <h1 className="h4 fw-normal text-center">Designs</h1>
+                    <Searcher onSubmit={onGetPostsByTag} placeholder={"Search by Tag"}/>
                     <div className="container w-100">
                         <div className="row row-cols-1 row-cols-md-4 g-4">
                             {mappedPosts}
                         </div>
                     </div>
                     <div className="px-2 py-5">
-                        <button className="btn btn-lg btn-outline-success w-100 mt-2" onClick={activateCreateMode}>
+                        <button className="btn btn-lg btn-outline-secondary w-25 mx-1" onClick={onGetPosts}>
+                            Back
+                        </button>
+                        <button className="btn btn-lg btn-outline-success w-25 mx-1" onClick={activateCreateMode}>
                             Create New Post
                         </button>
                     </div>

@@ -146,6 +146,16 @@ export const getPostsThunkCreator = () => {
         }
     };
 }
+export const getPostsByTagThunkCreator = (tagName) => {
+    return async (dispatch) => {
+        dispatch(setIsFetchingActionCreator(true));
+        let response = await postAPI.getPostsByTag(tagName);
+        if (response.status === 200) {
+            dispatch(setIsFetchingActionCreator(false));
+            dispatch(setPostsActionCreator(response.data.viewDtoList));
+        }
+    };
+}
 export const getPostsByNumberAndSizeThunkCreator = (pageNumber, pageSize) => {
     return async (dispatch) => {
         dispatch(setIsFetchingActionCreator(true));
