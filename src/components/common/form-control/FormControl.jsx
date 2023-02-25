@@ -35,6 +35,18 @@ export const Input = (props) => {
 
 const adaptFileEventToValue = delegate => e => delegate(e.target.files);
 
+export const FileInput = ({input: {value: omitValue, onChange, onBlur, ...inputProps}, ...props}) => {
+    let {meta, ...restProps} = props;
+    return (
+        <FormControl {...props}>
+            <input className="form-control" type="file"
+                   onChange={adaptFileEventToValue(onChange)}
+                   onBlur={adaptFileEventToValue(onBlur)}
+                   {...inputProps} {...restProps}/>
+        </FormControl>
+    );
+}
+
 export const MultipleFileInput = ({input: {value: omitValue, onChange, onBlur, ...inputProps}, ...props}) => {
     let {meta, ...restProps} = props;
     return (

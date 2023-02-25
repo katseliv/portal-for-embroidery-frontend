@@ -1,5 +1,5 @@
 import {folderAPI} from "../api/api";
-import {reset, stopSubmit} from "redux-form";
+import {reset} from "redux-form";
 import {updateObjectInArray} from "../utils/object-helpers";
 
 const ADD_FOLDER = '/folder/ADD-FOLDER';
@@ -29,13 +29,12 @@ export const folderReducer = (state = initialState, action) => {
         case ADD_FOLDER:
             return {
                 ...state,
-                folders: [...state.folders, {...action.newFolder}]
+                folders: [...state.folders, {...action.newFolder, editMode: true}]
             }
         case UPDATE_FOLDER:
             return {
                 ...state,
-                profile: {...action.newProfile},
-                folders: updateObjectInArray(state.folders, action.folderId, "id", {...action.newProfile})
+                folders: updateObjectInArray(state.folders, action.folderId, "id", {name: action.name})
             }
         case DELETE_FOLDER:
             return {
@@ -49,7 +48,7 @@ export const folderReducer = (state = initialState, action) => {
         case SET_INITIAL_PATH:
             return {...state, path: "/home", currentFolder: null};
         case SET_PATH:
-            return {...state, path: state.path + "/" + action.currentFolder, currentFolder: action.currentFolder}
+            return {...state, path: state.path + "/" + action.currentFolder.name, currentFolder: action.currentFolder}
         case SET_CURRENT_PAGE:
             return {...state, currentPage: action.currentPage}
         case SET_FOLDERS_TOTAL_COUNT:
@@ -63,10 +62,10 @@ export const folderReducer = (state = initialState, action) => {
 
 
 export const addFolderActionCreator = (newFolder) => ({type: ADD_FOLDER, newFolder: newFolder});
-export const updateFolderActionCreator = (folderId, newProfile) => ({
+export const updateFolderActionCreator = (folderId, folderName) => ({
     type: UPDATE_FOLDER,
     folderId: folderId,
-    newProfile: newProfile
+    name: folderName
 });
 export const deleteFolderActionCreator = (folderId) => ({type: DELETE_FOLDER, folderId: folderId});
 
@@ -100,14 +99,11 @@ export const addFolderThunkCreator = (folder) => {
         }
     };
 }
-export const updateFolderThunkCreator = (folderId, newProfile) => {
+export const updateFolderThunkCreator = (folderId, folderName) => {
     return async (dispatch) => {
-        let response = await folderAPI.updateFolder(folderId, newProfile);
+        let response = await folderAPI.updateFolder(folderId, folderName);
         if (response.status === 200) {
-            dispatch(updateFolderActionCreator(folderId, newProfile));
-        } else {
-            let message = response.data.messages.length > 0 ? response.data.messages[0] : "Some error...";
-            dispatch(stopSubmit("folderProfileUpdateForm", {_error: message}));
+            dispatch(updateFolderActionCreator(folderId, folderName));
         }
     };
 }

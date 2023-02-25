@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import folder from "../../images/folder.svg";
 
 const FolderItem = (props) => {
-    let [editMode, setEditMode] = useState(false);
+    let [editMode, setEditMode] = useState(props.editMode);
     let [text, setText] = useState(props.name);
 
     useEffect(() => {
@@ -19,7 +19,7 @@ const FolderItem = (props) => {
 
     const deactivateEditMode = () => {
         setEditMode(false);
-        // props.onUpdateComment(props.number, text);
+        props.onUpdateFolder(props.number, text);
     };
 
     return (
@@ -28,7 +28,7 @@ const FolderItem = (props) => {
                 <img src={folder} className="card-img-top" width={40} height={40}
                      onDoubleClick={() => {
                          props.onFolderChange(props.number);
-                         props.onSetPath(props.name);
+                         props.onSetPath({id: props.number, name: props.name});
                      }} alt="..."/>
                 <div className="">
                     {!editMode

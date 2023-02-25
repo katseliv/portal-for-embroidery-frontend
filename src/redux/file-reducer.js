@@ -1,5 +1,5 @@
 import {fileAPI} from "../api/api";
-import {reset, stopSubmit} from "redux-form";
+import {reset} from "redux-form";
 import {updateObjectInArray} from "../utils/object-helpers";
 
 const ADD_FILE = '/file/ADD-FILE';
@@ -30,8 +30,7 @@ export const fileReducer = (state = initialState, action) => {
         case UPDATE_FILE:
             return {
                 ...state,
-                profile: {...action.newProfile},
-                files: updateObjectInArray(state.files, action.fileId, "id", {...action.newProfile})
+                files: updateObjectInArray(state.files, action.fileId, "id", {name: action.name})
             }
         case DELETE_FILE:
             return {
@@ -55,10 +54,10 @@ export const fileReducer = (state = initialState, action) => {
 
 
 export const addFileActionCreator = (newFile) => ({type: ADD_FILE, newFile: newFile});
-export const updateFileActionCreator = (fileId, newProfile) => ({
+export const updateFileActionCreator = (fileId, fileName) => ({
     type: UPDATE_FILE,
     fileId: fileId,
-    newProfile: newProfile
+    name: fileName
 });
 export const deleteFileActionCreator = (fileId) => ({type: DELETE_FILE, fileId: fileId});
 
@@ -90,14 +89,11 @@ export const addFileThunkCreator = (file) => {
         }
     };
 }
-export const updateFileThunkCreator = (fileId, newProfile) => {
+export const updateFileThunkCreator = (fileId, fileName) => {
     return async (dispatch) => {
-        let response = await fileAPI.updateFile(fileId, newProfile);
+        let response = await fileAPI.updateFile(fileId, fileName);
         if (response.status === 200) {
-            dispatch(updateFileActionCreator(fileId, newProfile));
-        } else {
-            let message = response.data.messages.length > 0 ? response.data.messages[0] : "Some error...";
-            dispatch(stopSubmit("fileProfileUpdateForm", {_error: message}));
+            dispatch(updateFileActionCreator(fileId, fileName));
         }
     };
 }

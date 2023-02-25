@@ -9,9 +9,25 @@ const FolderGrid = (props) => {
     }
 
     let foldersData = props.folders.map(folder => <FolderItem key={folder.id} number={folder.id} name={folder.name}
+                                                              editMode={!!folder.editMode}
+                                                              onUpdateFolder={props.onUpdateFolder}
                                                               onFolderChange={props.onFolderChange}
                                                               onSetPath={props.onSetPath}/>);
-    let filesData = props.files.map(file => <FileItem key={file.id} number={file.id} name={file.name}/>);
+    let filesData = props.files.map(file => <FileItem key={file.id} number={file.id} name={file.name}
+                                                      onUpdateFile={props.onUpdateFile}/>);
+
+    const onAddFolder = () => {
+        let currentFolderId = props.currentFolder ? props.currentFolder.id : null;
+        props.onAddFolder({
+            name: "New Folder",
+            parentFolderId: currentFolderId,
+            creatorDesignerId: props.profileId
+        });
+    };
+
+    const onActivateCreateMode = () => {
+        props.activateCreateMode();
+    };
 
     return (
         <div className="container p-0 overflow-hidden">
@@ -22,11 +38,17 @@ const FolderGrid = (props) => {
                     {filesData}
                 </div>
                 <div className="row">
-                    <div className="col-8 p-0">
-                        <button className="btn btn-outline-secondary mt-lg-4" type="file"
-                                onClick={() => props.onBackHome()}>
-                            Back To Home
-                        </button>
+                    <div className="px-0">
+                        <div className="btn-group mt-lg-4" role="group" aria-label="Basic outlined example">
+                            <button className="btn btn-outline-secondary" onClick={() => props.onBackHome()}>
+                                Back To Home
+                            </button>
+                            <button className="btn btn-outline-success" onClick={onAddFolder}>Create New Folder</button>
+                            {props.currentFolder &&
+                                <button className="btn btn-outline-success" onClick={onActivateCreateMode}>
+                                    Create New File
+                                </button>}
+                        </div>
                     </div>
                 </div>
             </div>

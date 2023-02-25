@@ -44,7 +44,7 @@ export const folderAPI = {
         return instance.get(`/folders/${folderId}`);
     },
     updateFolder(folderId, folderName) {
-        return instance.put(`/folders/${folderId}`, {folderName: folderName});
+        return instance.put(`/folders/${folderId}`, {name: folderName});
     },
     deleteFolder(folderId) {
         return instance.delete(`/folders/${folderId}`);
@@ -71,7 +71,7 @@ export const fileAPI = {
         return instance.get(`/files/${fileId}`);
     },
     updateFile(fileId, fileName) {
-        return instance.put(`/files/${fileId}`, {fileName: fileName});
+        return instance.put(`/files/${fileId}`, {name: fileName});
     },
     deleteFile(fileId) {
         return instance.delete(`/files/${fileId}`);

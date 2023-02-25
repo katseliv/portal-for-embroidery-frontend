@@ -1,12 +1,15 @@
 import React from "react";
 import {connect} from "react-redux";
 import {
+    addFolderThunkCreator,
     getFoldersOfParentFolderByNumberAndSizeThunkCreator,
     getFoldersOfUserByNumberAndSizeThunkCreator,
     getFoldersThunkCreator,
-    setCurrentPageActionCreator, setInitialPathActionCreator,
+    setCurrentPageActionCreator,
+    setInitialPathActionCreator,
     setIsFetchingActionCreator,
-    setPathActionCreator
+    setPathActionCreator,
+    updateFolderThunkCreator
 } from "../../redux/folder-reducer";
 import {
     getCurrentFolderOfFolders,
@@ -17,7 +20,6 @@ import {
     getPathOfFolders,
     getTotalCountOfFolders
 } from "../../redux/folder-selector";
-import FolderGrid from "./FolderGrid";
 import {
     getCurrentPageOfFiles,
     getFiles,
@@ -25,8 +27,14 @@ import {
     getPageSizeOfFiles,
     getTotalCountOfFiles
 } from "../../redux/file-selector";
-import {getFilesOfFolderByNumberAndSizeThunkCreator, setFilesActionCreator} from "../../redux/file-reducer";
+import {
+    addFileThunkCreator,
+    getFilesOfFolderByNumberAndSizeThunkCreator,
+    setFilesActionCreator,
+    updateFileThunkCreator
+} from "../../redux/file-reducer";
 import {getUserProfile} from "../../redux/user-selector";
+import FolderSidePanel from "./FolderSidePanel";
 
 class FolderGridContainer extends React.Component {
     componentDidMount() {
@@ -45,6 +53,22 @@ class FolderGridContainer extends React.Component {
         const pageNumber = 1;
         this.props.getFoldersOfUserByNumberAndSize(this.props.profile.id, pageNumber, this.props.pageSizeOfFolders);
         this.props.getFilesOfFolderByNumberAndSize(null, pageNumber, this.props.pageSizeOfFolders);
+    }
+
+    onAddFolder = (folder) => {
+        this.props.addFolder(folder);
+    }
+
+    onUpdateFolder = (folderId, folderName) => {
+        this.props.updateFolder(folderId, folderName);
+    }
+
+    onAddFile = (file) => {
+        this.props.addFile(file);
+    }
+
+    onUpdateFile = (fileId, fileName) => {
+        this.props.updateFile(fileId, fileName);
     }
 
     onPageChange = (pageNumber) => {
@@ -68,18 +92,23 @@ class FolderGridContainer extends React.Component {
     }
 
     render() {
-        return <FolderGrid folders={this.props.folders}
-                           files={this.props.files}
-                           path={this.props.pathOfFolders}
-                           currentFolder={this.props.currentFolderOfFolders}
-                           currentPage={this.props.currentPageOfFolders}
-                           pageSize={this.props.pageSizeOfFolders}
-                           totalCount={this.props.totalCountOfFolders}
-                           isFetching={this.props.isFetchingOfFolders}
-                           onPageChange={this.onPageChange}
-                           onFolderChange={this.onFolderChange}
-                           onBackHome={this.onBackHome}
-                           onSetPath={this.onSetPath}/>;
+        return <FolderSidePanel profileId={this.props.profile.id}
+                                folders={this.props.folders}
+                                files={this.props.files}
+                                path={this.props.pathOfFolders}
+                                currentFolder={this.props.currentFolderOfFolders}
+                                currentPage={this.props.currentPageOfFolders}
+                                pageSize={this.props.pageSizeOfFolders}
+                                totalCount={this.props.totalCountOfFolders}
+                                isFetching={this.props.isFetchingOfFolders}
+                                onAddFolder={this.onAddFolder}
+                                onUpdateFolder={this.onUpdateFolder}
+                                onAddFile={this.onAddFile}
+                                onUpdateFile={this.onUpdateFile}
+                                onPageChange={this.onPageChange}
+                                onFolderChange={this.onFolderChange}
+                                onBackHome={this.onBackHome}
+                                onSetPath={this.onSetPath}/>;
     }
 }
 
@@ -103,6 +132,12 @@ let mapStateToProps = (state) => {
 
 let mapDispatchToProps = (dispatch) => {
     return {
+        addFolder: (folder) => {
+            dispatch(addFolderThunkCreator(folder));
+        },
+        updateFolder: (folderId, folderName) => {
+            dispatch(updateFolderThunkCreator(folderId, folderName));
+        },
         getFolders: () => {
             dispatch(getFoldersThunkCreator());
         },
@@ -111,6 +146,12 @@ let mapDispatchToProps = (dispatch) => {
         },
         getFoldersOfFolderByNumberAndSize: (folderId, pageNumber, pageSize) => {
             dispatch(getFoldersOfParentFolderByNumberAndSizeThunkCreator(folderId, pageNumber, pageSize));
+        },
+        addFile: (file) => {
+            dispatch(addFileThunkCreator(file));
+        },
+        updateFile: (fileId, fileName) => {
+            dispatch(updateFileThunkCreator(fileId, fileName));
         },
         getFilesOfFolderByNumberAndSize: (folderId, pageNumber, pageSize) => {
             dispatch(getFilesOfFolderByNumberAndSizeThunkCreator(folderId, pageNumber, pageSize));
