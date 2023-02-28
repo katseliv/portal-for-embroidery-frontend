@@ -13,14 +13,12 @@ const UserItem = (props) => {
             <td>{props.firstName}</td>
             <td>{props.lastName}</td>
             <td>
-                <form action="/" method="get">
-                    <button type="submit" className="btn btn-outline-success">Edit</button>
-                </form>
+                <button className="btn btn-outline-success">Edit</button>
             </td>
             <td>
-                <form action="/" method="delete">
-                    <button type="submit" className="btn btn-outline-danger">Delete</button>
-                </form>
+                <button className="btn btn-outline-danger" onClick={() => props.onDeleteUser(props.number)}>
+                    Delete
+                </button>
             </td>
         </tr>
     );

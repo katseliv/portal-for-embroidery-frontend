@@ -3,7 +3,10 @@ import {connect} from "react-redux";
 import {compose} from "redux";
 import UserProfile from "./UserProfile";
 import {Navigate, useNavigate, useParams} from "react-router-dom";
-import {getUserProfileThunkCreator, saveImageThunkCreator} from "../../redux/user-reducer";
+import {getUserProfileThunkCreator, updateUserThunkCreator} from "../../redux/user-reducer";
+import {getUserProfile} from "../../redux/user-selector";
+import {getAuthorizedUserId, getIsAuthenticated} from "../../redux/auth-selector";
+import {initialize} from "redux-form";
 
 class UserProfileContainer extends React.Component {
     componentDidMount() {
@@ -30,6 +33,14 @@ class UserProfileContainer extends React.Component {
         }
     }
 
+    initializeUser = () => {
+        this.props.initializeUser(this.props.profile);
+    }
+
+    onSaveProfile = (userId, profile) => {
+        this.props.updateUser(userId, profile);
+    }
+
     render() {
         if (!this.props.isAuthenticated) {
             return <Navigate replace to='/sign-in'/>;
@@ -37,25 +48,29 @@ class UserProfileContainer extends React.Component {
         return <UserProfile {...this.props}
                             isOwner={!!this.props.authorizedUserId}
                             profile={this.props.profile}
-                            saveImage={this.props.saveImage}/>;
+                            initializeUser={this.initializeUser}
+                            onSaveProfile={this.onSaveProfile}/>;
     }
 }
 
 let mapStateToProps = (state) => {
     return {
-        profile: state.userPage.profile,
-        authorizedUserId: state.authPage.id,
-        isAuthenticated: state.authPage.isAuthenticated
+        profile: getUserProfile(state),
+        authorizedUserId: getAuthorizedUserId(state),
+        isAuthenticated: getIsAuthenticated(state)
     }
 }
 
 let mapDispatchToProps = (dispatch) => {
     return {
+        initializeUser: (profile) => {
+            dispatch(initialize('userProfileUpdateForm', profile, true, {}));
+        },
         getUserProfile: (userId) => {
             dispatch(getUserProfileThunkCreator(userId));
         },
-        saveImage: (image) => {
-            dispatch(saveImageThunkCreator(image));
+        updateUser: (userId, profile) => {
+            dispatch(updateUserThunkCreator(userId, profile));
         },
     }
 }

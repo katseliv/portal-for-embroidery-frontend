@@ -15,7 +15,9 @@ const UserProfileInfo = (props) => {
                 <div className="row">
                     <div className="col-4">
                         <div className="mb-3">
-                            <img src={props.profile.base64StringImage || girl} className="img-fluid" alt=""/>
+                            <img src={props.profile.base64StringImage
+                                ? `data:image/jpeg;base64,${props.profile.base64StringImage}`
+                                : girl} className="img-fluid" alt=""/>
                         </div>
                         <UserProfileStatus status={"Texting to you..."}/>
                         <p></p>
@@ -29,17 +31,8 @@ const UserProfileInfo = (props) => {
                         <p></p>
                         <p><span style={pStyle}>Phone Number:</span> {props.profile.phoneNumber}</p>
                         <p></p>
-
-                        {/*<><b>Contacts: </b> {Object.keys(props.profile.contacts).map(key => {*/}
-                        {/*    <Contact contactTitle={key} contactValue={profile.contacts[key]}/>*/}
-                        {/*})}</>*/}
-
-                        {props.isOwner && <button className="btn btn-lg btn-outline-success w-100 mt-2" type="file"
-                                                  onChange={props.onUploadImage}>Upload Image</button>
-                        }
                         {props.isOwner && <button className="btn btn-lg btn-outline-success w-100 mt-2"
-                                                  onClick={props.activateEditMode}>Edit</button>
-                        }
+                                                  onClick={props.activateEditMode}>Edit</button>}
                     </div>
                     <div className="col-8">
                         {props.profile.id && <FolderGridContainer/>}

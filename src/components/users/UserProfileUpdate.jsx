@@ -1,14 +1,17 @@
 import React from "react";
-import {Input} from "../common/form-control/FormControl";
-import Preloader from "../common/Preloader";
 import {Field, reduxForm} from "redux-form";
+import Preloader from "../common/Preloader";
+import {FileInput, Input} from "../common/form-control/FormControl";
+import {mapFileToBase64} from "../../utils/file-helpers";
 
 const UserProfileUpdate = (props) => {
     if (!props.profile) {
         return <Preloader/>;
     }
 
-    const onSubmit = (formData) => {
+    const onSubmit = async (formData) => {
+        const base64StringImage = formData.image ? await mapFileToBase64(formData.image[0]) : "";
+        formData = {...props.profile, ...formData, base64StringImage: base64StringImage};
         props.onSaveProfile(formData);
     }
 
@@ -16,7 +19,7 @@ const UserProfileUpdate = (props) => {
         <div className="container p-5 overflow-hidden">
             <h1 className="h3 mb-5 fw-normal text-center">Edit Profile</h1>
             <div className="container w-25">
-                <UserProfileUpdateReduxForm initialValues={props.profile} onSubmit={onSubmit}/>
+                <UserProfileUpdateReduxForm onSubmit={onSubmit}/>
             </div>
         </div>
     );
@@ -38,7 +41,7 @@ const UserProfileUpdateForm = ({handleSubmit}) => {
                 <div className="invalid-feedback"></div>
             </div>
             <div className="mb-3">
-                <Field component={Input} name={"base64StringImage"} label={"Image"} type="file"/>
+                <Field component={FileInput} name={"image"} label={"Image"} type="file"/>
                 <div className="invalid-feedback"></div>
             </div>
             <div className="mb-3">

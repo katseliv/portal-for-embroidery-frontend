@@ -1,11 +1,10 @@
 import {userAPI} from "../api/api";
 import {reset, stopSubmit} from "redux-form";
-import {updateObjectInArray} from "../utils/object-helpers";
+import {loginThunkCreator} from "./auth-reducer";
 import {setInitialPathActionCreator} from "./folder-reducer";
 
 const ADD_USER = '/user/ADD-USER';
 const UPDATE_USER = '/user/UPDATE-USER';
-const SAVE_IMAGE = "/user/SAVE-IMAGE";
 const DELETE_USER = '/user/DELETE-USER';
 const SET_USERS = '/user/SET-USERS';
 const SET_USER_PROFILE = '/user/SET-USER-PROFILE';
@@ -30,13 +29,13 @@ export const userReducer = (state = initialState, action) => {
                 users: [...state.users, {...action.newUser}]
             }
         case UPDATE_USER:
+            const base64StringImage = action.newProfile.base64StringImage === ""
+                ? state.profile.base64StringImage
+                : action.newProfile.base64StringImage;
             return {
                 ...state,
-                profile: {...action.newProfile},
-                users: updateObjectInArray(state.users, action.userId, "id", {...action.newProfile})
+                profile: {...state.profile, ...action.newProfile, base64StringImage: base64StringImage}
             }
-        case SAVE_IMAGE:
-            return {...state, profile: {...action.profile, base64StringImage: action.image}};
         case DELETE_USER:
             return {
                 ...state,
@@ -57,16 +56,11 @@ export const userReducer = (state = initialState, action) => {
     }
 }
 
-
 export const addUserActionCreator = (newUser) => ({type: ADD_USER, newUser: newUser});
 export const updateUserActionCreator = (userId, newProfile) => ({
     type: UPDATE_USER,
     userId: userId,
     newProfile: newProfile
-});
-export const saveImageActionCreator = (image) => ({
-    type: SAVE_IMAGE,
-    image: image
 });
 export const deleteUserActionCreator = (userId) => ({type: DELETE_USER, userId: userId});
 
@@ -85,6 +79,20 @@ export const setIsFetchingActionCreator = (isFetching) => ({
     isFetching: isFetching
 });
 
+export const registerUserThunkCreator = (user) => {
+    return async (dispatch) => {
+        let responseCreateUser = await userAPI.registerUser(user);
+        if (responseCreateUser.status === 201) {
+            let newUserId = responseCreateUser.data;
+            let responseGetUser = await userAPI.getUser(newUserId);
+            if (responseGetUser.status === 200) {
+                dispatch(loginThunkCreator(user.email, user.password));
+                dispatch(addUserActionCreator(responseGetUser.data));
+                dispatch(reset('registrationForm'));
+            }
+        }
+    };
+}
 export const addUserThunkCreator = (user) => {
     return async (dispatch) => {
         let responseCreateUser = await userAPI.createUser(user);
@@ -106,14 +114,6 @@ export const updateUserThunkCreator = (userId, newProfile) => {
         } else {
             let message = response.data.messages.length > 0 ? response.data.messages[0] : "Some error...";
             dispatch(stopSubmit("userProfileUpdateForm", {_error: message}));
-        }
-    };
-}
-export const saveImageThunkCreator = (image) => {
-    return async (dispatch) => {
-        let response = await userAPI.saveImage(image);
-        if (response.status === 200) {
-            dispatch(saveImageActionCreator(response.data.base64StringImage));
         }
     };
 }

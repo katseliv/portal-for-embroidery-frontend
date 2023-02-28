@@ -11,19 +11,13 @@ const UserProfile = (props) => {
     }
 
     const activateEditMode = () => {
+        props.initializeUser();
         setEditMode(true);
     };
 
-    const onUploadImage = (e) => {
-        if (e.target.file.length) {
-            props.saveImage(e.target.file[0]);
-        }
-    }
-
     const onSaveProfile = (profile) => {
-        props.onSaveProfile(profile).then(() => {
-            setEditMode(false);
-        });
+        props.onSaveProfile(props.profile.id, profile);
+        setEditMode(false);
     }
 
     return (
@@ -32,7 +26,6 @@ const UserProfile = (props) => {
                 ? <UserProfileUpdate profile={props.profile} onSaveProfile={onSaveProfile}/>
                 : <UserProfileInfo profile={props.profile}
                                    isOwner={props.isOwner}
-                                   onUploadImage={onUploadImage}
                                    activateEditMode={activateEditMode}/>
             }
         </>

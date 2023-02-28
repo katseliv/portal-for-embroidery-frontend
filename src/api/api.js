@@ -7,6 +7,9 @@ const instance = axios.create({
 });
 
 export const userAPI = {
+    registerUser(user) {
+        return instance.post(`/users/register`, {...user});
+    },
     createUser(user) {
         return instance.post(`/users`, {...user});
     },
@@ -18,15 +21,6 @@ export const userAPI = {
     },
     deleteUser(userId) {
         return instance.delete(`/users/${userId}`);
-    },
-    saveImage(image) {
-        const formData = new FormData();
-        formData.append('base64StringImage', image);
-        return instance.put(`/users`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        });
     },
     getUsers() {
         return instance.get(`/users`);
