@@ -4,9 +4,10 @@ import {updateObjectInArray} from "../utils/object-helpers";
 
 const LIKE = '/post/LIKE';
 const DISLIKE = '/post/DISLIKE';
-const ADD_POST = '/post/ADD-COMMENT';
-const UPDATE_POST = '/post/UPDATE-COMMENT';
-const DELETE_POST = '/post/DELETE-COMMENT';
+const ADD_POST = '/post/ADD-POST';
+const UPDATE_POST = '/post/UPDATE-POST';
+const UPDATE_POST_TAGS = '/post/UPDATE-POST-TAGS';
+const DELETE_POST = '/post/DELETE-POST';
 const SET_POSTS = '/post/SET-POSTS';
 const SET_POST_PROFILE = '/post/SET-POST-PROFILE';
 const SET_CURRENT_PAGE = '/post/SET-CURRENT-PAGE';
@@ -36,6 +37,12 @@ export const postReducer = (state = initialState, action) => {
                 ...state,
                 profile: {...state.profile, description: action.description},
                 posts: updateObjectInArray(state.posts, action.postId, "id", {description: action.description})
+            }
+        case UPDATE_POST_TAGS:
+            const tags = action.tags.map(tag => tag.title);
+            return {
+                ...state,
+                profile: {...state.profile, tags: [...state.profile.tags, ...tags]},
             }
         case DELETE_POST:
             return {
@@ -79,6 +86,11 @@ export const updatePostActionCreator = (postId, description) => ({
     type: UPDATE_POST,
     postId: postId,
     description: description
+});
+export const updatePostByTagsActionCreator = (postId, tags) => ({
+    type: UPDATE_POST_TAGS,
+    postId: postId,
+    tags: tags
 });
 export const deletePostActionCreator = (postId) => ({type: DELETE_POST, postId: postId});
 export const setPostsActionCreator = (posts) => ({type: SET_POSTS, posts: posts});
@@ -124,6 +136,17 @@ export const updatePostThunkCreator = (postId, description) => {
         } else {
             let message = response.data.messages.length > 0 ? response.data.messages[0] : "Some error...";
             dispatch(stopSubmit("postProfileUpdateForm", {_error: message}));
+        }
+    };
+}
+export const updatePostByTagsThunkCreator = (postId, tags) => {
+    return async (dispatch) => {
+        let response = await postAPI.updatePostByTags(postId, tags);
+        if (response.status === 200) {
+            dispatch(updatePostByTagsActionCreator(postId, tags));
+        } else {
+            let message = response.data.messages.length > 0 ? response.data.messages[0] : "Some error...";
+            dispatch(stopSubmit("tagsCreateForm", {_error: message}));
         }
     };
 }

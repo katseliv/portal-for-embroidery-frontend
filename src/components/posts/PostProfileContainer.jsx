@@ -5,7 +5,11 @@ import {initialize} from 'redux-form';
 import {useNavigate, useParams} from "react-router-dom";
 import PostProfile from "./PostProfile";
 import {getPostProfile} from "../../redux/post-selector";
-import {getPostProfileThunkCreator, updatePostThunkCreator} from "../../redux/post-reducer";
+import {
+    getPostProfileThunkCreator,
+    updatePostByTagsThunkCreator,
+    updatePostThunkCreator
+} from "../../redux/post-reducer";
 import {getAuthorizedUserId, getIsAuthenticated} from "../../redux/auth-selector";
 
 class PostProfileContainer extends React.Component {
@@ -43,12 +47,17 @@ class PostProfileContainer extends React.Component {
         this.props.updatePost(postId, description);
     }
 
+    onAddTags = (postId, tags) => {
+        this.props.updatePostByTags(postId, tags);
+    }
+
     render() {
         return <PostProfile {...this.props}
                             profile={this.props.profile}
                             navigate={this.props.navigate}
                             initializePost={this.initializePost}
-                            onSaveProfile={this.onSaveProfile}/>;
+                            onSaveProfile={this.onSaveProfile}
+                            onAddTags={this.onAddTags}/>;
     }
 }
 
@@ -70,6 +79,9 @@ let mapDispatchToProps = (dispatch) => {
         },
         updatePost: (postId, description) => {
             dispatch(updatePostThunkCreator(postId, description));
+        },
+        updatePostByTags: (postId, tags) => {
+            dispatch(updatePostByTagsThunkCreator(postId, tags));
         },
     }
 }

@@ -97,6 +97,9 @@ export const postAPI = {
     updatePost(postId, description) {
         return instance.put(`/posts/${postId}`, {description: description});
     },
+    updatePostByTags(postId, tags) {
+        return instance.put(`/posts/${postId}/tags`, tags);
+    },
     deletePost(postId) {
         return instance.delete(`/posts/${postId}`);
     },

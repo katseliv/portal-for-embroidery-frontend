@@ -50,9 +50,16 @@ const PostProfileInfo = (props) => {
                             <h6 className="h5 mb-3 fw-normal text-right">
                                 Tags: {mappedTags}
                             </h6>
-                            <button className="btn btn-lg btn-outline-success w-100 mt-2"
-                                    onClick={props.activateEditMode}>Edit
-                            </button>
+                            <div className="btn-group mt-2 w-100" role="group">
+                                <button className="btn btn-lg btn-outline-success"
+                                        onClick={props.activateCreateTagsMode}>
+                                    Add Tags
+                                </button>
+                                <button className="btn btn-lg btn-outline-success"
+                                        onClick={props.activateEditMode}>
+                                    Edit
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
