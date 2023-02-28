@@ -12,7 +12,7 @@ const PostProfileCreate = (props) => {
                 name: getFileName(formData.files[i].name),
                 extension: getExtension(formData.files[i].name),
                 base64StringFile: result,
-                folderId: 12
+                folderId: null
             });
         }
 

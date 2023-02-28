@@ -107,6 +107,9 @@ export const postAPI = {
     getPosts() {
         return instance.get(`/posts`);
     },
+    getPostsByUser(userId) {
+        return instance.get(`/users/${userId}/posts`);
+    },
     getPostsByTag(tagName) {
         return instance.get(`/posts?tagName=${tagName}`);
     },

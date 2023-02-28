@@ -55,6 +55,7 @@ class PostProfileContainer extends React.Component {
         return <PostProfile {...this.props}
                             profile={this.props.profile}
                             navigate={this.props.navigate}
+                            authorizedUserId={this.props.authorizedUserId}
                             initializePost={this.initializePost}
                             onSaveProfile={this.onSaveProfile}
                             onAddTags={this.onAddTags}/>;

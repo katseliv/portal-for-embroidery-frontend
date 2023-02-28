@@ -50,15 +50,21 @@ export const postReducer = (state = initialState, action) => {
                 posts: state.posts.filter(c => c.id !== action.postId)
             }
         case LIKE:
-            return {
-                ...state,
-                posts: updateObjectInArray(state.posts, action.postId, "id", {liked: true})
-            }
+            const likedPosts = state.posts.map(post => {
+                if (post["id"] === action.postId) {
+                    return {...post, liked: true, countLikes: post.countLikes + 1}
+                }
+                return post;
+            })
+            return {...state, posts: likedPosts}
         case DISLIKE:
-            return {
-                ...state,
-                posts: updateObjectInArray(state.posts, action.postId, "id", {liked: false})
-            }
+            const dislikedPosts = state.posts.map(post => {
+                if (post["id"] === action.postId) {
+                    return {...post, liked: false, countLikes: post.countLikes - 1}
+                }
+                return post;
+            })
+            return {...state, posts: dislikedPosts}
         case SET_POSTS:
             return {...state, posts: [...action.posts]}
         case SET_POST_PROFILE:
@@ -169,6 +175,16 @@ export const getPostsThunkCreator = () => {
         }
     };
 }
+export const getPostsByUserThunkCreator = (userId) => {
+    return async (dispatch) => {
+        dispatch(setIsFetchingActionCreator(true));
+        let response = await postAPI.getPostsByUser(userId);
+        if (response.status === 200) {
+            dispatch(setIsFetchingActionCreator(false));
+            dispatch(setPostsActionCreator(response.data.viewDtoList));
+        }
+    };
+}
 export const getPostsByTagThunkCreator = (tagName) => {
     return async (dispatch) => {
         dispatch(setIsFetchingActionCreator(true));
@@ -206,18 +222,16 @@ export const likeDislikeFlowThunkCreator = async (dispatch, postId, userId, apiM
     }
     dispatch(setIsLikingInProgressActionCreator(false, postId));
 }
-export const likeFlowThunkCreator = (postId) => {
+export const likeFlowThunkCreator = (postId, userId) => {
     return async (dispatch) => {
-        let userId = 13;
         await likeDislikeFlowThunkCreator(dispatch, postId, userId, postAPI.likePost.bind({
             postId: postId,
             userId: userId
         }), likeActionCreator);
     };
 }
-export const dislikeFlowThunkCreator = (postId) => {
+export const dislikeFlowThunkCreator = (postId, userId) => {
     return async (dispatch) => {
-        let userId = 13;
         await likeDislikeFlowThunkCreator(dispatch, postId, userId, postAPI.dislikePost.bind({
             postId: postId,
             userId: userId

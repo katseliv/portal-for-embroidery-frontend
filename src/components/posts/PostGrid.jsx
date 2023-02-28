@@ -49,9 +49,9 @@ const PostGrid = (props) => {
     }
 
     let mappedPosts = props.posts.map(post => <PostItem key={post.id} number={post.id}
-                                                        image={post.designBase64StringImage}
-                                                        title={post.designName} text={post.description}
-                                                        onDeletePost={props.onDeletePost} countLikes={post.countLikes}
+                                                        image={post.designBase64StringImage} title={post.designName}
+                                                        text={post.description} onDeletePost={props.onDeletePost}
+                                                        countLikes={post.countLikes} isAuthenticated={props.isAuthenticated}
                                                         liked={post.liked} like={props.like} dislike={props.dislike}/>);
 
     return (

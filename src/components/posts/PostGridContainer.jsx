@@ -5,7 +5,7 @@ import {
     addPostThunkCreator,
     deletePostThunkCreator,
     dislikeFlowThunkCreator,
-    getPostsByNumberAndSizeThunkCreator, getPostsByTagThunkCreator,
+    getPostsByNumberAndSizeThunkCreator, getPostsByTagThunkCreator, getPostsByUserThunkCreator,
     getPostsThunkCreator,
     likeFlowThunkCreator,
     setCurrentPageActionCreator,
@@ -19,14 +19,24 @@ import {
     getPosts,
     getTotalCountOfPosts
 } from "../../redux/post-selector";
+import {getAuthorizedUserId, getIsAuthenticated} from "../../redux/auth-selector";
 
 class PostGridContainer extends React.Component {
     componentDidMount() {
-        this.props.getPosts();
+        this.refreshPostGrid();
     }
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
         return nextProps !== this.props || nextState !== this.props;
+    }
+
+    refreshPostGrid() {
+        if (this.props.isAuthenticated) {
+            const userId = this.props.authorizedUserId;
+            this.props.getPostsByUser(userId);
+        } else {
+            this.props.getPosts();
+        }
     }
 
     onAddPost = (post) => {
@@ -45,16 +55,20 @@ class PostGridContainer extends React.Component {
         this.props.getPostsByNumberAndSize(pageNumber, this.props.pageSizeOfPosts);
     }
 
+    getPostsByUser = (userId) => {
+        this.props.getPostsByUser(userId);
+    }
+
     getPostsByTag = (tagName) => {
         this.props.getPostsByTag(tagName);
     }
 
     likePost = (postId) => {
-        this.props.likePost(postId);
+        this.props.likePost(postId, this.props.authorizedUserId);
     }
 
     dislikePost = (postId) => {
-        this.props.dislikePost(postId);
+        this.props.dislikePost(postId, this.props.authorizedUserId);
     }
 
     render() {
@@ -64,6 +78,7 @@ class PostGridContainer extends React.Component {
                          totalCount={this.props.totalCountOfPosts}
                          isFetching={this.props.isFetchingOfPosts}
                          isLikingInProgress={this.props.isLikingInProgressOfPost}
+                         isAuthenticated={this.props.isAuthenticated}
                          getPosts={this.getPosts}
                          getPostsByNumber={this.getPostsByNumber}
                          getPostsByTag={this.getPostsByTag}
@@ -82,6 +97,8 @@ let mapStateToProps = (state) => {
         totalCountOfPosts: getTotalCountOfPosts(state),
         isFetchingOfPosts: getIsFetchingOfPosts(state),
         isLikingInProgressOfPost: getIsLikingInProgressOfPosts(state),
+        authorizedUserId: getAuthorizedUserId(state),
+        isAuthenticated: getIsAuthenticated(state),
     }
 }
 
@@ -93,14 +110,17 @@ let mapDispatchToProps = (dispatch) => {
         deletePost: (postId) => {
             dispatch(deletePostThunkCreator(postId));
         },
-        likePost: (postId) => {
-            dispatch(likeFlowThunkCreator(postId));
+        likePost: (postId, userId) => {
+            dispatch(likeFlowThunkCreator(postId, userId));
         },
-        dislikePost: (postId) => {
-            dispatch(dislikeFlowThunkCreator(postId));
+        dislikePost: (postId, userId) => {
+            dispatch(dislikeFlowThunkCreator(postId, userId));
         },
         getPosts: () => {
             dispatch(getPostsThunkCreator());
+        },
+        getPostsByUser: (userId) => {
+            dispatch(getPostsByUserThunkCreator(userId));
         },
         getPostsByTag: (tagName) => {
             dispatch(getPostsByTagThunkCreator(tagName));

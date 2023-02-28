@@ -64,7 +64,7 @@ const PostProfileInfo = (props) => {
                     </div>
                 </div>
             </div>
-            <CommentListContainer postId={props.profile.id} userId={13}/>
+            <CommentListContainer postId={props.profile.id} userId={props.authorizedUserId}/>
         </div>
     );
 }

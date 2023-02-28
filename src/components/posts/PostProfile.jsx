@@ -38,6 +38,7 @@ const PostProfile = (props) => {
                 : createTagsMode
                     ? <TagsCreate onAddTags={onAddTags}/>
                     : <PostProfileInfo profile={props.profile}
+                                       authorizedUserId={props.authorizedUserId}
                                        activateCreateTagsMode={activateCreateTagsMode}
                                        activateEditMode={activateEditMode}/>
             }

@@ -26,13 +26,11 @@ const PostItem = (props) => {
                         </div>
                         <div className="col-4 text-end">
                             {/*disabled={props.isLikingInProgress.some(c => id === c.id)}*/}
-                            {props.liked
-                                ? <img src={heartFill} onClick={() => {
-                                    props.dislike(props.number)
-                                }} alt={"Unlike"}/>
-                                : <img src={heart} onClick={() => {
-                                    props.like(props.number)
-                                }} alt={"Like"}/>}
+                            {props.isAuthenticated
+                                ? props.liked
+                                    ? <img src={heartFill} onClick={() => props.dislike(props.number)} alt={"Unlike"}/>
+                                    : <img src={heart} onClick={() => props.like(props.number)} alt={"Like"}/>
+                                : <img src={heart} alt={"Like"}/>}
                             <span className="px-2" style={textStyle}>{props.countLikes}</span>
                         </div>
                     </div>
