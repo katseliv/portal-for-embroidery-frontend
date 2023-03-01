@@ -13,9 +13,6 @@ const UserItem = (props) => {
             <td>{props.firstName}</td>
             <td>{props.lastName}</td>
             <td>
-                <button className="btn btn-outline-success">Edit</button>
-            </td>
-            <td>
                 <button className="btn btn-outline-danger" onClick={() => props.onDeleteUser(props.number)}>
                     Delete
                 </button>

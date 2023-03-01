@@ -56,9 +56,8 @@ class App extends React.Component {
                 <HeaderContainer/>
                 <Routes>
                     <Route path='/' element={<Home/>}/>
-                    <Route path='/profile' element={<UserProfileContainer/>}>
-                        <Route path=':userId' element={<UserProfileContainer/>}/>
-                    </Route>
+                    <Route path='/profile' element={<UserProfileContainer/>}/>
+                    <Route path='/profile/:userId' element={<UserProfileContainer/>}/>
                     <Route path='/users' element={<UserListContainer/>}/>
                     <Route path='/designs' element={<PostGridContainer/>}/>
                     <Route path='/designs/:postId' element={<PostProfileContainer/>}/>

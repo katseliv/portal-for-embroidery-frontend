@@ -6,6 +6,14 @@ export const getPosts = (state) => {
     return state.postPage.posts.sort((a, b) => a.id > b.id ? 1 : -1);
 };
 
+export const getDesigners = (state) => {
+    return state.postPage.designers.sort((a, b) => a.id > b.id ? 1 : -1);
+};
+
+export const getDesigns = (state) => {
+    return state.postPage.designs.sort((a, b) => a.id > b.id ? 1 : -1);
+};
+
 export const getCurrentPageOfPosts = (state) => {
     return state.postPage.currentPage;
 };

@@ -1,9 +1,14 @@
 import React from "react";
 import {Field, reduxForm} from "redux-form";
-import {MultipleFileInput, TextArea} from "../common/form-control/FormControl";
+import {MultipleFileInput, Select, TextArea} from "../common/form-control/FormControl";
 import {getExtension, getFileName, mapFileToBase64} from "../../utils/file-helpers";
+import Preloader from "../common/Preloader";
 
 const PostProfileCreate = (props) => {
+    if (props.isFetching) {
+        return <Preloader/>;
+    }
+
     const onSubmit = async (formData) => {
         let files = [];
         for (let i = 0; i < formData.files.length; i++) {
@@ -20,11 +25,15 @@ const PostProfileCreate = (props) => {
         props.onAddPost(formData);
     }
 
+    const mappedDesigners = props.designers.map(designer =>
+        <option value={designer.id}>{designer.firstName + " " + designer.lastName}</option>);
+    const mappedDesigns = props.designs.map(design => <option value={design.id}>{design.name}</option>);
+
     return (
         <div className="container p-5 overflow-hidden">
             <h1 className="h3 mb-5 fw-normal text-center">Create New Post</h1>
             <div className="container">
-                <PostProfileCreateReduxForm onSubmit={onSubmit}/>
+                <PostProfileCreateReduxForm designers={mappedDesigners} designs={mappedDesigns} onSubmit={onSubmit}/>
             </div>
         </div>
     );
@@ -33,6 +42,16 @@ const PostProfileCreate = (props) => {
 const PostProfileCreateForm = (props) => {
     return (
         <form onSubmit={props.handleSubmit}>
+            <div className="mb-3">
+                <Field component={Select} name={"designerId"} label={"Select designer"}>
+                    {props.designers}
+                </Field>
+            </div>
+            <div className="mb-3">
+                <Field component={Select} name={"designId"} label={"Select design"}>
+                    {props.designs}
+                </Field>
+            </div>
             <div className="mb-3">
                 <Field component={MultipleFileInput} name={"files"} label={"Select files"}/>
             </div>

@@ -5,7 +5,11 @@ import {
     addPostThunkCreator,
     deletePostThunkCreator,
     dislikeFlowThunkCreator,
-    getPostsByNumberAndSizeThunkCreator, getPostsByTagThunkCreator, getPostsByUserThunkCreator,
+    getDesignersThunkCreator,
+    getDesignsThunkCreator,
+    getPostsByNumberAndSizeThunkCreator,
+    getPostsByTagThunkCreator,
+    getPostsByUserThunkCreator,
     getPostsThunkCreator,
     likeFlowThunkCreator,
     setCurrentPageActionCreator,
@@ -13,6 +17,8 @@ import {
 } from "../../redux/post-reducer";
 import {
     getCurrentPageOfPosts,
+    getDesigners,
+    getDesigns,
     getIsFetchingOfPosts,
     getIsLikingInProgressOfPosts,
     getPageSizeOfPosts,
@@ -63,6 +69,14 @@ class PostGridContainer extends React.Component {
         this.props.getPostsByTag(tagName);
     }
 
+    getDesigners = () => {
+        this.props.getDesigners();
+    }
+
+    getDesigns = () => {
+        this.props.getDesigns();
+    }
+
     likePost = (postId) => {
         this.props.likePost(postId, this.props.authorizedUserId);
     }
@@ -73,6 +87,8 @@ class PostGridContainer extends React.Component {
 
     render() {
         return <PostGrid posts={this.props.posts}
+                         designers={this.props.designers}
+                         designs={this.props.designs}
                          currentPage={this.props.currentPageOfPosts}
                          pageSize={this.props.pageSizeOfPosts}
                          totalCount={this.props.totalCountOfPosts}
@@ -82,6 +98,8 @@ class PostGridContainer extends React.Component {
                          getPosts={this.getPosts}
                          getPostsByNumber={this.getPostsByNumber}
                          getPostsByTag={this.getPostsByTag}
+                         getDesigners={this.getDesigners}
+                         getDesigns={this.getDesigns}
                          onAddPost={this.onAddPost}
                          onDeletePost={this.onDeletePost}
                          like={this.likePost}
@@ -92,6 +110,8 @@ class PostGridContainer extends React.Component {
 let mapStateToProps = (state) => {
     return {
         posts: getPosts(state),
+        designers: getDesigners(state),
+        designs: getDesigns(state),
         currentPageOfPosts: getCurrentPageOfPosts(state),
         pageSizeOfPosts: getPageSizeOfPosts(state),
         totalCountOfPosts: getTotalCountOfPosts(state),
@@ -127,6 +147,12 @@ let mapDispatchToProps = (dispatch) => {
         },
         getPostsByNumberAndSize: (pageNumber, pageSize) => {
             dispatch(getPostsByNumberAndSizeThunkCreator(pageNumber, pageSize));
+        },
+        getDesigners: () => {
+            dispatch(getDesignersThunkCreator());
+        },
+        getDesigns: () => {
+            dispatch(getDesignsThunkCreator());
         },
         setCurrentPage: (pageNumber) => {
             dispatch(setCurrentPageActionCreator(pageNumber));

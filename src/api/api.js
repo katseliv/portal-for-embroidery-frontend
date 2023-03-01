@@ -116,6 +116,12 @@ export const postAPI = {
     getPostsByNumberAndSize(pageNumber, pageSize) {
         return instance.get(`/posts?page=${pageNumber}&size=${pageSize}`);
     },
+    getDesigners() {
+        return instance.get(`/users/designers`);
+    },
+    getDesigns() {
+        return instance.get(`/designs`);
+    },
 }
 
 export const commentAPI = {

@@ -27,7 +27,7 @@ export const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 users: [...state.users, {...action.newUser}]
-            }
+            };
         case UPDATE_USER:
             const base64StringImage = action.newProfile.base64StringImage === ""
                 ? state.profile.base64StringImage
@@ -35,22 +35,22 @@ export const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 profile: {...state.profile, ...action.newProfile, base64StringImage: base64StringImage}
-            }
+            };
         case DELETE_USER:
             return {
                 ...state,
                 users: state.users.filter(c => c.id !== action.userId)
-            }
+            };
         case SET_USERS:
-            return {...state, users: action.users}
+            return {...state, users: action.users};
         case SET_USER_PROFILE:
             return {...state, profile: action.profile};
         case SET_CURRENT_PAGE:
-            return {...state, currentPage: action.currentPage}
+            return {...state, currentPage: action.currentPage};
         case SET_USERS_TOTAL_COUNT:
-            return {...state, totalCount: action.totalCount}
+            return {...state, totalCount: action.totalCount};
         case TOGGLE_IS_FETCHING:
-            return {...state, isFetching: action.isFetching}
+            return {...state, isFetching: action.isFetching};
         default:
             return state;
     }
