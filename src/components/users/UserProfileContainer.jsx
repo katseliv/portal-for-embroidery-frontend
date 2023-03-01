@@ -27,6 +27,8 @@ class UserProfileContainer extends React.Component {
             userId = this.props.authorizedUserId;
             if (!userId) {
                 this.props.navigate("/sign-in");
+            } else {
+                this.props.getUserProfile(userId);
             }
         } else {
             this.props.getUserProfile(userId);
