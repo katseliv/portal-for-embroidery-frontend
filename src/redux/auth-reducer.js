@@ -30,13 +30,15 @@ export const setUserActionCreator = (id, accessToken, isAuthenticated) => ({
 
 export const loginThunkCreator = (email, password) => {
     return async (dispatch) => {
-        let response = await authAPI.login(email, password);
-
-        if (response.status === 200) {
-            dispatch(setUserActionCreator(response.data.id, response.data.accessToken, true));
-            dispatch(getUserProfileThunkCreator(response.data.id));
-        } else {
-            let message = response.data.messages.length > 0 ? response.data.messages[0] : "Some error...";
+        try {
+            const response = await authAPI.login(email, password);
+            if (response.status === 200) {
+                dispatch(setUserActionCreator(response.data.id, response.data.accessToken, true));
+                dispatch(getUserProfileThunkCreator(response.data.id));
+            }
+        } catch (error) {
+            const messages = error.response.data.messages;
+            let message = messages.length > 0 ? messages[0] : "Some error occurred...";
             dispatch(stopSubmit("loginForm", {_error: message}))
             return Promise.reject(message);
         }
@@ -45,7 +47,6 @@ export const loginThunkCreator = (email, password) => {
 export const logoutThunkCreator = () => {
     return async (dispatch) => {
         let response = await authAPI.logout();
-
         if (response.status === 200) {
             dispatch(setUserActionCreator(null, null, false));
         }

@@ -1,7 +1,9 @@
 import React from 'react';
 import {Field, reduxForm} from "redux-form";
 import {Input} from "../common/form-control/FormControl";
-import {maxLengthCreator, requiredField} from "../../utils/validators/validators";
+import {mustBeEmail, requiredField} from "../../utils/validators/validators";
+
+const errorStyle = {color: "#dc3545"};
 
 const Login = (props) => {
     return (
@@ -15,17 +17,15 @@ const Login = (props) => {
 }
 
 let LoginForm = ({handleSubmit, error}) => {
-    const maxLength10 = maxLengthCreator(10);
     return (
         <form onSubmit={handleSubmit}>
             <div className="mb-3">
-                <Field component={Input} name={"email"} label={"Email"} autoComplete="email"/>
+                <Field component={Input} name={"email"} label={"Email"} validate={[requiredField, mustBeEmail]} autoComplete="email"/>
             </div>
             <div className="mb-3">
-                <Field component={Input} name={"password"} label={"Password"} validate={[requiredField, maxLength10]}
-                       autoComplete="current-password" type="password"/>
+                <Field component={Input} name={"password"} label={"Password"} validate={[requiredField]} autoComplete="current-password" type="password"/>
             </div>
-            {error && <div>{error}</div>}
+            {error && <div className="mb-3" style={errorStyle}>{error}</div>}
             <button className="btn btn-lg btn-outline-success w-100 mt-2">Submit</button>
         </form>
     );
