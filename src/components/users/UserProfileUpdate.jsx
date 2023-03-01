@@ -3,6 +3,15 @@ import {Field, reduxForm} from "redux-form";
 import Preloader from "../common/Preloader";
 import {FileInput, Input} from "../common/form-control/FormControl";
 import {mapFileToBase64} from "../../utils/file-helpers";
+import {
+    mustBeEmail,
+    mustContainLetter, mustNotBeOutOfRange,
+    mustNotContainLetter,
+    mustNotContainNumber,
+    requiredField
+} from "../../utils/validators/validators";
+
+const errorStyle = {color: "#dc3545"};
 
 const UserProfileUpdate = (props) => {
     if (!props.profile) {
@@ -25,33 +34,32 @@ const UserProfileUpdate = (props) => {
     );
 }
 
-const UserProfileUpdateForm = ({handleSubmit}) => {
+const UserProfileUpdateForm = ({handleSubmit, error}) => {
     return (
         <form onSubmit={handleSubmit}>
             <div className="mb-3">
-                <Field component={Input} name={"username"} label={"Username"}/>
-                <div className="invalid-feedback"></div>
+                <Field component={Input} name={"username"} label={"Username"}
+                       validate={[requiredField, mustContainLetter]}/>
             </div>
             <div className="mb-3">
-                <Field component={Input} name={"firstName"} label={"First Name"}/>
-                <div className="invalid-feedback"></div>
+                <Field component={Input} name={"firstName"} label={"First Name"}
+                       validate={[requiredField, mustNotContainNumber]}/>
             </div>
             <div className="mb-3">
-                <Field component={Input} name={"lastName"} label={"Last Name"}/>
-                <div className="invalid-feedback"></div>
+                <Field component={Input} name={"lastName"} label={"Last Name"}
+                       validate={[requiredField, mustNotContainNumber]}/>
             </div>
             <div className="mb-3">
                 <Field component={FileInput} name={"image"} label={"Image"} type="file"/>
-                <div className="invalid-feedback"></div>
             </div>
             <div className="mb-3">
-                <Field component={Input} name={"email"} label={"Email"}/>
-                <div className="invalid-feedback"></div>
+                <Field component={Input} name={"email"} label={"Email"} validate={[requiredField, mustBeEmail]}/>
             </div>
             <div className="mb-3">
-                <Field component={Input} name={"phoneNumber"} label={"Phone Number"}/>
-                <div className="invalid-feedback"></div>
+                <Field component={Input} name={"phoneNumber"} label={"Phone Number"}
+                       validate={[requiredField, mustNotContainLetter, mustNotBeOutOfRange]}/>
             </div>
+            {error && <div className="mb-3" style={errorStyle}>{error}</div>}
             <button className="btn btn-lg btn-outline-success w-100 mt-2">Edit</button>
         </form>
     );

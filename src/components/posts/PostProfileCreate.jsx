@@ -4,6 +4,8 @@ import {MultipleFileInput, Select, TextArea} from "../common/form-control/FormCo
 import {getExtension, getFileName, mapFileToBase64} from "../../utils/file-helpers";
 import Preloader from "../common/Preloader";
 
+const errorStyle = {color: "#dc3545"};
+
 const PostProfileCreate = (props) => {
     if (props.isFetching) {
         return <Preloader/>;
@@ -39,17 +41,17 @@ const PostProfileCreate = (props) => {
     );
 }
 
-const PostProfileCreateForm = (props) => {
+const PostProfileCreateForm = ({designers, designs, handleSubmit, error}) => {
     return (
-        <form onSubmit={props.handleSubmit}>
+        <form onSubmit={handleSubmit}>
             <div className="mb-3">
                 <Field component={Select} name={"designerId"} label={"Select designer"}>
-                    {props.designers}
+                    {designers}
                 </Field>
             </div>
             <div className="mb-3">
                 <Field component={Select} name={"designId"} label={"Select design"}>
-                    {props.designs}
+                    {designs}
                 </Field>
             </div>
             <div className="mb-3">
@@ -58,6 +60,7 @@ const PostProfileCreateForm = (props) => {
             <div className="mb-3">
                 <Field component={TextArea} name={"description"} label={"Description"}/>
             </div>
+            {error && <div className="mb-3" style={errorStyle}>{error}</div>}
             <button className="btn btn-lg btn-outline-success w-100 mt-2" type="submit">Create</button>
         </form>
     );

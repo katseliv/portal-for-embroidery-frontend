@@ -37,10 +37,10 @@ const CommentList = (props) => {
 }
 
 const CommentForm = (props) => {
-    const maxLength100 = maxLengthCreator(100);
+    const maxLength500 = maxLengthCreator(500);
     return (
         <form onSubmit={props.handleSubmit}>
-            <Field component={TextArea} name={"text"} validate={[requiredField, maxLength100]}
+            <Field component={TextArea} name={"text"} validate={[requiredField, maxLength500]}
                    placeholder="Please, write a comment ..."/>
             <div className="py-4 d-md-flex justify-content-md-end">
                 <button className="btn btn-success mb-3">Send</button>

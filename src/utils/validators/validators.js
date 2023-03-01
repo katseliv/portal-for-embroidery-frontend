@@ -27,15 +27,16 @@ export const mustNotBeOutOfRange = (value) => {
     return "Field mustn't be out of range!";
 }
 
-export const numberMustBePositive = (value) => {
-    if (value >= 0) return undefined;
-    return "Field must be a positive number!";
-}
-
 export const mustBeEmail = (value) => {
     const regex = new RegExp("^[\\w-\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
     if (regex.test(value)) return undefined;
     return "Field must be an email!";
+}
+
+export const mustBePassword = (value) => {
+    const regex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,30}$");
+    if (regex.test(value)) return undefined;
+    return "Password must contain one uppercase and lowercase letter, one number and one special character!";
 }
 
 export const maxLengthCreator = (maxLength) => (value) => {

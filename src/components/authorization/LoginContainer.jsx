@@ -1,9 +1,10 @@
 import React from 'react';
+import Login from "./Login";
 import {connect} from "react-redux";
 import {compose} from "redux";
-import Login from "./Login";
-import {loginThunkCreator} from "../../redux/auth-reducer";
 import {Navigate} from "react-router-dom";
+import {loginThunkCreator} from "../../redux/auth-reducer";
+import {getIsAuthenticated} from "../../redux/auth-selector";
 
 class LoginContainer extends React.Component {
     login = (values) => {
@@ -20,7 +21,7 @@ class LoginContainer extends React.Component {
 
 let mapStateToProps = (state) => {
     return {
-        isAuthenticated: state.authPage.isAuthenticated,
+        isAuthenticated: getIsAuthenticated(state),
     }
 }
 let mapDispatchToProps = (dispatch) => {

@@ -1,5 +1,5 @@
 import {fileAPI} from "../api/api";
-import {reset} from "redux-form";
+import {reset, stopSubmit} from "redux-form";
 import {updateObjectInArray} from "../utils/object-helpers";
 
 const ADD_FILE = '/file/ADD-FILE';
@@ -78,14 +78,21 @@ export const setIsFetchingActionCreator = (isFetching) => ({
 
 export const addFileThunkCreator = (file) => {
     return async (dispatch) => {
-        let responseCreateFile = await fileAPI.createFile(file);
-        if (responseCreateFile.status === 201) {
-            let newFileId = responseCreateFile.data;
-            let responseGetFile = await fileAPI.getFile(newFileId);
-            if (responseGetFile.status === 200) {
-                dispatch(addFileActionCreator(responseGetFile.data));
-                dispatch(reset('fileForm'));
+        try {
+            let responseCreateFile = await fileAPI.createFile(file);
+            if (responseCreateFile.status === 201) {
+                let newFileId = responseCreateFile.data;
+                let responseGetFile = await fileAPI.getFile(newFileId);
+                if (responseGetFile.status === 200) {
+                    dispatch(addFileActionCreator(responseGetFile.data));
+                    dispatch(reset("fileCreateForm"));
+                }
             }
+        } catch (error) {
+            const messages = error.response.data.messages;
+            let message = messages.length > 0 ? messages[0] : "Some error occurred...";
+            dispatch(stopSubmit("fileCreateForm", {_error: message}))
+            return Promise.reject(message);
         }
     };
 }

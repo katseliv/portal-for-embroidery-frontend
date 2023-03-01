@@ -137,36 +137,51 @@ export const setIsLikingInProgressActionCreator = (isFetching, id) => ({
 
 export const addPostThunkCreator = (post) => {
     return async (dispatch) => {
-        let responseCreatePost = await postAPI.createPost(post);
-        if (responseCreatePost.status === 201) {
-            let newPostId = responseCreatePost.data;
-            let responseGetPost = await postAPI.getPost(newPostId);
-            if (responseGetPost.status === 200) {
-                dispatch(addPostActionCreator(responseGetPost.data));
-                dispatch(reset('postForm'));
+        try {
+            let responseCreatePost = await postAPI.createPost(post);
+            if (responseCreatePost.status === 201) {
+                let newPostId = responseCreatePost.data;
+                let responseGetPost = await postAPI.getPost(newPostId);
+                if (responseGetPost.status === 200) {
+                    dispatch(addPostActionCreator(responseGetPost.data));
+                    dispatch(reset("postProfileCreateForm"));
+                }
             }
+        } catch (error) {
+            const messages = error.response.data.messages;
+            let message = messages.length > 0 ? messages[0] : "Some error occurred...";
+            dispatch(stopSubmit("postProfileCreateForm", {_error: message}))
+            return Promise.reject(message);
         }
     };
 }
 export const updatePostThunkCreator = (postId, description) => {
     return async (dispatch) => {
-        let response = await postAPI.updatePost(postId, description);
-        if (response.status === 200) {
-            dispatch(updatePostActionCreator(postId, description));
-        } else {
-            let message = response.data.messages.length > 0 ? response.data.messages[0] : "Some error...";
-            dispatch(stopSubmit("postProfileUpdateForm", {_error: message}));
+        try {
+            let response = await postAPI.updatePost(postId, description);
+            if (response.status === 200) {
+                dispatch(updatePostActionCreator(postId, description));
+            }
+        } catch (error) {
+            const messages = error.response.data.messages;
+            let message = messages.length > 0 ? messages[0] : "Some error occurred...";
+            dispatch(stopSubmit("postProfileUpdateForm", {_error: message}))
+            return Promise.reject(message);
         }
     };
 }
 export const updatePostByTagsThunkCreator = (postId, tags) => {
     return async (dispatch) => {
-        let response = await postAPI.updatePostByTags(postId, tags);
-        if (response.status === 200) {
-            dispatch(updatePostByTagsActionCreator(postId, tags));
-        } else {
-            let message = response.data.messages.length > 0 ? response.data.messages[0] : "Some error...";
-            dispatch(stopSubmit("tagsCreateForm", {_error: message}));
+        try {
+            let response = await postAPI.updatePostByTags(postId, tags);
+            if (response.status === 200) {
+                dispatch(updatePostByTagsActionCreator(postId, tags));
+            }
+        } catch (error) {
+            const messages = error.response.data.messages;
+            let message = messages.length > 0 ? messages[0] : "Some error occurred...";
+            dispatch(stopSubmit("tagsCreateForm", {_error: message}))
+            return Promise.reject(message);
         }
     };
 }

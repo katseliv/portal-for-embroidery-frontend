@@ -2,6 +2,8 @@ import React from "react";
 import {FieldArray, reduxForm} from "redux-form";
 import {TagsInput} from "../../common/form-control/FormControl";
 
+const errorStyle = {color: "#dc3545"};
+
 const TagsCreate = (props) => {
     const onSubmit = async (formData) => {
         props.onAddTags(formData.tags);
@@ -17,10 +19,11 @@ const TagsCreate = (props) => {
     );
 }
 
-const TagsCreateForm = (props) => {
+const TagsCreateForm = ({handleSubmit, error}) => {
     return (
-        <form onSubmit={props.handleSubmit}>
+        <form onSubmit={handleSubmit}>
             <FieldArray component={TagsInput} name="tags"/>
+            {error && <div className="mb-3" style={errorStyle}>{error}</div>}
             <button className="btn btn-lg btn-outline-success w-100 mt-2" type="submit">Add Tags</button>
         </form>
     );

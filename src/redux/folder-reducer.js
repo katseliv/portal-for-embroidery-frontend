@@ -1,5 +1,4 @@
 import {folderAPI} from "../api/api";
-import {reset} from "redux-form";
 import {updateObjectInArray} from "../utils/object-helpers";
 
 const ADD_FOLDER = '/folder/ADD-FOLDER';
@@ -94,7 +93,6 @@ export const addFolderThunkCreator = (folder) => {
             let responseGetFolder = await folderAPI.getFolder(newFolderId);
             if (responseGetFolder.status === 200) {
                 dispatch(addFolderActionCreator(responseGetFolder.data));
-                dispatch(reset('folderForm'));
             }
         }
     };

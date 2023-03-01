@@ -3,6 +3,8 @@ import {Field, reduxForm} from "redux-form";
 import {FileInput} from "../../common/form-control/FormControl";
 import {getExtension, getFileName, mapFileToBase64} from "../../../utils/file-helpers";
 
+const errorStyle = {color: "#dc3545"};
+
 const FileCreate = (props) => {
     const onSubmit = async (formData) => {
         let currentFolderId = props.currentFolder ? props.currentFolder.id : null;
@@ -26,12 +28,13 @@ const FileCreate = (props) => {
     );
 }
 
-const FileCreateForm = (props) => {
+const FileCreateForm = ({handleSubmit, error}) => {
     return (
-        <form className="py-3" onSubmit={props.handleSubmit}>
+        <form className="py-3" onSubmit={handleSubmit}>
             <div className="mb-3">
                 <Field component={FileInput} name={"files"} label={"Select file"}/>
             </div>
+            {error && <div className="mb-3" style={errorStyle}>{error}</div>}
             <button className="btn btn-lg btn-outline-success w-100 mt-2" type="submit">Create</button>
         </form>
     );

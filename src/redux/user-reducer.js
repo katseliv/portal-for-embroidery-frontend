@@ -81,39 +81,57 @@ export const setIsFetchingActionCreator = (isFetching) => ({
 
 export const registerUserThunkCreator = (user) => {
     return async (dispatch) => {
-        let responseCreateUser = await userAPI.registerUser(user);
-        if (responseCreateUser.status === 201) {
-            let newUserId = responseCreateUser.data;
-            let responseGetUser = await userAPI.getUser(newUserId);
-            if (responseGetUser.status === 200) {
-                dispatch(loginThunkCreator(user.email, user.password));
-                dispatch(addUserActionCreator(responseGetUser.data));
-                dispatch(reset('registrationForm'));
+        try {
+            let responseCreateUser = await userAPI.registerUser(user);
+            if (responseCreateUser.status === 201) {
+                let newUserId = responseCreateUser.data;
+                let responseGetUser = await userAPI.getUser(newUserId);
+                if (responseGetUser.status === 200) {
+                    dispatch(loginThunkCreator(user.email, user.password));
+                    dispatch(addUserActionCreator(responseGetUser.data));
+                    dispatch(reset("registrationForm"));
+                }
             }
+        } catch (error) {
+            const messages = error.response.data.messages;
+            let message = messages.length > 0 ? messages[0] : "Some error occurred...";
+            dispatch(stopSubmit("registrationForm", {_error: message}))
+            return Promise.reject(message);
         }
     };
 }
 export const addUserThunkCreator = (user) => {
     return async (dispatch) => {
-        let responseCreateUser = await userAPI.createUser(user);
-        if (responseCreateUser.status === 201) {
-            let newUserId = responseCreateUser.data;
-            let responseGetUser = await userAPI.getUser(newUserId);
-            if (responseGetUser.status === 200) {
-                dispatch(addUserActionCreator(responseGetUser.data));
-                dispatch(reset('userForm'));
+        try {
+            let responseCreateUser = await userAPI.createUser(user);
+            if (responseCreateUser.status === 201) {
+                let newUserId = responseCreateUser.data;
+                let responseGetUser = await userAPI.getUser(newUserId);
+                if (responseGetUser.status === 200) {
+                    dispatch(addUserActionCreator(responseGetUser.data));
+                    dispatch(reset("userProfileCreateForm"));
+                }
             }
+        } catch (error) {
+            const messages = error.response.data.messages;
+            let message = messages.length > 0 ? messages[0] : "Some error occurred...";
+            dispatch(stopSubmit("userProfileCreateForm", {_error: message}))
+            return Promise.reject(message);
         }
     };
 }
 export const updateUserThunkCreator = (userId, newProfile) => {
     return async (dispatch) => {
-        let response = await userAPI.updateUser(userId, newProfile);
-        if (response.status === 200) {
-            dispatch(updateUserActionCreator(userId, newProfile));
-        } else {
-            let message = response.data.messages.length > 0 ? response.data.messages[0] : "Some error...";
-            dispatch(stopSubmit("userProfileUpdateForm", {_error: message}));
+        try {
+            let response = await userAPI.updateUser(userId, newProfile);
+            if (response.status === 200) {
+                dispatch(updateUserActionCreator(userId, newProfile));
+            }
+        } catch (error) {
+            const messages = error.response.data.messages;
+            let message = messages.length > 0 ? messages[0] : "Some error occurred...";
+            dispatch(stopSubmit("userProfileUpdateForm", {_error: message}))
+            return Promise.reject(message);
         }
     };
 }

@@ -1,4 +1,4 @@
-import {reset} from "redux-form";
+import {reset, stopSubmit} from "redux-form";
 import {commentAPI} from "../api/api";
 import {updateObjectInArray} from "../utils/object-helpers";
 
@@ -68,14 +68,21 @@ export const setIsFetchingActionCreator = (isFetching) => ({
 
 export const addCommentThunkCreator = (postId, userId, text) => {
     return async (dispatch) => {
-        let responseCreateComment = await commentAPI.createComment(postId, userId, text);
-        if (responseCreateComment.status === 201) {
-            let newCommentId = responseCreateComment.data;
-            let responseGetComment = await commentAPI.getComment(newCommentId);
-            if (responseGetComment.status === 200) {
-                dispatch(addCommentActionCreator(responseGetComment.data));
-                dispatch(reset('commentForm'));
+        try {
+            let responseCreateComment = await commentAPI.createComment(postId, userId, text);
+            if (responseCreateComment.status === 201) {
+                let newCommentId = responseCreateComment.data;
+                let responseGetComment = await commentAPI.getComment(newCommentId);
+                if (responseGetComment.status === 200) {
+                    dispatch(addCommentActionCreator(responseGetComment.data));
+                    dispatch(reset("commentForm"));
+                }
             }
+        } catch (error) {
+            const messages = error.response.data.messages;
+            let message = messages.length > 0 ? messages[0] : "Some error occurred...";
+            dispatch(stopSubmit("commentForm", {_error: message}))
+            return Promise.reject(message);
         }
     };
 }

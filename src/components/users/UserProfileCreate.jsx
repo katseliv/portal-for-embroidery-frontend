@@ -1,6 +1,15 @@
 import React from "react";
 import {Field, reduxForm} from "redux-form";
 import {Input, Select} from "../common/form-control/FormControl";
+import {
+    mustBeEmail, mustBePassword,
+    mustContainLetter, mustNotBeOutOfRange,
+    mustNotContainLetter,
+    mustNotContainNumber,
+    requiredField
+} from "../../utils/validators/validators";
+
+const errorStyle = {color: "#dc3545"};
 
 const UserProfileCreate = (props) => {
     const onSubmit = (formData) => {
@@ -17,23 +26,27 @@ const UserProfileCreate = (props) => {
     );
 }
 
-const UserProfileCreateForm = ({handleSubmit}) => {
+const UserProfileCreateForm = ({handleSubmit, error}) => {
     return (
         <form onSubmit={handleSubmit}>
             <div className="mb-3">
-                <Field component={Input} name={"username"} label={"Username"}/>
+                <Field component={Input} name={"username"} label={"Username"}
+                       validate={[requiredField, mustContainLetter]}/>
             </div>
             <div className="mb-3">
-                <Field component={Input} name={"firstName"} label={"First Name"}/>
+                <Field component={Input} name={"firstName"} label={"First Name"}
+                       validate={[requiredField, mustNotContainNumber]}/>
             </div>
             <div className="mb-3">
-                <Field component={Input} name={"lastName"} label={"Last Name"}/>
+                <Field component={Input} name={"lastName"} label={"Last Name"}
+                       validate={[requiredField, mustNotContainNumber]}/>
             </div>
             <div className="mb-3">
-                <Field component={Input} name={"email"} label={"Email"}/>
+                <Field component={Input} name={"email"} label={"Email"} validate={[requiredField, mustBeEmail]}/>
             </div>
             <div className="mb-3">
-                <Field component={Input} name={"phoneNumber"} label={"Phone Number"}/>
+                <Field component={Input} name={"phoneNumber"} label={"Phone Number"}
+                       validate={[requiredField, mustNotContainLetter, mustNotBeOutOfRange]}/>
             </div>
             <div className="mb-3">
                 <Field component={Select} name={"roleId"} label={"Role"}>
@@ -43,11 +56,14 @@ const UserProfileCreateForm = ({handleSubmit}) => {
                 </Field>
             </div>
             <div className="mb-3">
-                <Field component={Input} name={"password"} label={"Password"} type={"password"}/>
+                <Field component={Input} name={"password"} label={"Password"} validate={[requiredField, mustBePassword]}
+                       type={"password"}/>
             </div>
             <div className="mb-3">
-                <Field component={Input} name={"passwordConfirmation"} label={"Password Confirmation"} type={"password"}/>
+                <Field component={Input} name={"passwordConfirmation"} label={"Password Confirmation"}
+                       validate={[requiredField, mustBePassword]} type={"password"}/>
             </div>
+            {error && <div className="mb-3" style={errorStyle}>{error}</div>}
             <button className="btn btn-lg btn-outline-success w-100 mt-2">Submit</button>
         </form>
     );
