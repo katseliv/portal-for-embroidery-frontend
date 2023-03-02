@@ -7,6 +7,9 @@ const Header = (props) => {
         <div className="container">
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <div className="container-fluid">
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false">
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
                     <NavLink className="navbar-brand" to="/">Portal for Embroidery</NavLink>
                     <NavLink className="navbar-brand" to="/">
                         <img className="align-content-center" src={postageHeart} height="25" width="25" alt=""/>
@@ -43,12 +46,12 @@ const Header = (props) => {
                         </ul>
                         {props.isAuthenticated
                             ? <button className="btn btn-outline-danger" onClick={() => props.logout()}>Sign Out</button>
-                            : <>
+                            : <div className="d-flex">
                                 <NavLink className="link-secondary nav-link" to="/sign-up">Sign Up</NavLink>
-                                <form className="d-flex" action="/sign-in">
+                                <form action="/sign-in">
                                     <button className="btn btn-outline-success" type="submit">Sign In</button>
                                 </form>
-                            </>
+                            </div>
                         }
                     </div>
                 </div>

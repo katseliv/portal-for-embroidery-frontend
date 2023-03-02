@@ -26,6 +26,7 @@ import {
     getTotalCountOfPosts
 } from "../../redux/post-selector";
 import {getAuthorizedUserId, getIsAuthenticated} from "../../redux/auth-selector";
+import {getUserProfile} from "../../redux/user-selector";
 
 class PostGridContainer extends React.Component {
     componentDidMount() {
@@ -57,16 +58,20 @@ class PostGridContainer extends React.Component {
         this.props.getPosts();
     }
 
-    getPostsByNumber = (pageNumber) => {
-        this.props.getPostsByNumberAndSize(pageNumber, this.props.pageSizeOfPosts);
-    }
-
     getPostsByUser = (userId) => {
         this.props.getPostsByUser(userId);
     }
 
     getPostsByTag = (tagName) => {
         this.props.getPostsByTag(tagName);
+    }
+
+    getPostsByNumberAndSize = () => {
+        this.props.getPostsByNumberAndSize(this.props.currentPageOfPosts, this.props.pageSizeOfPosts);
+    }
+
+    setCurrentPage = (pageNumber) => {
+        this.props.setCurrentPage(pageNumber);
     }
 
     getDesigners = () => {
@@ -86,7 +91,8 @@ class PostGridContainer extends React.Component {
     }
 
     render() {
-        return <PostGrid posts={this.props.posts}
+        return <PostGrid profile={this.props.profile}
+                         posts={this.props.posts}
                          designers={this.props.designers}
                          designs={this.props.designs}
                          currentPage={this.props.currentPageOfPosts}
@@ -96,8 +102,9 @@ class PostGridContainer extends React.Component {
                          isLikingInProgress={this.props.isLikingInProgressOfPost}
                          isAuthenticated={this.props.isAuthenticated}
                          getPosts={this.getPosts}
-                         getPostsByNumber={this.getPostsByNumber}
                          getPostsByTag={this.getPostsByTag}
+                         getPostsByNumberAndSize={this.getPostsByNumberAndSize}
+                         setCurrentPage={this.setCurrentPage}
                          getDesigners={this.getDesigners}
                          getDesigns={this.getDesigns}
                          onAddPost={this.onAddPost}
@@ -117,6 +124,7 @@ let mapStateToProps = (state) => {
         totalCountOfPosts: getTotalCountOfPosts(state),
         isFetchingOfPosts: getIsFetchingOfPosts(state),
         isLikingInProgressOfPost: getIsLikingInProgressOfPosts(state),
+        profile: getUserProfile(state),
         authorizedUserId: getAuthorizedUserId(state),
         isAuthenticated: getIsAuthenticated(state),
     }

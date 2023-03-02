@@ -101,9 +101,11 @@ const PostGrid = (props) => {
                         <button className="btn btn-lg btn-outline-secondary w-25 mx-1" onClick={onGetPosts}>
                             Back
                         </button>
-                        <button className="btn btn-lg btn-outline-success w-25 mx-1" onClick={activateCreateMode}>
-                            Create New Post
-                        </button>
+                        {props.isAuthenticated && props.profile && (props.profile.role === "ADMIN" || props.profile.role === "DESIGNER") &&
+                            <button className="btn btn-lg btn-outline-success w-25 mx-1" onClick={activateCreateMode}>
+                                Create New Post
+                            </button>
+                        }
                     </div>
                 </div>
             }

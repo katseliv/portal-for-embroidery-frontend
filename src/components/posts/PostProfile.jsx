@@ -38,7 +38,10 @@ const PostProfile = (props) => {
                 : createTagsMode
                     ? <TagsCreate onAddTags={onAddTags}/>
                     : <PostProfileInfo profile={props.profile}
+                                       userProfile={props.userProfile}
                                        authorizedUserId={props.authorizedUserId}
+                                       isAuthenticated={props.isAuthenticated}
+                                       navigate={props.navigate}
                                        activateCreateTagsMode={activateCreateTagsMode}
                                        activateEditMode={activateEditMode}/>
             }

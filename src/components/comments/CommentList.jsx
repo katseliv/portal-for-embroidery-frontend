@@ -11,6 +11,7 @@ const CommentList = (props) => {
         .map(comment => <CommentItem key={comment.id} number={comment.id}
                                      author={comment.userFirstName + " " + comment.userLastName}
                                      text={comment.text} date={comment.creationDatetime}
+                                     isAuthenticated={props.isAuthenticated}
                                      onUpdateComment={props.onUpdateComment}
                                      onDeleteComment={props.onDeleteComment}/>);
 

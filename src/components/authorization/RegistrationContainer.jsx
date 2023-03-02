@@ -2,8 +2,7 @@ import React from 'react';
 import {connect} from "react-redux";
 import Registration from "./Registration";
 import {Navigate} from "react-router-dom";
-import {getUserProfile} from "../../redux/user-selector";
-import {getAuthorizedUserId, getIsAuthenticated} from "../../redux/auth-selector";
+import {getIsAuthenticated} from "../../redux/auth-selector";
 import {registerUserThunkCreator} from "../../redux/user-reducer";
 
 class RegistrationContainer extends React.Component {
@@ -21,8 +20,6 @@ class RegistrationContainer extends React.Component {
 
 let mapStateToProps = (state) => {
     return {
-        profile: getUserProfile(state),
-        authorizedUserId: getAuthorizedUserId(state),
         isAuthenticated: getIsAuthenticated(state)
     }
 }

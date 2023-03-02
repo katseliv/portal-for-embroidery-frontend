@@ -11,9 +11,7 @@ const PostProfileInfo = (props) => {
 
     let mappedFiles = props.profile.files.map(file =>
         <a className="link-success px-1" href="javascript: undefined;"
-           onClick={() => {
-               saveByteArray(file.name, file.extension, base64ToArrayBuffer(file.base64StringFile))
-           }}>
+           onClick={() => saveByteArray(file.name, file.extension, base64ToArrayBuffer(file.base64StringFile))}>
             {file.name + "." + file.extension}
         </a>);
     let mappedTags = props.profile.tags.map(tag =>
@@ -50,16 +48,19 @@ const PostProfileInfo = (props) => {
                             <h6 className="h5 mb-3 fw-normal text-right">
                                 Tags: {mappedTags}
                             </h6>
-                            <div className="btn-group mt-2 w-100" role="group">
-                                <button className="btn btn-lg btn-outline-success"
-                                        onClick={props.activateCreateTagsMode}>
-                                    Add Tags
+                            {props.isAuthenticated && props.userProfile && (props.userProfile.role === "ADMIN" || props.userProfile.role === "DESIGNER")
+                                ? <div className="btn-group mt-2 w-100" role="group">
+                                    <button className="btn btn-lg btn-outline-success" onClick={props.activateCreateTagsMode}>
+                                        Add Tags
+                                    </button>
+                                    <button className="btn btn-lg btn-outline-success" onClick={props.activateEditMode}>
+                                        Edit
+                                    </button>
+                                </div>
+                                : <button className="btn btn-lg btn-outline-secondary w-100" onClick={() => props.navigate("/designs")}>
+                                    Back
                                 </button>
-                                <button className="btn btn-lg btn-outline-success"
-                                        onClick={props.activateEditMode}>
-                                    Edit
-                                </button>
-                            </div>
+                            }
                         </div>
                     </div>
                 </div>
