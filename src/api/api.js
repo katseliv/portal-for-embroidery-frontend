@@ -155,6 +155,9 @@ export const authAPI = {
     login(email, password) {
         return instance.post(`/accessToken`, {email, password});
     },
+    getNewAccessToken(refreshToken) {
+        return instance.post(`/newAccessToken`, {refreshToken});
+    },
     logout() {
         return instance.post(`/logout`);
     },

@@ -6,8 +6,12 @@ import {logoutThunkCreator} from "../../redux/auth-reducer";
 import {getIsAuthenticated} from "../../redux/auth-selector";
 
 class HeaderContainer extends React.Component {
+    logout = () => {
+        this.props.logout();
+    }
+
     render() {
-        return (<Header {...this.props}/>);
+        return (<Header {...this.props} logout={this.logout}/>);
     }
 }
 

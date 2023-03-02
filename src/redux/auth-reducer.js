@@ -1,12 +1,14 @@
 import {authAPI} from "../api/api";
 import {stopSubmit} from "redux-form";
 import {getUserProfileThunkCreator} from "./user-reducer";
+import {clearLocalStorage, setAuthDataToLocalStorage} from "../utils/local-storage-helpers";
 
 const SET_USER_DATA = "/auth/SET-USER";
 
 let initialState = {
     id: null,
     accessToken: null,
+    refreshToken: null,
     isAuthenticated: false
 }
 
@@ -17,6 +19,7 @@ export const authReducer = (state = initialState, action) => {
                 ...state,
                 id: action.id,
                 accessToken: action.accessToken,
+                refreshToken: action.refreshToken,
                 isAuthenticated: action.isAuthenticated
             };
         default:
@@ -24,8 +27,8 @@ export const authReducer = (state = initialState, action) => {
     }
 }
 
-export const setUserActionCreator = (id, accessToken, isAuthenticated) => ({
-    type: SET_USER_DATA, id: id, accessToken: accessToken, isAuthenticated: isAuthenticated
+export const setUserActionCreator = (id, accessToken, refreshToken, isAuthenticated) => ({
+    type: SET_USER_DATA, id: id, accessToken: accessToken, refreshToken: refreshToken, isAuthenticated: isAuthenticated
 });
 
 export const loginThunkCreator = (email, password) => {
@@ -33,8 +36,9 @@ export const loginThunkCreator = (email, password) => {
         try {
             const response = await authAPI.login(email, password);
             if (response.status === 200) {
-                dispatch(setUserActionCreator(response.data.id, response.data.accessToken, true));
+                dispatch(setUserActionCreator(response.data.id, response.data.accessToken, response.data.refreshToken, true));
                 dispatch(getUserProfileThunkCreator(response.data.id));
+                dispatch(setAuthDataToLocalStorage(response.data));
             }
         } catch (error) {
             const messages = error.response.data.messages;
@@ -48,7 +52,8 @@ export const logoutThunkCreator = () => {
     return async (dispatch) => {
         let response = await authAPI.logout();
         if (response.status === 200) {
-            dispatch(setUserActionCreator(null, null, false));
+            dispatch(setUserActionCreator(null, null, null, false));
+            dispatch(clearLocalStorage());
         }
     };
 }

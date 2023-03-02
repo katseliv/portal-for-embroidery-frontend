@@ -84,8 +84,8 @@ let mapStateToProps = (state) => {
 
 let mapDispatchToProps = (dispatch) => {
     return {
-        initializeApp: (userId) => {
-            dispatch(initializeAppThunkCreator(userId));
+        initializeApp: () => {
+            dispatch(initializeAppThunkCreator());
         },
         getUser: (userId) => {
             dispatch(getUserProfileThunkCreator(userId));

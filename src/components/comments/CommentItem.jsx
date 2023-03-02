@@ -38,13 +38,12 @@ const CommentItem = (props) => {
                     <i className="rounded me-2 bi-person-fill align-content-center" style={iStyle}></i>
                     <strong className="me-auto">{props.author}</strong>
                     <small>{props.date}</small>
-                    <button className="btn-close" aria-label="Закрыть" onClick={() => {props.onDeleteComment(props.number);}}/>
+                    <button className="btn-close" aria-label="Закрыть" onClick={() => props.onDeleteComment(props.number)}/>
                 </div>
                 <div className="toast-body">
                     {!editMode
                         ? <span onDoubleClick={activateEditMode}>{text || "No comment..."}</span>
-                        : <input className="form-control" autoFocus={true} onChange={onTextChange}
-                                 onBlur={deactivateEditMode} value={text}/>
+                        : <input className="form-control" autoFocus={true} onChange={onTextChange} onBlur={deactivateEditMode} value={text}/>
                     }
                 </div>
             </div>

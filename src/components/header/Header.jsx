@@ -41,17 +41,13 @@ const Header = (props) => {
                             </li>
                         </ul>
                         {props.isAuthenticated
-                            ?
-                            <form className="d-flex">
-                                <button className="btn btn-outline-danger" onClick={props.logout}>Sign Out</button>
-                            </form>
-                            :
-                            <>
+                            ? <button className="btn btn-outline-danger" onClick={() => props.logout()}>Sign Out</button>
+                            : <div>
                                 <NavLink className="link-secondary nav-link" to="/sign-up">Sign Up</NavLink>
                                 <form className="d-flex" action="/sign-in">
                                     <button className="btn btn-outline-success" type="submit">Sign In</button>
                                 </form>
-                            </>
+                            </div>
                         }
                     </div>
                 </div>
