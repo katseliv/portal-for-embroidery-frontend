@@ -4,6 +4,7 @@ import {compose} from "redux";
 import Header from "./Header";
 import {logoutThunkCreator} from "../../redux/auth-reducer";
 import {getIsAuthenticated} from "../../redux/auth-selector";
+import {getUserProfile} from "../../redux/user-selector";
 
 class HeaderContainer extends React.Component {
     logout = () => {
@@ -11,12 +12,13 @@ class HeaderContainer extends React.Component {
     }
 
     render() {
-        return (<Header {...this.props} logout={this.logout}/>);
+        return <Header {...this.props} logout={this.logout}/>;
     }
 }
 
 let mapStateToProps = (state) => {
     return {
+        profile: getUserProfile(state),
         isAuthenticated: getIsAuthenticated(state)
     }
 }
