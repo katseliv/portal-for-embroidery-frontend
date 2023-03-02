@@ -12,13 +12,12 @@ let Carousel = (props) => {
             if (file.extension !== "jpeg" && file.extension !== "png") {
                 return;
             }
-
             if (index === 0) {
-                return <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                return <button key="0" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
                                className="active" aria-current="true"/>;
             } else {
                 counter++;
-                return <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to={counter}/>;
+                return <button key={counter} type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to={counter}/>;
             }
         }
     );
@@ -28,12 +27,12 @@ let Carousel = (props) => {
                 return;
             }
             if (index === 0) {
-                return <div className="carousel-item active">
+                return <div key="0" className="carousel-item active">
                     <img src={`data:image/${file.extension};base64,${file.base64StringFile}`} className="d-block w-100"
                          alt=""/>
                 </div>;
             } else {
-                return <div className="carousel-item">
+                return <div key={index} className="carousel-item">
                     <img src={`data:image/${file.extension};base64,${file.base64StringFile}`} className="d-block w-100"
                          alt=""/>
                 </div>;

@@ -34,7 +34,7 @@ const Header = (props) => {
                             </li>
                             {props.isAuthenticated && props.profile && props.profile.role === "DESIGNER" &&
                                 <li className="nav-item">
-                                    <NavLink className="nav-link" to="/designs">My Designs</NavLink>
+                                    <NavLink className="nav-link" to="/my-designs">My Designs</NavLink>
                                 </li>
                             }
                             <li className="nav-item">

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import UserItem from "./UserItem";
 import Preloader from "../common/Preloader";
-import PageNavigation from "../common/PageNavigation";
+import PageNavigation from "../common/page-navigation/PageNavigation";
 import UserProfileCreate from "./UserProfileCreate";
 
 const UserList = (props) => {

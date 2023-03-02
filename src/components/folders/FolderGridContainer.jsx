@@ -52,7 +52,6 @@ class FolderGridContainer extends React.Component {
     refreshFolderGrid() {
         const pageNumber = 1;
         this.props.getFoldersOfUserByNumberAndSize(this.props.profile.id, pageNumber, this.props.pageSizeOfFolders);
-        this.props.getFilesOfFolderByNumberAndSize(null, pageNumber, this.props.pageSizeOfFolders);
     }
 
     onAddFolder = (folder) => {

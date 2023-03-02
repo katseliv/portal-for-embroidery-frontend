@@ -27,7 +27,7 @@ let PageNavigation = (props) => {
     return (
         <nav className="pagination justify-content-center px-5 py-3 w-100">
             <ul className="pagination">
-                <li className="page-item" key={0} onClick={() => {props.onPageChange(1);}}>
+                <li className="page-item" key="0" onClick={() => {props.onPageChange(1);}}>
                     <span className="page-link" style={aStyle} aria-hidden="true">&laquo;</span>
                 </li>
                 {pages.map(page => {

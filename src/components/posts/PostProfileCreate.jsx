@@ -28,8 +28,8 @@ const PostProfileCreate = (props) => {
     }
 
     const mappedDesigners = props.designers.map(designer =>
-        <option value={designer.id}>{designer.firstName + " " + designer.lastName}</option>);
-    const mappedDesigns = props.designs.map(design => <option value={design.id}>{design.name}</option>);
+        <option key={designer.id} value={designer.id}>{designer.firstName + " " + designer.lastName}</option>);
+    const mappedDesigns = props.designs.map(design => <option key={design.id} value={design.id}>{design.name}</option>);
 
     return (
         <div className="container p-5 overflow-hidden">

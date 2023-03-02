@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import Login from "./Login";
 import {connect} from "react-redux";
 import {compose} from "redux";
@@ -15,7 +15,7 @@ class LoginContainer extends React.Component {
         if (this.props.isAuthenticated) {
             return <Navigate replace to='/profile'/>;
         }
-        return (<Login login={this.login} logout={this.logout}/>);
+        return <Login login={this.login} logout={this.logout}/>;
     }
 }
 

@@ -1,6 +1,6 @@
 import React from "react";
 import Preloader from "../common/Preloader";
-import PageNavigation from "../common/PageNavigation";
+import PageNavigation from "../common/page-navigation/PageNavigation";
 import CommentItem from "./CommentItem";
 import {Field, reduxForm} from "redux-form";
 import {TextArea} from "../common/form-control/FormControl";

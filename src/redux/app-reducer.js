@@ -3,6 +3,7 @@ import {getIdFromLocalStorage, getTokenDataFromLocalStorage} from "../utils/loca
 import {setUserActionCreator} from "./auth-reducer";
 
 const SET_INITIALIZED = "/app/SET-INITIALIZED";
+const SET_GLOBAL_ERROR = "/app/SET-GLOBAL-ERROR";
 
 let initialState = {
     initialized: false,
@@ -16,12 +17,18 @@ export const appReducer = (state = initialState, action) => {
                 ...state,
                 initialized: true,
             };
+        case SET_GLOBAL_ERROR:
+            return {
+                ...state,
+                globalError: action.error,
+            };
         default:
             return state;
     }
 }
 
 export const setInitializedActionCreator = () => ({type: SET_INITIALIZED});
+export const setGlobalErrorActionCreator = (error) => ({type: SET_GLOBAL_ERROR, error: error});
 
 export const initializeAppThunkCreator = () => {
     return (dispatch) => {

@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import "../common/PageNavigation.module.css";
+import "../common/page-navigation/PageNavigation.module.css";
 import {
     addCommentThunkCreator,
     deleteCommentThunkCreator,
