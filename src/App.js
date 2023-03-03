@@ -16,8 +16,8 @@ import LoginContainer from "./components/authorization/LoginContainer";
 import HeaderContainer from "./components/header/HeaderContainer";
 import {getGlobalError, getInitialized} from "./redux/app-selector";
 import {initializeAppThunkCreator, setGlobalErrorActionCreator} from "./redux/app-reducer";
-import {getUserProfileThunkCreator} from "./redux/user-reducer";
-import {getAuthorizedUserId, getIsAuthenticated} from "./redux/auth-selector";
+import {getDesignerProfileThunkCreator, getUserProfileThunkCreator} from "./redux/user-reducer";
+import {getAuthorizedUserId, getAuthorizedUserRole, getIsAuthenticated} from "./redux/auth-selector";
 import Error from "./components/common/Error";
 
 // const UserListContainer = React.lazy(() => import('./components/users/UserListContainer'));
@@ -45,7 +45,11 @@ class App extends React.Component {
         this.props.initializeApp();
         let userId = this.props.authorizedUserId;
         if (userId) {
-            this.props.getUser(userId);
+            if (this.props.authorizedUserRole === "DESIGNER") {
+                this.props.getDesignerProfile(userId);
+            } else {
+                this.props.getUserProfile(userId);
+            }
         }
     }
 
@@ -87,6 +91,7 @@ let mapStateToProps = (state) => {
         initialized: getInitialized(state),
         globalError: getGlobalError(state),
         authorizedUserId: getAuthorizedUserId(state),
+        authorizedUserRole: getAuthorizedUserRole(state),
         isAuthenticated: getIsAuthenticated(state),
     }
 }
@@ -99,8 +104,11 @@ let mapDispatchToProps = (dispatch) => {
         setGlobalError: (hasError) => {
             dispatch(setGlobalErrorActionCreator(hasError));
         },
-        getUser: (userId) => {
+        getUserProfile: (userId) => {
             dispatch(getUserProfileThunkCreator(userId));
+        },
+        getDesignerProfile: (designerId) => {
+            dispatch(getDesignerProfileThunkCreator(designerId));
         },
     }
 }

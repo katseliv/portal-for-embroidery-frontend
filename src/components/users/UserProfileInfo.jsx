@@ -1,5 +1,5 @@
 import React from 'react';
-import girl from '../../images/girl.png';
+import person from '../../images/person-square.svg';
 import FolderGridContainer from "../folders/FolderGridContainer";
 
 const pStyle = {
@@ -15,8 +15,7 @@ const UserProfileInfo = (props) => {
                     <div className="col-4">
                         <div className="mb-3">
                             <img src={props.profile.base64StringImage
-                                ? `data:image/jpeg;base64,${props.profile.base64StringImage}`
-                                : girl} className="img-fluid" alt=""/>
+                                ? `data:image/jpeg;base64,${props.profile.base64StringImage}` : person} className="img-fluid" alt=""/>
                         </div>
                         <p><span style={pStyle}>Username:</span> {props.profile.username}</p>
                         <p></p>

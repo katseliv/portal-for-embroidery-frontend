@@ -156,6 +156,21 @@ export const updateUserThunkCreator = (userId, newProfile) => {
         }
     };
 }
+export const updateDesignerThunkCreator = (designerId, newProfile) => {
+    return async (dispatch) => {
+        try {
+            let response = await designerProfileAPI.updateDesignerProfile(designerId, newProfile);
+            if (response.status === 200) {
+                dispatch(updateUserActionCreator(designerId, newProfile));
+            }
+        } catch (error) {
+            const messages = error.response.data.messages;
+            let message = messages.length > 0 ? messages[0] : "Some error occurred...";
+            dispatch(stopSubmit("userProfileUpdateForm", {_error: message}))
+            return Promise.reject(message);
+        }
+    };
+}
 export const deleteUserThunkCreator = (userId) => {
     return async (dispatch) => {
         let response = await userAPI.deleteUser(userId);

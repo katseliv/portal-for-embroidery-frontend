@@ -5,7 +5,7 @@ import UserProfile from "./UserProfile";
 import {Navigate, useNavigate, useParams} from "react-router-dom";
 import {
     getDesignerProfileThunkCreator,
-    getUserProfileThunkCreator,
+    getUserProfileThunkCreator, updateDesignerThunkCreator,
     updateUserThunkCreator
 } from "../../redux/user-reducer";
 import {getUserProfile} from "../../redux/user-selector";
@@ -51,8 +51,12 @@ class UserProfileContainer extends React.Component {
         this.props.initializeUser(this.props.profile);
     }
 
-    onSaveProfile = (userId, profile) => {
+    onSaveUserProfile = (userId, profile) => {
         this.props.updateUser(userId, profile);
+    }
+
+    onSaveDesignerProfile = (designerId, profile) => {
+        this.props.updateDesigner(designerId, profile);
     }
 
     render() {
@@ -63,7 +67,8 @@ class UserProfileContainer extends React.Component {
                             isOwner={!!this.props.authorizedUserId}
                             profile={this.props.profile}
                             initializeUser={this.initializeUser}
-                            onSaveProfile={this.onSaveProfile}/>;
+                            onSaveUserProfile={this.onSaveUserProfile}
+                            onSaveDesignerProfile={this.onSaveDesignerProfile}/>;
     }
 }
 
@@ -81,14 +86,17 @@ let mapDispatchToProps = (dispatch) => {
         initializeUser: (profile) => {
             dispatch(initialize('userProfileUpdateForm', profile, true, {}));
         },
+        updateUser: (userId, profile) => {
+            dispatch(updateUserThunkCreator(userId, profile));
+        },
+        updateDesigner: (designerId, profile) => {
+            dispatch(updateDesignerThunkCreator(designerId, profile));
+        },
         getUserProfile: (userId) => {
             dispatch(getUserProfileThunkCreator(userId));
         },
         getDesignerProfile: (designerId) => {
             dispatch(getDesignerProfileThunkCreator(designerId));
-        },
-        updateUser: (userId, profile) => {
-            dispatch(updateUserThunkCreator(userId, profile));
         },
     }
 }
