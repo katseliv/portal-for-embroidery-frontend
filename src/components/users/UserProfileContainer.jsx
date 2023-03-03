@@ -40,7 +40,6 @@ class UserProfileContainer extends React.Component {
     }
 
     getUserProfile(userId) {
-        console.log(this.props.authorizedUserRole);
         if (this.props.authorizedUserRole === "DESIGNER") {
             this.props.getDesignerProfile(userId);
         } else {

@@ -84,18 +84,39 @@ export const registerUserThunkCreator = (user) => {
         try {
             let responseCreateUser = await userAPI.registerUser(user);
             if (responseCreateUser.status === 201) {
-                let newUserId = responseCreateUser.data;
-                let responseGetUser = await userAPI.getUser(newUserId);
+                let newUser = responseCreateUser.data;
+                let responseGetUser = await userAPI.getUser(newUser);
                 if (responseGetUser.status === 200) {
                     dispatch(loginThunkCreator(user.email, user.password));
                     dispatch(addUserActionCreator(responseGetUser.data));
-                    dispatch(reset("registrationForm"));
+                    dispatch(reset("userRegistrationForm"));
                 }
             }
         } catch (error) {
             const messages = error.response.data.messages;
             let message = messages.length > 0 ? messages[0] : "Some error occurred...";
-            dispatch(stopSubmit("registrationForm", {_error: message}))
+            dispatch(stopSubmit("userRegistrationForm", {_error: message}))
+            return Promise.reject(message);
+        }
+    };
+}
+export const registerDesignerThunkCreator = (designer) => {
+    return async (dispatch) => {
+        try {
+            let responseCreateUser = await designerProfileAPI.createDesignerProfile(designer);
+            if (responseCreateUser.status === 201) {
+                let newUser = responseCreateUser.data;
+                let responseGetUser = await userAPI.getUser(newUser);
+                if (responseGetUser.status === 200) {
+                    dispatch(loginThunkCreator(designer.email, designer.password));
+                    dispatch(addUserActionCreator(responseGetUser.data));
+                    dispatch(reset("designerRegistrationForm"));
+                }
+            }
+        } catch (error) {
+            const messages = error.response.data.messages;
+            let message = messages.length > 0 ? messages[0] : "Some error occurred...";
+            dispatch(stopSubmit("designerRegistrationForm", {_error: message}))
             return Promise.reject(message);
         }
     };
@@ -105,8 +126,8 @@ export const addUserThunkCreator = (user) => {
         try {
             let responseCreateUser = await userAPI.createUser(user);
             if (responseCreateUser.status === 201) {
-                let newUserId = responseCreateUser.data;
-                let responseGetUser = await userAPI.getUser(newUserId);
+                let newUser = responseCreateUser.data;
+                let responseGetUser = await userAPI.getUser(newUser);
                 if (responseGetUser.status === 200) {
                     dispatch(addUserActionCreator(responseGetUser.data));
                     dispatch(reset("userProfileCreateForm"));

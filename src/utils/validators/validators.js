@@ -34,7 +34,7 @@ export const mustBeEmail = (value) => {
 }
 
 export const mustBePassword = (value) => {
-    const regex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,30}$");
+    const regex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_-])[A-Za-z\\d@$!%*?&_-]{8,30}$");
     if (regex.test(value)) return undefined;
     return "Password must contain one uppercase and lowercase letter, one number and one special character!";
 }

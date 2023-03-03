@@ -1,74 +1,41 @@
-import React from 'react';
-import {Input} from "../common/form-control/FormControl";
-import {NavLink} from "react-router-dom";
-import {Field, reduxForm} from "redux-form";
-import {
-    mustBeEmail, mustBePassword,
-    mustContainLetter, mustNotBeOutOfRange,
-    mustNotContainLetter,
-    mustNotContainNumber,
-    requiredField
-} from "../../utils/validators/validators";
-
-const errorStyle = {color: "#dc3545"};
+import React, {useState} from 'react';
+import RegistrationForDesigner from "./RegistrationForDesigner";
+import RegistrationForUser from "./RegistrationForUser";
 
 const Registration = (props) => {
-    const onSubmit = (formData) => {
-        props.onSignUp({...formData, roleId: 3});
-    }
+    let [chooseMode, setChooseMode] = useState(true);
+    let [designerRegistrationMode, setDesignerRegistrationMode] = useState(false);
+
+    const deactivateRegistrationMode = () => {
+        setChooseMode(true);
+    };
+
+    const activateUserRegistrationMode = () => {
+        setChooseMode(false);
+        setDesignerRegistrationMode(false);
+    };
+
+    const activateDesignerRegistrationMode = () => {
+        setChooseMode(false);
+        setDesignerRegistrationMode(true);
+    };
 
     return (
         <div className="container p-5 overflow-hidden">
             <h1 className="h4 mb-5 fw-normal text-center">Registration</h1>
             <div className="container w-25">
-                <RegistrationReduxForm onSubmit={onSubmit}/>
+                {chooseMode
+                    ? <>
+                        <button className="btn btn-lg btn-outline-success w-100 mt-2" onClick={() => activateUserRegistrationMode()}>User</button>
+                        <button className="btn btn-lg btn-outline-warning w-100 mt-2" onClick={() => activateDesignerRegistrationMode()}>Designer</button>
+                    </>
+                    : designerRegistrationMode
+                        ? <RegistrationForDesigner onSignUp={props.onDesignerSignUp}/>
+                        : <RegistrationForUser onSignUp={props.onUserSignUp}/>}
+                <button className="btn btn-lg btn-outline-secondary w-100 mt-2" onClick={() => deactivateRegistrationMode()}>Back</button>
             </div>
         </div>
     );
 }
-
-const RegistrationForm = ({handleSubmit, error}) => {
-    return (
-        <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-                <Field component={Input} name={"username"} label={"Username"}
-                       validate={[requiredField, mustContainLetter]}/>
-            </div>
-            <div className="mb-3">
-                <Field component={Input} name={"firstName"} label={"First Name"}
-                       validate={[requiredField, mustNotContainNumber]}/>
-            </div>
-            <div className="mb-3">
-                <Field component={Input} name={"lastName"} label={"Last Name"}
-                       validate={[requiredField, mustNotContainNumber]}/>
-            </div>
-            <div className="mb-3">
-                <Field component={Input} name={"email"} label={"Email"} validate={[requiredField, mustBeEmail]}/>
-            </div>
-            <div className="mb-3">
-                <Field component={Input} name={"phoneNumber"} label={"Phone Number"}
-                       validate={[requiredField, mustNotContainLetter, mustNotBeOutOfRange]}/>
-            </div>
-            <div className="mb-3">
-                <Field component={Input} name={"password"} label={"Password"} validate={[requiredField, mustBePassword]}
-                       type={"password"}/>
-            </div>
-            <div className="mb-3">
-                <Field component={Input} name={"passwordConfirmation"} label={"Password Confirmation"}
-                       validate={[requiredField, mustBePassword]} type={"password"}/>
-            </div>
-            {error && <div className="mb-3" style={errorStyle}>{error}</div>}
-            <button className="btn btn-lg btn-outline-success w-100 mt-2">Submit</button>
-            <p className="mt-3 mb-3 text-center">Already have an account?<br/>
-                <NavLink className="text-dark" to="/sign-in">Sign In!</NavLink>
-            </p>
-        </form>
-    );
-}
-
-const RegistrationReduxForm = reduxForm({
-    form: "registrationForm",
-    enableReinitialize: true
-})(RegistrationForm);
 
 export default Registration;

@@ -28,7 +28,7 @@ const UserProfileInfo = (props) => {
                         <p></p>
                         <p><span style={pStyle}>Phone Number:</span> {props.profile.phoneNumber}</p>
                         <p></p>
-                        {props.profile.role === "DESIGNER" &&
+                        {props.profile.role === "DESIGNER" && props.profile.experiencedSince && props.profile.description &&
                             <>
                                 <p><span style={pStyle}>Experience:</span> {props.profile.experiencedSince}</p>
                                 <p></p>

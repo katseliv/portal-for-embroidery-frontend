@@ -3,18 +3,22 @@ import {connect} from "react-redux";
 import Registration from "./Registration";
 import {Navigate} from "react-router-dom";
 import {getIsAuthenticated} from "../../redux/auth-selector";
-import {registerUserThunkCreator} from "../../redux/user-reducer";
+import {registerDesignerThunkCreator, registerUserThunkCreator} from "../../redux/user-reducer";
 
 class RegistrationContainer extends React.Component {
     onUserRegister = (user) => {
         this.props.registerUser(user);
     }
 
+    onDesignerRegister = (designer) => {
+        this.props.registerDesigner(designer);
+    }
+
     render() {
         if (this.props.isAuthenticated) {
             return <Navigate replace to='/profile'/>;
         }
-        return <Registration onSignUp={this.onUserRegister}/>;
+        return <Registration onUserSignUp={this.onUserRegister} onDesignerSignUp={this.onDesignerRegister}/>;
     }
 }
 
@@ -27,6 +31,9 @@ let mapDispatchToProps = (dispatch) => {
     return {
         registerUser: (user) => {
             dispatch(registerUserThunkCreator(user));
+        },
+        registerDesigner: (designer) => {
+            dispatch(registerDesignerThunkCreator(designer));
         },
     }
 }
