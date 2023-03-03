@@ -16,7 +16,11 @@ const UserProfile = (props) => {
     };
 
     const onSaveProfile = (profile) => {
-        props.onSaveProfile(props.profile.id, profile);
+        if (props.profile.role === "DESIGNER") {
+            props.onSaveDesignerProfile(props.profile.id, profile);
+        } else {
+            props.onSaveUserProfile(props.profile.id, profile);
+        }
         setEditMode(false);
     }
 
