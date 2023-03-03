@@ -3,9 +3,13 @@ import {connect} from "react-redux";
 import {compose} from "redux";
 import UserProfile from "./UserProfile";
 import {Navigate, useNavigate, useParams} from "react-router-dom";
-import {getUserProfileThunkCreator, updateUserThunkCreator} from "../../redux/user-reducer";
+import {
+    getDesignerProfileThunkCreator,
+    getUserProfileThunkCreator,
+    updateUserThunkCreator
+} from "../../redux/user-reducer";
 import {getUserProfile} from "../../redux/user-selector";
-import {getAuthorizedUserId, getIsAuthenticated} from "../../redux/auth-selector";
+import {getAuthorizedUserId, getAuthorizedUserRole, getIsAuthenticated} from "../../redux/auth-selector";
 import {initialize} from "redux-form";
 
 class UserProfileContainer extends React.Component {
@@ -28,8 +32,17 @@ class UserProfileContainer extends React.Component {
             if (!userId) {
                 this.props.navigate("/sign-in");
             } else {
-                this.props.getUserProfile(userId);
+                this.getUserProfile(userId);
             }
+        } else {
+            this.getUserProfile(userId);
+        }
+    }
+
+    getUserProfile(userId) {
+        console.log(this.props.authorizedUserRole);
+        if (this.props.authorizedUserRole === "DESIGNER") {
+            this.props.getDesignerProfile(userId);
         } else {
             this.props.getUserProfile(userId);
         }
@@ -59,6 +72,7 @@ let mapStateToProps = (state) => {
     return {
         profile: getUserProfile(state),
         authorizedUserId: getAuthorizedUserId(state),
+        authorizedUserRole: getAuthorizedUserRole(state),
         isAuthenticated: getIsAuthenticated(state)
     }
 }
@@ -70,6 +84,9 @@ let mapDispatchToProps = (dispatch) => {
         },
         getUserProfile: (userId) => {
             dispatch(getUserProfileThunkCreator(userId));
+        },
+        getDesignerProfile: (designerId) => {
+            dispatch(getDesignerProfileThunkCreator(designerId));
         },
         updateUser: (userId, profile) => {
             dispatch(updateUserThunkCreator(userId, profile));

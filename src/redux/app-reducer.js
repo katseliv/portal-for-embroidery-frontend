@@ -1,5 +1,9 @@
-import {getUserProfileThunkCreator} from "./user-reducer";
-import {getIdFromLocalStorage, getTokenDataFromLocalStorage} from "../utils/local-storage-helpers";
+import {getDesignerProfileThunkCreator, getUserProfileThunkCreator} from "./user-reducer";
+import {
+    getIdFromLocalStorage,
+    getRoleFromLocalStorage,
+    getTokenDataFromLocalStorage
+} from "../utils/local-storage-helpers";
 import {setUserActionCreator} from "./auth-reducer";
 
 const SET_INITIALIZED = "/app/SET-INITIALIZED";
@@ -34,9 +38,10 @@ export const initializeAppThunkCreator = () => {
     return (dispatch) => {
         const userId = getIdFromLocalStorage();
         const tokenData = getTokenDataFromLocalStorage();
+        const role = getRoleFromLocalStorage();
         if (userId) {
-            const promiseUserProfile = dispatch(getUserProfileThunkCreator(userId));
-            const promiseUserAuth = dispatch(setUserActionCreator(userId, tokenData.accessToken, tokenData.refreshToken, true));
+            const promiseUserProfile = role !== "DESIGNER" ? dispatch(getUserProfileThunkCreator(userId)) : dispatch(getDesignerProfileThunkCreator(userId));
+            const promiseUserAuth = dispatch(setUserActionCreator(userId, role, tokenData.accessToken, tokenData.refreshToken, true));
             Promise.all([promiseUserProfile, promiseUserAuth]).then(() => {
                 dispatch(setInitializedActionCreator());
             });

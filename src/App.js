@@ -25,22 +25,26 @@ import Error from "./components/common/Error";
 
 class App extends React.Component {
     componentDidMount() {
-        this.props.initializeApp();
-        let userId = this.props.authorizedUserId;
-        if (userId) {
-            this.props.getUser(userId);
-        }
+        this.refreshApp();
         window.addEventListener("unhandledrejection", this.catchAllUnhandledErrors);
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener("unhandledrejection", this.catchAllUnhandledErrors);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         let userId = this.props.authorizedUserId;
         let prevUserId = prevProps.authorizedUserId;
         if (userId !== prevUserId) {
+            this.refreshApp();
+        }
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("unhandledrejection", this.catchAllUnhandledErrors);
+    }
+
+    refreshApp() {
+        this.props.initializeApp();
+        let userId = this.props.authorizedUserId;
+        if (userId) {
             this.props.getUser(userId);
         }
     }
@@ -63,8 +67,8 @@ class App extends React.Component {
                     <Route path='/profile' element={<UserProfileContainer/>}/>
                     <Route path='/profile/:userId' element={<UserProfileContainer/>}/>
                     <Route path='/users' element={<UserListContainer/>}/>
-                    <Route path='/designs' element={<PostGridContainer isMyDesigns={false}/>}/>
-                    <Route path='/my-designs' element={<PostGridContainer isMyDesigns={true}/>}/>
+                    <Route path='/designs' element={<PostGridContainer/>}/>
+                    <Route path='/my-designs' element={<PostGridContainer/>}/>
                     <Route path='/designs/:postId' element={<PostProfileContainer/>}/>
                     <Route path='/my-designs'/>
                     <Route path='/about-us' element={<AboutUs/>}/>

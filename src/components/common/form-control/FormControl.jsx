@@ -47,6 +47,17 @@ export const Select = (props) => {
     );
 }
 
+export const DateInput = (props) => {
+    let {input, meta, ...restProps} = props;
+    input = {...input, value: meta.initial};
+    return (
+        <FormControl {...props}>
+            <input className="form-control" type="datetime-local" id="startDatetime"
+                   name="startDatetime" {...input} {...restProps}/>
+        </FormControl>
+    );
+}
+
 export const SearchInput = (props) => {
     let {input, meta, ...restProps} = props;
     input = {...input, value: meta.initial};

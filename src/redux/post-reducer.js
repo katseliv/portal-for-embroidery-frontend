@@ -215,6 +215,17 @@ export const getPostsByUserThunkCreator = (userId) => {
         }
     };
 }
+export const getPostsByDesignerThunkCreator = (designerId) => {
+    return async (dispatch) => {
+        dispatch(setIsFetchingActionCreator(true));
+        let response = await postAPI.getPostsByDesigner(designerId);
+        if (response.status === 200) {
+            dispatch(setIsFetchingActionCreator(false));
+            dispatch(setPostsActionCreator(response.data.viewDtoList));
+            dispatch(setTotalCountActionCreator(response.data.totalCount));
+        }
+    };
+}
 export const getPostsByTagThunkCreator = (tagName) => {
     return async (dispatch) => {
         dispatch(setIsFetchingActionCreator(true));

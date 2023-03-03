@@ -1,6 +1,5 @@
 import React from 'react';
 import girl from '../../images/girl.png';
-import UserProfileStatus from "./UserProfileStatus";
 import FolderGridContainer from "../folders/FolderGridContainer";
 
 const pStyle = {
@@ -19,8 +18,6 @@ const UserProfileInfo = (props) => {
                                 ? `data:image/jpeg;base64,${props.profile.base64StringImage}`
                                 : girl} className="img-fluid" alt=""/>
                         </div>
-                        <UserProfileStatus status={"Texting to you..."}/>
-                        <p></p>
                         <p><span style={pStyle}>Username:</span> {props.profile.username}</p>
                         <p></p>
                         <p><span style={pStyle}>First Name:</span> {props.profile.firstName}</p>
@@ -31,6 +28,14 @@ const UserProfileInfo = (props) => {
                         <p></p>
                         <p><span style={pStyle}>Phone Number:</span> {props.profile.phoneNumber}</p>
                         <p></p>
+                        {props.profile.role === "DESIGNER" &&
+                            <>
+                                <p><span style={pStyle}>Experience:</span> {props.profile.experiencedSince}</p>
+                                <p></p>
+                                <p><span style={pStyle}>Description:</span> {props.profile.description}</p>
+                                <p></p>
+                            </>
+                        }
                         {props.isOwner && <button className="btn btn-lg btn-outline-success w-100 mt-2"
                                                   onClick={props.activateEditMode}>Edit</button>}
                     </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {compose} from "redux";
+import {useNavigate} from "react-router-dom";
 import Header from "./Header";
 import {logoutThunkCreator} from "../../redux/auth-reducer";
 import {getIsAuthenticated} from "../../redux/auth-selector";
@@ -9,6 +10,7 @@ import {getUserProfile} from "../../redux/user-selector";
 class HeaderContainer extends React.Component {
     logout = () => {
         this.props.logout();
+        this.props.navigate("/");
     }
 
     render() {
@@ -30,4 +32,8 @@ let mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default compose(connect(mapStateToProps, mapDispatchToProps))(HeaderContainer);
+function withNavigation(Component) {
+    return props => <Component {...props} navigate={useNavigate()}/>;
+}
+
+export default compose(connect(mapStateToProps, mapDispatchToProps), withNavigation)(HeaderContainer);

@@ -1,4 +1,4 @@
-import {userAPI} from "../api/api";
+import {designerProfileAPI, userAPI} from "../api/api";
 import {reset, stopSubmit} from "redux-form";
 import {loginThunkCreator} from "./auth-reducer";
 import {setInitialPathActionCreator} from "./folder-reducer";
@@ -168,6 +168,16 @@ export const getUsersByNumberAndSizeThunkCreator = (pageNumber, pageSize) => {
 export const getUserProfileThunkCreator = (userId) => {
     return async (dispatch) => {
         userAPI.getUser(userId).then(response => {
+            if (response.status === 200) {
+                dispatch(setUserProfileActionCreator(response.data));
+                dispatch(setInitialPathActionCreator());
+            }
+        });
+    };
+}
+export const getDesignerProfileThunkCreator = (designerId) => {
+    return async (dispatch) => {
+        designerProfileAPI.getDesignerProfile(designerId).then(response => {
             if (response.status === 200) {
                 dispatch(setUserProfileActionCreator(response.data));
                 dispatch(setInitialPathActionCreator());

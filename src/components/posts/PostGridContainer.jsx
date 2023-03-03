@@ -1,5 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
+import {compose} from "redux";
+import {useLocation} from "react-router-dom";
 import PostGrid from "./PostGrid";
 import {
     addPostThunkCreator,
@@ -7,6 +9,7 @@ import {
     dislikeFlowThunkCreator,
     getDesignersThunkCreator,
     getDesignsThunkCreator,
+    getPostsByDesignerThunkCreator,
     getPostsByNumberAndSizeThunkCreator,
     getPostsByTagThunkCreator,
     getPostsByUserThunkCreator,
@@ -25,8 +28,8 @@ import {
     getPosts,
     getTotalCountOfPosts
 } from "../../redux/post-selector";
-import {getAuthorizedUserId, getIsAuthenticated} from "../../redux/auth-selector";
 import {getUserProfile} from "../../redux/user-selector";
+import {getAuthorizedUserId, getIsAuthenticated} from "../../redux/auth-selector";
 
 class PostGridContainer extends React.Component {
     componentDidMount() {
@@ -37,10 +40,23 @@ class PostGridContainer extends React.Component {
         return nextProps !== this.props || nextState !== this.props;
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        let pathName = this.props.location.pathname;
+        let prevPathName = prevProps.location.pathname;
+        if (pathName !== prevPathName) {
+            this.refreshPostGrid();
+        }
+    }
+
     refreshPostGrid() {
         if (this.props.isAuthenticated) {
             const userId = this.props.authorizedUserId;
-            this.props.getPostsByUser(userId);
+            let pathName = this.props.location.pathname;
+            if (pathName === "/my-designs") {
+                this.props.getPostsByDesigner(userId);
+            } else {
+                this.props.getPostsByUser(userId);
+            }
         } else {
             this.props.getPosts();
         }
@@ -150,6 +166,9 @@ let mapDispatchToProps = (dispatch) => {
         getPostsByUser: (userId) => {
             dispatch(getPostsByUserThunkCreator(userId));
         },
+        getPostsByDesigner: (designerId) => {
+            dispatch(getPostsByDesignerThunkCreator(designerId));
+        },
         getPostsByTag: (tagName) => {
             dispatch(getPostsByTagThunkCreator(tagName));
         },
@@ -171,4 +190,8 @@ let mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostGridContainer);
+function withLocation(Component) {
+    return props => <Component {...props} location={useLocation()}/>;
+}
+
+export default compose(connect(mapStateToProps, mapDispatchToProps), withLocation)(PostGridContainer);

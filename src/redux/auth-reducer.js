@@ -7,6 +7,7 @@ const SET_USER_DATA = "/auth/SET-USER";
 
 let initialState = {
     id: null,
+    role: null,
     accessToken: null,
     refreshToken: null,
     isAuthenticated: false
@@ -18,6 +19,7 @@ export const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 id: action.id,
+                role: action.role,
                 accessToken: action.accessToken,
                 refreshToken: action.refreshToken,
                 isAuthenticated: action.isAuthenticated
@@ -27,8 +29,13 @@ export const authReducer = (state = initialState, action) => {
     }
 }
 
-export const setUserActionCreator = (id, accessToken, refreshToken, isAuthenticated) => ({
-    type: SET_USER_DATA, id: id, accessToken: accessToken, refreshToken: refreshToken, isAuthenticated: isAuthenticated
+export const setUserActionCreator = (id, role, accessToken, refreshToken, isAuthenticated) => ({
+    type: SET_USER_DATA,
+    id: id,
+    role: role,
+    accessToken: accessToken,
+    refreshToken: refreshToken,
+    isAuthenticated: isAuthenticated
 });
 
 export const loginThunkCreator = (email, password) => {
@@ -36,7 +43,7 @@ export const loginThunkCreator = (email, password) => {
         try {
             const response = await authAPI.login(email, password);
             if (response.status === 200) {
-                dispatch(setUserActionCreator(response.data.id, response.data.accessToken, response.data.refreshToken, true));
+                dispatch(setUserActionCreator(response.data.id, response.data.role, response.data.accessToken, response.data.refreshToken, true));
                 dispatch(getUserProfileThunkCreator(response.data.id));
                 dispatch(setAuthDataToLocalStorage(response.data));
             }

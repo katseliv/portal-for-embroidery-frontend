@@ -30,6 +30,18 @@ export const userAPI = {
     },
 }
 
+export const designerProfileAPI = {
+    createDesignerProfile(designerProfile) {
+        return instance.post(`/designer-profiles`, {...designerProfile});
+    },
+    getDesignerProfile(designerProfileId) {
+        return instance.get(`/designer-profiles/${designerProfileId}`);
+    },
+    updateDesignerProfile(designerProfileId, newProfile) {
+        return instance.put(`/designer-profiles/${designerProfileId}`, {...newProfile});
+    },
+}
+
 export const folderAPI = {
     createFolder(folder) {
         return instance.post(`/folders`, {...folder});
@@ -109,6 +121,9 @@ export const postAPI = {
     },
     getPostsByUser(userId) {
         return instance.get(`/users/${userId}/posts`);
+    },
+    getPostsByDesigner(designerId) {
+        return instance.get(`/designer-profiles/${designerId}/posts`);
     },
     getPostsByTag(tagName) {
         return instance.get(`/posts?tagName=${tagName}`);
