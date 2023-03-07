@@ -33,8 +33,7 @@ const UserProfileInfo = (props) => {
                                 <p></p>
                                 <p><span style={pStyle}>Description:</span> {props.profile.description}</p>
                                 <p></p>
-                            </>
-                        }
+                            </>}
                         {props.isOwner && <button className="btn btn-lg btn-outline-success w-100 mt-2"
                                                   onClick={props.activateEditMode}>Edit</button>}
                     </div>

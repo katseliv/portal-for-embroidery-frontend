@@ -1,7 +1,6 @@
 import React from "react";
 
 let Error = (props) => {
-
     const onBackHome = () => {
       props.navigate("/");
       props.setGlobalError(null);

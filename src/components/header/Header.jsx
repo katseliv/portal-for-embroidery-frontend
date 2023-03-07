@@ -7,7 +7,9 @@ const Header = (props) => {
         <div className="container">
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <div className="container-fluid">
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false">
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03"
+                            aria-expanded="false">
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <NavLink className="navbar-brand" to="/">Portal for Embroidery</NavLink>
@@ -22,21 +24,18 @@ const Header = (props) => {
                             {props.isAuthenticated &&
                                 <li className="nav-item">
                                     <NavLink className="nav-link" to="/profile">Profile</NavLink>
-                                </li>
-                            }
-                            {props.isAuthenticated && props.profile && props.profile.role === "ADMIN" &&
+                                </li>}
+                            {props.isAuthenticated && props.authorizedUserRole === "ADMIN" &&
                                 <li className="nav-item">
                                     <NavLink className="nav-link" to="/users">Users</NavLink>
-                                </li>
-                            }
+                                </li>}
                             <li className="nav-item">
                                 <NavLink className="nav-link" to="/designs">Designs</NavLink>
                             </li>
-                            {props.isAuthenticated && props.profile && props.profile.role === "DESIGNER" &&
+                            {props.isAuthenticated && props.authorizedUserRole === "DESIGNER" &&
                                 <li className="nav-item">
                                     <NavLink className="nav-link" to="/my-designs">My Designs</NavLink>
-                                </li>
-                            }
+                                </li>}
                             <li className="nav-item">
                                 <NavLink className="nav-link" to="/about-us">About Us</NavLink>
                             </li>
@@ -51,8 +50,7 @@ const Header = (props) => {
                                 <form action="/sign-in">
                                     <button className="btn btn-outline-success" type="submit">Sign In</button>
                                 </form>
-                            </div>
-                        }
+                            </div>}
                     </div>
                 </div>
             </nav>

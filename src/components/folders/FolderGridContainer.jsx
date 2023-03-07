@@ -42,16 +42,17 @@ class FolderGridContainer extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        let profileId = this.props.profile.id;
-        let prevProfileId = prevProps.profile.id;
+        const profileId = this.props.profile.id;
+        const prevProfileId = prevProps.profile.id;
         if (profileId !== prevProfileId) {
             this.refreshFolderGrid();
         }
     }
 
     refreshFolderGrid() {
+        const profileId = this.props.profile.id;
         const pageNumber = 1;
-        this.props.getFoldersOfUserByNumberAndSize(this.props.profile.id, pageNumber, this.props.pageSizeOfFolders);
+        this.props.getFoldersOfUserByNumberAndSize(profileId, pageNumber, this.props.pageSizeOfFolders);
     }
 
     onAddFolder = (folder) => {
@@ -71,7 +72,8 @@ class FolderGridContainer extends React.Component {
     }
 
     onPageChange = (pageNumber) => {
-        this.props.getFoldersOfUserByNumberAndSize(this.props.profile.id, pageNumber, this.props.pageSizeOfFolders);
+        const profileId = this.props.profile.id;
+        this.props.getFoldersOfUserByNumberAndSize(profileId, pageNumber, this.props.pageSizeOfFolders);
     }
 
     onFolderChange = (folderId) => {

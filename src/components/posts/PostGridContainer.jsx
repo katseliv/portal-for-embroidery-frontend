@@ -29,7 +29,7 @@ import {
     getTotalCountOfPosts
 } from "../../redux/post-selector";
 import {getUserProfile} from "../../redux/user-selector";
-import {getAuthorizedUserId, getIsAuthenticated} from "../../redux/auth-selector";
+import {getAuthorizedUserId, getAuthorizedUserRole, getIsAuthenticated} from "../../redux/auth-selector";
 
 class PostGridContainer extends React.Component {
     componentDidMount() {
@@ -51,7 +51,7 @@ class PostGridContainer extends React.Component {
     refreshPostGrid() {
         if (this.props.isAuthenticated) {
             const userId = this.props.authorizedUserId;
-            let pathName = this.props.location.pathname;
+            const pathName = this.props.location.pathname;
             if (pathName === "/my-designs") {
                 this.props.getPostsByDesigner(userId);
             } else {
@@ -116,6 +116,8 @@ class PostGridContainer extends React.Component {
                          totalCount={this.props.totalCountOfPosts}
                          isFetching={this.props.isFetchingOfPosts}
                          isLikingInProgress={this.props.isLikingInProgressOfPost}
+                         authorizedUserId={this.props.authorizedUserId}
+                         authorizedUserRole={this.props.authorizedUserRole}
                          isAuthenticated={this.props.isAuthenticated}
                          getPosts={this.getPosts}
                          getPostsByTag={this.getPostsByTag}
@@ -142,6 +144,7 @@ let mapStateToProps = (state) => {
         isLikingInProgressOfPost: getIsLikingInProgressOfPosts(state),
         profile: getUserProfile(state),
         authorizedUserId: getAuthorizedUserId(state),
+        authorizedUserRole: getAuthorizedUserRole(state),
         isAuthenticated: getIsAuthenticated(state),
     }
 }

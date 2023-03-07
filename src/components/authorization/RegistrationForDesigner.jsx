@@ -14,7 +14,6 @@ const errorStyle = {color: "#dc3545"};
 
 const RegistrationForDesigner = (props) => {
     const onSubmit = (formData) => {
-        console.log(formData)
         props.onSignUp({...formData});
     }
 

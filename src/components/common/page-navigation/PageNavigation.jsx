@@ -4,8 +4,8 @@ import "./PageNavigation.css";
 const aStyle = {color: "#530FAD"};
 const buttonLimit = 5;
 
-let PageNavigation = (props) => {
-    let getStartPageNumber = (totalPages, pageNumber) => {
+const PageNavigation = (props) => {
+    const getStartPageNumber = (totalPages, pageNumber) => {
         if (totalPages <= buttonLimit) {
             return 1;
         } else if (pageNumber > totalPages - Math.ceil(buttonLimit / 2)) {
@@ -15,11 +15,11 @@ let PageNavigation = (props) => {
         }
     }
 
-    let totalPages = Math.ceil(props.totalCount / props.pageSize);
-    let startPageNumber = getStartPageNumber(totalPages, props.currentPage);
-    let endPageNumber = Math.max(Math.min(props.currentPage + Math.floor(buttonLimit / 2), totalPages), buttonLimit);
+    const totalPages = Math.ceil(props.totalCount / props.pageSize);
+    const startPageNumber = getStartPageNumber(totalPages, props.currentPage);
+    const endPageNumber = Math.max(Math.min(props.currentPage + Math.floor(buttonLimit / 2), totalPages), buttonLimit);
 
-    let pages = [];
+    const pages = [];
     for (let i = startPageNumber; i <= endPageNumber; i++) {
         pages.push(i);
     }

@@ -4,7 +4,7 @@ import UserProfileInfo from "./UserProfileInfo";
 import UserProfileUpdate from "./UserProfileUpdate";
 
 const UserProfile = (props) => {
-    let [editMode, setEditMode] = useState(false);
+    const [editMode, setEditMode] = useState(false);
 
     if (!props.profile) {
         return <Preloader/>;
@@ -30,8 +30,7 @@ const UserProfile = (props) => {
                 ? <UserProfileUpdate profile={props.profile} onSaveProfile={onSaveProfile}/>
                 : <UserProfileInfo profile={props.profile}
                                    isOwner={props.isOwner}
-                                   activateEditMode={activateEditMode}/>
-            }
+                                   activateEditMode={activateEditMode}/>}
         </>
     );
 }

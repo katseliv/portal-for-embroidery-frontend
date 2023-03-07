@@ -39,8 +39,7 @@ const FolderSidePanel = (props) => {
                               onFolderChange={props.onFolderChange}
                               onBackHome={props.onBackHome}
                               onSetPath={props.onSetPath}
-                              activateCreateMode={activateCreateMode}/>
-            }
+                              activateCreateMode={activateCreateMode}/>}
         </>
     );
 }

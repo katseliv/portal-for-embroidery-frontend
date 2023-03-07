@@ -22,7 +22,9 @@ const PostProfileCreate = (props) => {
                 folderId: null
             });
         }
-
+        if (props.authorizedUserRole === "DESIGNER") {
+            formData.designerId = props.authorizedUserId;
+        }
         formData.files = files;
         props.onAddPost(formData);
     }
@@ -35,20 +37,22 @@ const PostProfileCreate = (props) => {
         <div className="container p-5 overflow-hidden">
             <h1 className="h3 mb-5 fw-normal text-center">Create New Post</h1>
             <div className="container">
-                <PostProfileCreateReduxForm designers={mappedDesigners} designs={mappedDesigns} onSubmit={onSubmit}/>
+                <PostProfileCreateReduxForm designers={mappedDesigners} designs={mappedDesigns}
+                                            role={props.authorizedUserRole} onSubmit={onSubmit}/>
             </div>
         </div>
     );
 }
 
-const PostProfileCreateForm = ({designers, designs, handleSubmit, error}) => {
+const PostProfileCreateForm = ({designers, designs, role, handleSubmit, error}) => {
     return (
         <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-                <Field component={Select} name={"designerId"} label={"Select designer"}>
-                    {designers}
-                </Field>
-            </div>
+            {role === "ADMIN" &&
+                <div className="mb-3">
+                    <Field component={Select} name={"designerId"} label={"Select designer"}>
+                        {designers}
+                    </Field>
+                </div>}
             <div className="mb-3">
                 <Field component={Select} name={"designId"} label={"Select design"}>
                     {designs}

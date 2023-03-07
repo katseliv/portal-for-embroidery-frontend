@@ -13,10 +13,10 @@ import {
     getCurrentPageOfUsers,
     getIsFetchingOfUsers,
     getPageSizeOfUsers,
-    getTotalCountOfUsers, getUserProfile,
+    getTotalCountOfUsers,
     getUsers
 } from "../../redux/user-selector";
-import {getIsAuthenticated} from "../../redux/auth-selector";
+import {getAuthorizedUserRole, getIsAuthenticated} from "../../redux/auth-selector";
 import {Navigate} from "react-router-dom";
 
 class UserListContainer extends React.Component {
@@ -37,7 +37,7 @@ class UserListContainer extends React.Component {
     }
 
     render() {
-        if (!this.props.isAuthenticated || !this.props.profile || this.props.profile.role !== "ADMIN") {
+        if (!this.props.isAuthenticated || this.props.authorizedUserRole !== "ADMIN") {
             return <Navigate replace to='/'/>;
         }
 
@@ -54,12 +54,12 @@ class UserListContainer extends React.Component {
 
 let mapStateToProps = (state) => {
     return {
-        profile: getUserProfile(state),
         users: getUsers(state),
         currentPageOfUsers: getCurrentPageOfUsers(state),
         pageSizeOfUsers: getPageSizeOfUsers(state),
         totalCountOfUsers: getTotalCountOfUsers(state),
         isFetchingOfUsers: getIsFetchingOfUsers(state),
+        authorizedUserRole: getAuthorizedUserRole(state),
         isAuthenticated: getIsAuthenticated(state)
     }
 }

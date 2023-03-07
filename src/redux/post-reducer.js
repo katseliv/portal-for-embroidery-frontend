@@ -143,7 +143,9 @@ export const addPostThunkCreator = (post) => {
                 let newPostId = responseCreatePost.data;
                 let responseGetPost = await postAPI.getPost(newPostId);
                 if (responseGetPost.status === 200) {
-                    dispatch(addPostActionCreator(responseGetPost.data));
+                    let designBase64StringImage = responseGetPost.data.files
+                        .find(file => file.extension === "jpeg" || file.extension === "png").base64StringFile;
+                    dispatch(addPostActionCreator({...responseGetPost.data, designBase64StringImage}));
                     dispatch(reset("postProfileCreateForm"));
                 }
             }

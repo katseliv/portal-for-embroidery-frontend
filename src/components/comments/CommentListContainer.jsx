@@ -32,8 +32,8 @@ class CommentListContainer extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        let postId = this.props.postId;
-        let prevPostId = prevProps.postId;
+        const postId = this.props.postId;
+        const prevPostId = prevProps.postId;
         if (postId !== prevPostId) {
             this.props.getCommentsOfPost(postId);
         }

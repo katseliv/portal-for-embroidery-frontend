@@ -20,7 +20,7 @@ const UserList = (props) => {
         setCreateMode(false);
     }
 
-    let usersData = props.users.map(user => <UserItem key={user.id} number={user.id} username={user.username}
+    const usersData = props.users.map(user => <UserItem key={user.id} number={user.id} username={user.username}
                                                       firstName={user.firstName} lastName={user.lastName}
                                                       onDeleteUser={props.onDeleteUser}/>);
 
@@ -56,8 +56,7 @@ const UserList = (props) => {
                                      onClick={activateCreateMode}>here</a> to create a new user!
                         </h1>
                     </div>
-                </div>
-            }
+                </div>}
         </div>
     );
 }

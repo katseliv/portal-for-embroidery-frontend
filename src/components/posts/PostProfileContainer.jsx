@@ -10,8 +10,7 @@ import {
     updatePostByTagsThunkCreator,
     updatePostThunkCreator
 } from "../../redux/post-reducer";
-import {getAuthorizedUserId, getIsAuthenticated} from "../../redux/auth-selector";
-import {getUserProfile} from "../../redux/user-selector";
+import {getAuthorizedUserId, getAuthorizedUserRole, getIsAuthenticated} from "../../redux/auth-selector";
 
 class PostProfileContainer extends React.Component {
     componentDidMount() {
@@ -31,7 +30,7 @@ class PostProfileContainer extends React.Component {
     }
 
     refreshProfile() {
-        let postId = this.props.params.postId;
+        const postId = this.props.params.postId;
         if (postId) {
             this.props.getPost(postId);
         } else {
@@ -55,8 +54,8 @@ class PostProfileContainer extends React.Component {
         return <PostProfile {...this.props}
                             profile={this.props.profile}
                             navigate={this.props.navigate}
-                            userProfile={this.props.userProfile}
                             authorizedUserId={this.props.authorizedUserId}
+                            authorizedUserRole={this.props.authorizedUserRole}
                             initializePost={this.initializePost}
                             onSaveProfile={this.onSaveProfile}
                             onAddTags={this.onAddTags}/>;
@@ -66,8 +65,8 @@ class PostProfileContainer extends React.Component {
 let mapStateToProps = (state) => {
     return {
         profile: getPostProfile(state),
-        userProfile: getUserProfile(state),
         authorizedUserId: getAuthorizedUserId(state),
+        authorizedUserRole: getAuthorizedUserRole(state),
         isAuthenticated: getIsAuthenticated(state)
     }
 }

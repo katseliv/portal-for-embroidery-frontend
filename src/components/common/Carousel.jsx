@@ -8,7 +8,7 @@ const carouselStyle = {
 let Carousel = (props) => {
     let counter = 0;
 
-    let carouselIndicators = props.files.map((file, index) => {
+    const carouselIndicators = props.files.map((file, index) => {
             if (file.extension !== "jpeg" && file.extension !== "png") {
                 return;
             }
@@ -22,7 +22,7 @@ let Carousel = (props) => {
         }
     );
 
-    let carouselItems = props.files.map((file, index) => {
+    const carouselItems = props.files.map((file, index) => {
             if (file.extension !== "jpeg" && file.extension !== "png") {
                 return;
             }

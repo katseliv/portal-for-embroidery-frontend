@@ -16,7 +16,7 @@ const Login = (props) => {
     );
 }
 
-let LoginForm = ({handleSubmit, error}) => {
+const LoginForm = ({handleSubmit, error}) => {
     return (
         <form onSubmit={handleSubmit}>
             <div className="mb-3">

@@ -4,8 +4,7 @@ import {compose} from "redux";
 import {useNavigate} from "react-router-dom";
 import Header from "./Header";
 import {logoutThunkCreator} from "../../redux/auth-reducer";
-import {getIsAuthenticated} from "../../redux/auth-selector";
-import {getUserProfile} from "../../redux/user-selector";
+import {getAuthorizedUserRole, getIsAuthenticated} from "../../redux/auth-selector";
 
 class HeaderContainer extends React.Component {
     logout = () => {
@@ -20,7 +19,7 @@ class HeaderContainer extends React.Component {
 
 let mapStateToProps = (state) => {
     return {
-        profile: getUserProfile(state),
+        authorizedUserRole: getAuthorizedUserRole(state),
         isAuthenticated: getIsAuthenticated(state)
     }
 }

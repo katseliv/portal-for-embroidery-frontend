@@ -7,7 +7,7 @@ import {TextArea} from "../common/form-control/FormControl";
 import {maxLengthCreator, requiredField} from "../../utils/validators/validators";
 
 const CommentList = (props) => {
-    let commentsData = props.comments
+    const commentsData = props.comments
         .map(comment => <CommentItem key={comment.id} number={comment.id}
                                      author={comment.userFirstName + " " + comment.userLastName}
                                      text={comment.text} date={comment.creationDatetime}

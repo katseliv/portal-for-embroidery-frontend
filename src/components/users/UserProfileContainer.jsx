@@ -18,8 +18,8 @@ class UserProfileContainer extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        let userId = this.props.params.userId;
-        let prevUserId = prevProps.params.userId;
+        const userId = this.props.params.userId;
+        const prevUserId = prevProps.params.userId;
         if (userId !== prevUserId) {
             this.refreshProfile();
         }

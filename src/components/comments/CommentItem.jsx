@@ -10,8 +10,8 @@ const borderStyle = {
     borderRadius: "0.25rem"
 };
 const CommentItem = (props) => {
-    let [editMode, setEditMode] = useState(false);
-    let [text, setText] = useState(props.text);
+    const [editMode, setEditMode] = useState(false);
+    const [text, setText] = useState(props.text);
 
     useEffect(() => {
         setText(props.text);
@@ -46,8 +46,7 @@ const CommentItem = (props) => {
                     {!editMode
                         ? <span onDoubleClick={activateEditMode}>{text || "No comment..."}</span>
                         : <input className="form-control" autoFocus={true} onChange={onTextChange}
-                                 onBlur={deactivateEditMode} value={text}/>
-                    }
+                                 onBlur={deactivateEditMode} value={text}/>}
                 </div>
             </div>
         </div>

@@ -3,8 +3,8 @@ import RegistrationForDesigner from "./RegistrationForDesigner";
 import RegistrationForUser from "./RegistrationForUser";
 
 const Registration = (props) => {
-    let [chooseMode, setChooseMode] = useState(true);
-    let [designerRegistrationMode, setDesignerRegistrationMode] = useState(false);
+    const [chooseMode, setChooseMode] = useState(true);
+    const [designerRegistrationMode, setDesignerRegistrationMode] = useState(false);
 
     const deactivateRegistrationMode = () => {
         setChooseMode(true);

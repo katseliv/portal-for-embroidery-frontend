@@ -9,12 +9,12 @@ const PostProfileInfo = (props) => {
         return <Preloader/>;
     }
 
-    let mappedFiles = props.profile.files.map(file =>
+    const mappedFiles = props.profile.files.map(file =>
         <a key={file.id} className="link-success px-1" href="javascript: undefined;"
            onClick={() => saveByteArray(file.name, file.extension, base64ToArrayBuffer(file.base64StringFile))}>
             {file.name + "." + file.extension}
         </a>);
-    let mappedTags = props.profile.tags.map((tag, index) =>
+    const mappedTags = props.profile.tags.map((tag, index) =>
         <a key={index} className="link-success px-1" href="javascript: undefined;">
             {"#" + tag}
         </a>);
@@ -48,7 +48,7 @@ const PostProfileInfo = (props) => {
                             <h6 className="h5 mb-3 fw-normal text-right">
                                 Tags: {mappedTags}
                             </h6>
-                            {props.isAuthenticated && props.userProfile && (props.userProfile.role === "ADMIN" || props.userProfile.role === "DESIGNER")
+                            {props.isAuthenticated && (props.authorizedUserRole === "ADMIN" || props.authorizedUserRole === "DESIGNER")
                                 ? <div className="btn-group mt-2 w-100" role="group">
                                     <button className="btn btn-lg btn-outline-success"
                                             onClick={props.activateCreateTagsMode}>
@@ -61,8 +61,7 @@ const PostProfileInfo = (props) => {
                                 : <button className="btn btn-lg btn-outline-secondary w-100"
                                           onClick={() => props.navigate("/designs")}>
                                     Back
-                                </button>
-                            }
+                                </button>}
                         </div>
                     </div>
                 </div>

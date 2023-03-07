@@ -67,8 +67,7 @@ const UserProfileUpdateForm = ({handleSubmit, error, role}) => {
                     <div className="mb-3">
                         <Field component={TextArea} name={"description"} label={"Description"}/>
                     </div>
-                </>
-            }
+                </>}
             {error && <div className="mb-3" style={errorStyle}>{error}</div>}
             <button className="btn btn-lg btn-outline-success w-100 mt-2">Edit</button>
         </form>
