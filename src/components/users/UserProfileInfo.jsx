@@ -1,6 +1,7 @@
 import React from 'react';
 import person from '../../images/person-square.svg';
 import FolderGridContainer from "../folders/FolderGridContainer";
+import {datetimeToYears} from "../../utils/date-helpers";
 
 const pStyle = {
     fontWeight: 600,
@@ -29,7 +30,7 @@ const UserProfileInfo = (props) => {
                         <p></p>
                         {props.profile.role === "DESIGNER" && props.profile.experiencedSince && props.profile.description &&
                             <>
-                                <p><span style={pStyle}>Experience:</span> {props.profile.experiencedSince}</p>
+                                <p><span style={pStyle}>Experience:</span> {datetimeToYears(props.profile.experiencedSince)}</p>
                                 <p></p>
                                 <p><span style={pStyle}>Description:</span> {props.profile.description}</p>
                                 <p></p>
