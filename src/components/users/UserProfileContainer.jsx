@@ -5,7 +5,8 @@ import UserProfile from "./UserProfile";
 import {Navigate, useNavigate, useParams} from "react-router-dom";
 import {
     getDesignerProfileThunkCreator,
-    getUserProfileThunkCreator, updateDesignerThunkCreator,
+    getUserProfileThunkCreator,
+    updateDesignerThunkCreator,
     updateUserThunkCreator
 } from "../../redux/user-reducer";
 import {getUserProfile} from "../../redux/user-selector";

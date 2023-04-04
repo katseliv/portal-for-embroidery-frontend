@@ -5,7 +5,8 @@ import {DateInput, FileInput, Input, TextArea} from "../common/form-control/Form
 import {mapFileToBase64} from "../../utils/file-helpers";
 import {
     mustBeEmail,
-    mustContainLetter, mustNotBeOutOfRange,
+    mustContainLetter,
+    mustNotBeOutOfRange,
     mustNotContainLetter,
     mustNotContainNumber,
     requiredField
@@ -76,7 +77,7 @@ const UserProfileUpdateForm = ({handleSubmit, error, role}) => {
 
 const UserProfileUpdateReduxForm = reduxForm({
     form: "userProfileUpdateForm",
-    enableReinitialize: true
+    enableReinitialize: true,
 })(UserProfileUpdateForm);
 
 export default UserProfileUpdate;
