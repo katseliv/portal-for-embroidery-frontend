@@ -110,7 +110,6 @@ export const postAPI = {
         return instance.delete(`/posts/${postId}`);
     },
     likePost(data) {
-        console.log(data)
         return instance.post(`/posts/${data.postId}/like`, {userId: data.userId});
     },
     dislikePost(data) {
@@ -130,6 +129,12 @@ export const postAPI = {
     },
     getPostsByNumberAndSize(pageNumber, pageSize) {
         return instance.get(`/posts?page=${pageNumber}&size=${pageSize}`);
+    },
+    getPostsByUserAndNumberAndSize(userId, pageNumber, pageSize) {
+        return instance.get(`/users/${userId}/posts?page=${pageNumber}&size=${pageSize}`);
+    },
+    getPostsByDesignerAndNumberAndSize(designerId, pageNumber, pageSize) {
+        return instance.get(`/designer-profiles/${designerId}/posts?page=${pageNumber}&size=${pageSize}`);
     },
     getDesigners() {
         return instance.get(`/users/designers`);

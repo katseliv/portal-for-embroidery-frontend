@@ -1,5 +1,5 @@
-import {reset, stopSubmit} from "redux-form";
 import {postAPI} from "../api/api";
+import {reset, stopSubmit} from "redux-form";
 import {updateObjectInArray} from "../utils/object-helpers";
 
 const LIKE = '/post/LIKE';
@@ -16,6 +16,7 @@ const SET_POST_PROFILE = '/post/SET-POST-PROFILE';
 const SET_CURRENT_PAGE = '/post/SET-CURRENT-PAGE';
 const SET_POSTS_TOTAL_COUNT = '/post/SET-POSTS-TOTAL-COUNT';
 const TOGGLE_IS_FETCHING = '/post/TOGGLE-IS-FETCHING';
+const TOGGLE_IS_END_OF_POSTS = '/post/TOGGLE-IS-END-OF-POSTS';
 const TOGGLE_IS_LIKING_PROGRESS = '/post/TOGGLE-IS-LIKING-PROGRESS';
 
 let initialState = {
@@ -27,6 +28,7 @@ let initialState = {
     pageSize: 5,
     totalCount: 0,
     isFetching: false,
+    isEndOfPosts: false,
     isLikingInProgress: []
 }
 
@@ -86,6 +88,8 @@ export const postReducer = (state = initialState, action) => {
             return {...state, totalCount: action.totalCount};
         case TOGGLE_IS_FETCHING:
             return {...state, isFetching: action.isFetching};
+        case TOGGLE_IS_END_OF_POSTS:
+            return {...state, isEndOfPosts: action.isEndOfPosts};
         case TOGGLE_IS_LIKING_PROGRESS:
             return {
                 ...state,
@@ -128,6 +132,10 @@ export const dislikeActionCreator = (postId) => ({type: DISLIKE, postId: postId}
 export const setIsFetchingActionCreator = (isFetching) => ({
     type: TOGGLE_IS_FETCHING,
     isFetching: isFetching
+});
+export const setIsEndOfPostsActionCreator = (isEndOfPosts) => ({
+    type: TOGGLE_IS_END_OF_POSTS,
+    isEndOfPosts: isEndOfPosts
 });
 export const setIsLikingInProgressActionCreator = (isFetching, id) => ({
     type: TOGGLE_IS_LIKING_PROGRESS,
@@ -195,60 +203,84 @@ export const deletePostThunkCreator = (postId) => {
         }
     };
 }
+export const setResponseDataForPostsThunkCreator = (dispatch, response) => {
+    if (response.status === 200) {
+        dispatch(setIsFetchingActionCreator(false));
+        dispatch(setPostsActionCreator(response.data.viewDtoList));
+        dispatch(setTotalCountActionCreator(response.data.totalCount));
+        if (response.data.totalPages === 1) {
+            dispatch(setIsEndOfPostsActionCreator(true));
+        } else {
+            dispatch(setIsEndOfPostsActionCreator(false));
+        }
+    }
+}
 export const getPostsThunkCreator = () => {
     return async (dispatch) => {
         dispatch(setIsFetchingActionCreator(true));
+        dispatch(setCurrentPageActionCreator(1));
         let response = await postAPI.getPosts();
-        if (response.status === 200) {
-            dispatch(setIsFetchingActionCreator(false));
-            dispatch(setPostsActionCreator(response.data.viewDtoList));
-            dispatch(setTotalCountActionCreator(response.data.totalCount));
-        }
+        setResponseDataForPostsThunkCreator(dispatch, response);
     };
 }
 export const getPostsByUserThunkCreator = (userId) => {
     return async (dispatch) => {
         dispatch(setIsFetchingActionCreator(true));
+        dispatch(setCurrentPageActionCreator(1));
         let response = await postAPI.getPostsByUser(userId);
-        if (response.status === 200) {
-            dispatch(setIsFetchingActionCreator(false));
-            dispatch(setPostsActionCreator(response.data.viewDtoList));
-            dispatch(setTotalCountActionCreator(response.data.totalCount));
-        }
+        setResponseDataForPostsThunkCreator(dispatch, response);
     };
 }
 export const getPostsByDesignerThunkCreator = (designerId) => {
     return async (dispatch) => {
         dispatch(setIsFetchingActionCreator(true));
+        dispatch(setCurrentPageActionCreator(1));
         let response = await postAPI.getPostsByDesigner(designerId);
-        if (response.status === 200) {
-            dispatch(setIsFetchingActionCreator(false));
-            dispatch(setPostsActionCreator(response.data.viewDtoList));
-            dispatch(setTotalCountActionCreator(response.data.totalCount));
-        }
+        setResponseDataForPostsThunkCreator(dispatch, response);
     };
 }
 export const getPostsByTagThunkCreator = (tagName) => {
     return async (dispatch) => {
         dispatch(setIsFetchingActionCreator(true));
+        dispatch(setCurrentPageActionCreator(1));
         let response = await postAPI.getPostsByTag(tagName);
-        if (response.status === 200) {
-            dispatch(setIsFetchingActionCreator(false));
-            dispatch(setPostsActionCreator(response.data.viewDtoList));
-            dispatch(setTotalCountActionCreator(response.data.totalCount));
-        }
+        setResponseDataForPostsThunkCreator(dispatch, response);
     };
+}
+export const setResponseDataForPageablePostsThunkCreator = (pageNumber, dispatch, response) => {
+    if (response.status === 200) {
+        dispatch(setIsFetchingActionCreator(false));
+        dispatch(addPostsActionCreator(response.data.viewDtoList));
+        dispatch(setTotalCountActionCreator(response.data.totalCount));
+        if (response.data.totalPages === pageNumber) {
+            dispatch(setIsEndOfPostsActionCreator(true));
+        } else {
+            dispatch(setIsEndOfPostsActionCreator(false));
+        }
+    }
 }
 export const getPostsByNumberAndSizeThunkCreator = (pageNumber, pageSize) => {
     return async (dispatch) => {
         dispatch(setIsFetchingActionCreator(true));
         dispatch(setCurrentPageActionCreator(pageNumber));
         let response = await postAPI.getPostsByNumberAndSize(pageNumber, pageSize);
-        if (response.status === 200) {
-            dispatch(setIsFetchingActionCreator(false));
-            dispatch(addPostsActionCreator(response.data.viewDtoList));
-            dispatch(setTotalCountActionCreator(response.data.totalCount));
-        }
+        setResponseDataForPageablePostsThunkCreator(pageNumber, dispatch, response);
+    };
+}
+export const getPostsByUserAndNumberAndSizeThunkCreator = (userId, pageNumber, pageSize) => {
+    return async (dispatch) => {
+        dispatch(setIsFetchingActionCreator(true));
+        dispatch(setCurrentPageActionCreator(pageNumber));
+        let response = await postAPI.getPostsByUserAndNumberAndSize(userId, pageNumber, pageSize);
+        setResponseDataForPageablePostsThunkCreator(pageNumber, dispatch, response);
+    };
+}
+export const getPostsByDesignerAndNumberAndSizeThunkCreator = (designerId, pageNumber, pageSize) => {
+    return async (dispatch) => {
+        dispatch(setIsFetchingActionCreator(true));
+        dispatch(setCurrentPageActionCreator(pageNumber));
+        let response = await postAPI.getPostsByDesignerAndNumberAndSize(designerId, pageNumber, pageSize);
+        setResponseDataForPageablePostsThunkCreator(pageNumber, dispatch, response);
     };
 }
 export const getDesignersThunkCreator = () => {

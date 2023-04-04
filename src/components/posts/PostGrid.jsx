@@ -4,30 +4,12 @@ import Preloader from "../common/Preloader";
 import PostProfileCreate from "./PostProfileCreate";
 import Searcher from "../common/Searcher";
 
+const gridStyle = {
+    overflowAnchor: "none"
+};
+
 const PostGrid = (props) => {
     const [createMode, setCreateMode] = useState(false);
-    // const [currentPage, setCurrentPage] = useState(1);
-
-    // const [posts, setPosts] = useState(props.posts);
-    // const [isFetching, setIsFetching] = useState(props.isFetching);
-    // const [totalCount, setTotalCount] = useState(0);
-    //
-
-    // useEffect(() => {
-    //     if (isFetching) {
-    //         props.getPostsByNumber(currentPage);
-    //         setCurrentPage(prevState => prevState + 1);
-    //         setTotalCount();
-    //     }
-    // }, [isFetching])
-
-
-    // useEffect(() => {
-    //     document.addEventListener("scroll", scrollHandler);
-    //     return () => {
-    //         document.removeEventListener("scroll", scrollHandler);
-    //     };
-    // }, [])
 
     if (props.isFetching) {
         return <Preloader/>;
@@ -44,6 +26,12 @@ const PostGrid = (props) => {
         setCreateMode(false);
     }
 
+    const onLoadPosts = () => {
+        props.getPostsByNumberAndSize(props.currentPage + 1);
+        const element = document.getElementById("footer");
+        element.scrollIntoView({behavior: "smooth", block: "end"});
+    }
+
     const onGetPosts = () => {
         props.getPosts();
     }
@@ -52,33 +40,9 @@ const PostGrid = (props) => {
         props.getPostsByTag(tag.request);
     }
 
-    // const scrollHandler = (event) => {
-    //     if (event.target.documentElement.scrollHeight - (event.target.documentElement.scrollTop + window.innerHeight) < 100
-    //         && props.totalCount !== 0
-    //     ) {
-    //         console.log("scroll");
-    //         props.getPostsByNumber(currentPage);
-    //         setCurrentPage(currentPage + 1);
-    //     }
-    // }
-
-    // const onScrollList = (event) => {
-    //     const scrollBottom = event.target.scrollTop + event.target.offsetHeight === event.target.scrollHeight;
-    //     if (scrollBottom) {
-    //         props.getPostsByNumber(currentPage);
-    //         setCurrentPage(currentPage + 1);
-    //         // const total = 100;
-    //         // const data = []; // lenght == 40
-    //         //
-    //         // if(data.lenght < total) {
-    //         //     apiMethod({ start: data.lenght, count: 20 });
-    //         // }
-    //     }
-    // };
-
-
     const mappedPosts = props.posts.map(post => <PostItem key={post.id} number={post.id}
-                                                          image={post.designBase64StringImage} title={post.designName}
+                                                          image={post.designBase64StringImage}
+                                                          title={post.designName}
                                                           text={post.description} onDeletePost={props.onDeletePost}
                                                           countLikes={post.countLikes}
                                                           isAuthenticated={props.isAuthenticated}
@@ -115,11 +79,12 @@ const PostGrid = (props) => {
                             {mappedPosts}
                         </div>
                     </div>
-                    <div className="px-2 py-5 text-center">
-                        <button className="btn btn-lg btn-outline-secondary w-25 mx-1" onClick={onGetPosts}>
-                            Load More
-                        </button>
-                    </div>
+                    {!props.isEndOfPost &&
+                        <div className="px-2 py-5 text-center">
+                            <button className="btn btn-lg btn-outline-secondary w-25 mx-1" onClick={onLoadPosts}>
+                                Load More
+                            </button>
+                        </div>}
                 </div>}
         </div>
     );

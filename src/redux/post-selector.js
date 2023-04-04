@@ -30,6 +30,10 @@ export const getIsFetchingOfPosts = (state) => {
     return state.postPage.isFetching;
 };
 
+export const getIsEndOfPosts = (state) => {
+    return state.postPage.isEndOfPosts;
+};
+
 export const getIsLikingInProgressOfPosts = (state) => {
     return state.postPage.isLikingInProgress;
 };

@@ -8,10 +8,10 @@ import {
     deletePostThunkCreator,
     dislikeFlowThunkCreator,
     getDesignersThunkCreator,
-    getDesignsThunkCreator,
+    getDesignsThunkCreator, getPostsByDesignerAndNumberAndSizeThunkCreator,
     getPostsByDesignerThunkCreator,
     getPostsByNumberAndSizeThunkCreator,
-    getPostsByTagThunkCreator,
+    getPostsByTagThunkCreator, getPostsByUserAndNumberAndSizeThunkCreator,
     getPostsByUserThunkCreator,
     getPostsThunkCreator,
     likeFlowThunkCreator,
@@ -21,7 +21,7 @@ import {
 import {
     getCurrentPageOfPosts,
     getDesigners,
-    getDesigns,
+    getDesigns, getIsEndOfPosts,
     getIsFetchingOfPosts,
     getIsLikingInProgressOfPosts,
     getPageSizeOfPosts,
@@ -41,8 +41,8 @@ class PostGridContainer extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        let pathName = this.props.location.pathname;
-        let prevPathName = prevProps.location.pathname;
+        const pathName = this.props.location.pathname;
+        const prevPathName = prevProps.location.pathname;
         if (pathName !== prevPathName) {
             this.refreshPostGrid();
         }
@@ -82,8 +82,18 @@ class PostGridContainer extends React.Component {
         this.props.getPostsByTag(tagName);
     }
 
-    getPostsByNumberAndSize = () => {
-        this.props.getPostsByNumberAndSize(this.props.currentPageOfPosts, this.props.pageSizeOfPosts);
+    getPostsByNumberAndSize = (pageNumber) => {
+        if (this.props.isAuthenticated) {
+            const userId = this.props.authorizedUserId;
+            const pathName = this.props.location.pathname;
+            if (pathName === "/my-designs") {
+                this.props.getPostsByDesignerAndNumberAndSize(userId, pageNumber, this.props.pageSizeOfPosts);
+            } else {
+                this.props.getPostsByUserAndNumberAndSize(userId, pageNumber, this.props.pageSizeOfPosts);
+            }
+        } else {
+            this.props.getPostsByNumberAndSize(pageNumber, this.props.pageSizeOfPosts);
+        }
     }
 
     setCurrentPage = (pageNumber) => {
@@ -115,6 +125,7 @@ class PostGridContainer extends React.Component {
                          pageSize={this.props.pageSizeOfPosts}
                          totalCount={this.props.totalCountOfPosts}
                          isFetching={this.props.isFetchingOfPosts}
+                         isEndOfPost={this.props.isEndOfPosts}
                          isLikingInProgress={this.props.isLikingInProgressOfPost}
                          authorizedUserId={this.props.authorizedUserId}
                          authorizedUserRole={this.props.authorizedUserRole}
@@ -141,6 +152,7 @@ let mapStateToProps = (state) => {
         pageSizeOfPosts: getPageSizeOfPosts(state),
         totalCountOfPosts: getTotalCountOfPosts(state),
         isFetchingOfPosts: getIsFetchingOfPosts(state),
+        isEndOfPosts: getIsEndOfPosts(state),
         isLikingInProgressOfPost: getIsLikingInProgressOfPosts(state),
         profile: getUserProfile(state),
         authorizedUserId: getAuthorizedUserId(state),
@@ -177,6 +189,12 @@ let mapDispatchToProps = (dispatch) => {
         },
         getPostsByNumberAndSize: (pageNumber, pageSize) => {
             dispatch(getPostsByNumberAndSizeThunkCreator(pageNumber, pageSize));
+        },
+        getPostsByUserAndNumberAndSize: (userId, pageNumber, pageSize) => {
+            dispatch(getPostsByUserAndNumberAndSizeThunkCreator(userId, pageNumber, pageSize));
+        },
+        getPostsByDesignerAndNumberAndSize: (designerId, pageNumber, pageSize) => {
+            dispatch(getPostsByDesignerAndNumberAndSizeThunkCreator(designerId, pageNumber, pageSize));
         },
         getDesigners: () => {
             dispatch(getDesignersThunkCreator());
