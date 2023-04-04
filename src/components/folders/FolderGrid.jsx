@@ -1,7 +1,7 @@
 import React from 'react';
 import FolderItem from "./FolderItem";
 import Preloader from "../common/Preloader";
-import FileItem from "./files/FileItem";
+import DesignItem from "./designs/DesignItem";
 
 const FolderGrid = (props) => {
     if (props.isFetching) {
@@ -14,8 +14,10 @@ const FolderGrid = (props) => {
                                                                 onUpdateFolder={props.onUpdateFolder}
                                                                 onFolderChange={props.onFolderChange}
                                                                 onSetPath={props.onSetPath}/>);
-    const filesData = props.files.map(file => <FileItem key={file.id} number={file.id} name={file.name}
-                                                        onUpdateFile={props.onUpdateFile}/>);
+    const designData = props.designs.map(design => <DesignItem key={design.id} number={design.id}
+                                                               name={design.name}
+                                                               editMode={!!design.editMode}
+                                                               onUpdateDesign={props.onUpdateDesign}/>);
 
     const onAddFolder = () => {
         const currentFolderId = props.currentFolder ? props.currentFolder.id : null;
@@ -26,17 +28,22 @@ const FolderGrid = (props) => {
         });
     };
 
-    const onActivateCreateMode = () => {
-        props.activateCreateMode();
+    const onAddDesign = () => {
+        const currentFolderId = props.currentFolder ? props.currentFolder.id : null;
+        props.onAddDesign({
+            name: "New Design",
+            folderId: currentFolderId,
+            creatorDesignerId: props.profileId
+        });
     };
 
     return (
         <div className="container p-0 overflow-hidden">
-            <h1 className="h4 mb-3 fw-normal px-3">Folders & Files: {props.path}</h1><br/>
+            <h1 className="h4 mb-3 fw-normal px-3">Folders & Designs: {props.path}</h1><br/>
             <div className="container w-100">
                 <div className="row row-cols-1 row-cols-md-5 g-4 border-top">
                     {foldersData}
-                    {filesData}
+                    {designData}
                 </div>
                 <div className="row">
                     <div className="px-0 mt-lg-4">
@@ -47,8 +54,8 @@ const FolderGrid = (props) => {
                             Create New Folder
                         </button>
                         {props.currentFolder &&
-                            <button className="btn btn-outline-success" onClick={onActivateCreateMode}>
-                                Create New File
+                            <button className="btn btn-outline-success" onClick={onAddDesign}>
+                                Create New Design
                             </button>}
                     </div>
                 </div>

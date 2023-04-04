@@ -134,11 +134,11 @@ export const getFilesByNumberAndSizeThunkCreator = (pageNumber, pageSize) => {
         }
     };
 }
-export const getFilesOfFolderByNumberAndSizeThunkCreator = (folderId, pageNumber, pageSize) => {
+export const getFilesOfDesignByNumberAndSizeThunkCreator = (designId, pageNumber, pageSize) => {
     return async (dispatch) => {
         dispatch(setIsFetchingActionCreator(true));
         dispatch(setCurrentPageActionCreator(pageNumber));
-        let response = await fileAPI.getFilesOfFolderByNumberAndSize(folderId, pageNumber, pageSize);
+        let response = await fileAPI.getFilesOfDesignByNumberAndSize(designId, pageNumber, pageSize);
         if (response.status === 200) {
             dispatch(setIsFetchingActionCreator(false));
             dispatch(setFilesActionCreator(response.data.viewDtoList));

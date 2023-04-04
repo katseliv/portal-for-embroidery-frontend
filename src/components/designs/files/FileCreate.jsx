@@ -7,13 +7,12 @@ const errorStyle = {color: "#dc3545"};
 
 const FileCreate = (props) => {
     const onSubmit = async (formData) => {
-        const currentFolderId = props.currentFolder ? props.currentFolder.id : null;
         const result = await mapFileToBase64(formData.files[0]);
         const newFile = {
             name: getFileName(formData.files[0].name),
             extension: getExtension(formData.files[0].name),
             base64StringFile: result,
-            folderId: currentFolderId
+            designId: props.profile.id
         };
         props.onAddFile(newFile);
     }

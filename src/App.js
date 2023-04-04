@@ -3,6 +3,7 @@ import {compose} from "redux";
 import {connect} from "react-redux";
 import {Route, Routes, useNavigate} from "react-router-dom";
 import Home from "./components/home/Home";
+import Error from "./components/common/Error";
 import Footer from "./components/footer/Footer";
 import AboutUs from "./components/about-us/AboutUs";
 import Contacts from "./components/contacts/Contacts";
@@ -18,7 +19,7 @@ import {getGlobalError, getInitialized} from "./redux/app-selector";
 import {initializeAppThunkCreator, setGlobalErrorActionCreator} from "./redux/app-reducer";
 import {getDesignerProfileThunkCreator, getUserProfileThunkCreator} from "./redux/user-reducer";
 import {getAuthorizedUserId, getAuthorizedUserRole, getIsAuthenticated} from "./redux/auth-selector";
-import Error from "./components/common/Error";
+import DesignProfileContainer from "./components/designs/DesignProfileContainer";
 
 // const UserListContainer = React.lazy(() => import('./components/users/UserListContainer'));
 // <Suspense fallback={<Preloader/>}>userListContainer</Suspense>
@@ -70,11 +71,11 @@ class App extends React.Component {
                     <Route path='/' element={<Home/>}/>
                     <Route path='/profile' element={<UserProfileContainer/>}/>
                     <Route path='/profile/:userId' element={<UserProfileContainer/>}/>
+                    <Route path='/profile/design/:designId' element={<DesignProfileContainer/>}/>
                     <Route path='/users' element={<UserListContainer/>}/>
                     <Route path='/designs' element={<PostGridContainer/>}/>
                     <Route path='/my-designs' element={<PostGridContainer/>}/>
                     <Route path='/designs/:postId' element={<PostProfileContainer/>}/>
-                    <Route path='/my-designs'/>
                     <Route path='/about-us' element={<AboutUs/>}/>
                     <Route path='/contacts' element={<Contacts/>}/>
                     <Route path='/sign-in' element={<LoginContainer/>}/>

@@ -3,6 +3,7 @@ import {appReducer} from "./app-reducer";
 import {authReducer} from "./auth-reducer";
 import {userReducer} from "./user-reducer";
 import {postReducer} from "./post-reducer";
+import {designReducer} from "./design-reducer";
 import {commentReducer} from "./comment-reducer";
 import {folderReducer} from "./folder-reducer";
 import {fileReducer} from "./file-reducer";
@@ -14,6 +15,7 @@ let reducers = combineReducers({
     authPage: authReducer,
     userPage: userReducer,
     postPage: postReducer,
+    designPage: designReducer,
     commentPage: commentReducer,
     folderPage: folderReducer,
     filePage: fileReducer,

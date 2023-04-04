@@ -88,8 +88,32 @@ export const fileAPI = {
     getFilesByNumberAndSize(pageNumber, pageSize) {
         return instance.get(`/files?page=${pageNumber}&size=${pageSize}`);
     },
-    getFilesOfFolderByNumberAndSize(folderId, pageNumber, pageSize) {
-        return instance.get(`/folders/${folderId}/files?page=${pageNumber}&size=${pageSize}`);
+    getFilesOfDesignByNumberAndSize(designId, pageNumber, pageSize) {
+        return instance.get(`/designs/${designId}/files?page=${pageNumber}&size=${pageSize}`);
+    },
+}
+
+export const designAPI = {
+    createDesign(design) {
+        return instance.post(`/designs`, {...design});
+    },
+    getDesign(designId) {
+        return instance.get(`/designs/${designId}`);
+    },
+    updateDesign(designId, designName) {
+        return instance.put(`/designs/${designId}`, {name: designName});
+    },
+    deleteDesign(designId) {
+        return instance.delete(`/designs/${designId}`);
+    },
+    getDesigns() {
+        return instance.get(`/designs`);
+    },
+    getDesignsByNumberAndSize(pageNumber, pageSize) {
+        return instance.get(`/designs?page=${pageNumber}&size=${pageSize}`);
+    },
+    getDesignsOfFolderByNumberAndSize(folderId, pageNumber, pageSize) {
+        return instance.get(`/folders/${folderId}/designs?page=${pageNumber}&size=${pageSize}`);
     },
 }
 
