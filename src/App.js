@@ -8,6 +8,7 @@ import Footer from "./components/footer/Footer";
 import AboutUs from "./components/about-us/AboutUs";
 import Contacts from "./components/contacts/Contacts";
 import Preloader from "./components/common/Preloader";
+import ModelPanel from "./components/common/ModelPanel";
 import PostGridContainer from "./components/posts/PostGridContainer";
 import PostProfileContainer from "./components/posts/PostProfileContainer";
 import UserListContainer from "./components/users/UserListContainer";
@@ -76,6 +77,7 @@ class App extends React.Component {
                     <Route path='/designs' element={<PostGridContainer/>}/>
                     <Route path='/my-designs' element={<PostGridContainer/>}/>
                     <Route path='/designs/:postId' element={<PostProfileContainer/>}/>
+                    <Route path='/model-view' element={<ModelPanel/>}/>
                     <Route path='/about-us' element={<AboutUs/>}/>
                     <Route path='/contacts' element={<Contacts/>}/>
                     <Route path='/sign-in' element={<LoginContainer/>}/>
