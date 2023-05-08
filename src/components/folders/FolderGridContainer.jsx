@@ -29,6 +29,7 @@ import {
     updateDesignThunkCreator
 } from "../../redux/design-reducer";
 import FolderGrid from "./FolderGrid";
+import {getAuthorizedUserRole} from "../../redux/auth-selector";
 
 class FolderGridContainer extends React.Component {
     componentDidMount() {
@@ -89,6 +90,7 @@ class FolderGridContainer extends React.Component {
 
     render() {
         return <FolderGrid profileId={this.props.profile.id}
+                           authorizedUserRole={this.props.authorizedUserRole}
                            folders={this.props.folders}
                            designs={this.props.designs}
                            path={this.props.pathOfFolders}
@@ -111,6 +113,7 @@ class FolderGridContainer extends React.Component {
 let mapStateToProps = (state) => {
     return {
         profile: getUserProfile(state),
+        authorizedUserRole: getAuthorizedUserRole(state),
         folders: getFolders(state),
         designs: getDesigns(state),
         pathOfFolders: getPathOfFolders(state),

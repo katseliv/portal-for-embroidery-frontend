@@ -53,7 +53,7 @@ const FolderGrid = (props) => {
                         <button className="btn btn-outline-success me-2" onClick={onAddFolder}>
                             Create New Folder
                         </button>
-                        {props.currentFolder &&
+                        {props.currentFolder !== null && props.authorizedUserRole === "DESIGNER" &&
                             <button className="btn btn-outline-success" onClick={onAddDesign}>
                                 Create New Design
                             </button>}
