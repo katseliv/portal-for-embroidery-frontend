@@ -44,15 +44,12 @@ const PostProfileInfo = (props) => {
                                 <div className="col-7">
                                     <h1 className="h4 mb-5 fw-normal text-center">{props.profile.designName}</h1>
                                     <h6 className="h5 mb-3 fw-normal text-right">{props.profile.description}</h6>
-                                    <h6 className="h5 mb-3 fw-normal text-right">As with all forms of matter, a liquid
-                                        is composed of particles—atoms and molecules—that move about in relation to each
-                                        other. Each state is distinguished from the others by the behavior of its
-                                        particles. The particles in a liquid are situated near each other but
-                                        are not as close together as the particles in solids—nor as far apart as those
-                                        in gases. Unlike the particles in solids, which are fixed in place, the
-                                        particles in liquids can slide past each other, though they cannot move as
-                                        freely as the particles in gases.
-                                    </h6>
+                                    <h6 className="h5 mb-3 fw-normal text-right">This lotus design will look fabulous
+                                        stitched on a cushion cover, or framed as a decoration for your wall.
+                                        DMC Mouliné Spécial threads will show your stitches off at their best.
+                                        Our patterns and quality supplies make it easy for you to complete your
+                                        project. Colourfast and fade resistant DMC threads keep stitches looking
+                                        vibrant for generations to come.</h6>
                                     <h6 className="h5 mb-3 fw-normal text-right">
                                         Author: {props.profile.designerFirstName + " " + props.profile.designerLastName}
                                     </h6>
